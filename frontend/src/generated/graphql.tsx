@@ -35402,7 +35402,7 @@ export type Room_GetEventsQuery = { readonly __typename?: 'query_root', readonly
 export type Room_EventSummaryFragment = { readonly __typename?: 'schedule_Event', readonly id: any, readonly conferenceId: any, readonly startTime: any, readonly name: string, readonly endTime?: Maybe<any>, readonly intendedRoomModeName: Room_Mode_Enum, readonly itemId?: Maybe<any>, readonly exhibitionId?: Maybe<any>, readonly shufflePeriod?: Maybe<(
     { readonly __typename?: 'room_ShufflePeriod' }
     & ShufflePeriodDataFragment
-  )>, readonly item?: Maybe<{ readonly __typename?: 'content_Item', readonly id: any, readonly title: string, readonly typeName: Content_ItemType_Enum, readonly chatId?: Maybe<any>, readonly videoElements: ReadonlyArray<{ readonly __typename?: 'content_Element', readonly id: any, readonly name: string }>, readonly zoomItems: ReadonlyArray<{ readonly __typename?: 'content_Element', readonly id: any, readonly data: any, readonly name: string }> }>, readonly eventPeople: ReadonlyArray<{ readonly __typename?: 'schedule_EventProgramPerson', readonly id: any, readonly roleName: Schedule_EventProgramPersonRole_Enum, readonly person: { readonly __typename?: 'collection_ProgramPerson', readonly id: any, readonly name: string, readonly affiliation?: Maybe<string>, readonly registrantId?: Maybe<any> } }> };
+  )>, readonly item?: Maybe<{ readonly __typename?: 'content_Item', readonly id: any, readonly title: string, readonly typeName: Content_ItemType_Enum, readonly chatId?: Maybe<any>, readonly videoElements: ReadonlyArray<{ readonly __typename?: 'content_Element', readonly id: any, readonly name: string, readonly createdAt: any }>, readonly zoomItems: ReadonlyArray<{ readonly __typename?: 'content_Element', readonly id: any, readonly data: any, readonly name: string }> }>, readonly eventPeople: ReadonlyArray<{ readonly __typename?: 'schedule_EventProgramPerson', readonly id: any, readonly roleName: Schedule_EventProgramPersonRole_Enum, readonly person: { readonly __typename?: 'collection_ProgramPerson', readonly id: any, readonly name: string, readonly affiliation?: Maybe<string>, readonly registrantId?: Maybe<any> } }> };
 
 export type Room_GetDefaultVideoRoomBackendQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -38364,6 +38364,7 @@ export const Room_EventSummaryFragmentDoc = gql`
     ) {
       id
       name
+      createdAt
     }
     zoomItems: elements(where: {typeName: {_eq: ZOOM}}, limit: 1) {
       id

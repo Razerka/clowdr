@@ -4,8 +4,11 @@ import {
     Box,
     Button,
     Center,
+    FormControl,
+    FormLabel,
     HStack,
     Spinner,
+    Switch,
     Text,
     useColorModeValue,
     useToast,
@@ -76,6 +79,7 @@ gql`
             ) {
                 id
                 name
+                createdAt
             }
             zoomItems: elements(where: { typeName: { _eq: ZOOM } }, limit: 1) {
                 id
@@ -298,17 +302,35 @@ function RoomInner({
     }, [currentRoomEvent, nextRoomEvent, now30s]);
 
     const videoPlayerRef = useRef<HTMLDivElement | null>(null);
+    const [videoPlayerAuto, setVideoPlayerAuto] = useState<boolean>(true);
     const [selectedVideoElementId, setSelectedVideoElementId] = useState<string | null>(null);
     useEffect(() => {
-        if (
-            selectedVideoElementId &&
-            currentRoomEvent &&
-            currentRoomEvent.intendedRoomModeName !== Room_Mode_Enum.VideoPlayer
-        ) {
-            setSelectedVideoElementId(null);
+        if (videoPlayerAuto) {
+            if (currentRoomEvent?.intendedRoomModeName === Room_Mode_Enum.VideoPlayer) {
+                if (!currentRoomEvent.item?.videoElements?.length) {
+                    setSelectedVideoElementId(null);
+                } else {
+                    const mostRecentElement = R.reduce(
+                        R.maxBy<{ createdAt: string; id: string | null }>((el) => Date.parse(el.createdAt)),
+                        { createdAt: new Date(0).toISOString(), id: null },
+                        currentRoomEvent.item.videoElements
+                    );
+                    setSelectedVideoElementId(mostRecentElement.id);
+                }
+            } else {
+                setSelectedVideoElementId(null);
+            }
+        } else {
+            if (
+                selectedVideoElementId &&
+                currentRoomEvent &&
+                currentRoomEvent.intendedRoomModeName !== Room_Mode_Enum.VideoPlayer
+            ) {
+                setSelectedVideoElementId(null);
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentRoomEvent]);
+    }, [currentRoomEvent, videoPlayerAuto]);
 
     const toast = useToast();
     useEffect(() => {
@@ -610,6 +632,8 @@ function RoomInner({
         ]
     );
 
+    const onDeviatedFromSimulive = useCallback(() => setVideoPlayerAuto(false), [setVideoPlayerAuto]);
+
     const playerEl = useMemo(() => {
         const currentEventIsVideoPlayer = currentRoomEvent?.intendedRoomModeName === Room_Mode_Enum.VideoPlayer;
         const shouldShowLivePlayer =
@@ -617,29 +641,54 @@ function RoomInner({
 
         return !showBackstage ? (
             currentEventIsVideoPlayer || (selectedVideoElementId && !currentRoomEvent) ? (
-                <Box pos="relative" ref={videoPlayerRef}>
-                    {selectedVideoElementId ? (
-                        <VideoPlayer elementId={selectedVideoElementId} />
-                    ) : (
-                        <Center>
-                            <AspectRatio
-                                w="100%"
-                                maxW="800px"
-                                maxH="90vh"
-                                ratio={16 / 9}
-                                border="3px solid"
-                                borderColor="gray.400"
-                                borderRadius="lg"
-                            >
-                                <VStack>
-                                    <Text fontSize="2xl">Select a video below</Text>
-                                    <FAIcon icon="hand-point-down" aria-hidden="true" iconStyle="r" fontSize="6xl" />
-                                </VStack>
-                            </AspectRatio>
-                        </Center>
-                    )}
-                    <EmojiFloatContainer chatId={roomDetails.chatId ?? ""} />
-                </Box>
+                <>
+                    <FormControl display="flex" alignItems="center">
+                        <FormLabel htmlFor="email-alerts" mb="0">
+                            Autoplay?
+                        </FormLabel>
+                        <Switch
+                            id="mount-player"
+                            isChecked={videoPlayerAuto}
+                            onChange={() => setVideoPlayerAuto((v) => !v)}
+                        />
+                    </FormControl>
+                    <Box pos="relative" ref={videoPlayerRef}>
+                        {selectedVideoElementId ? (
+                            <VideoPlayer
+                                elementId={selectedVideoElementId}
+                                simuliveStartTimeMillis={
+                                    currentRoomEvent?.startTime && videoPlayerAuto
+                                        ? Date.parse(currentRoomEvent.startTime)
+                                        : undefined
+                                }
+                                onDeviatedFromSimulive={onDeviatedFromSimulive}
+                            />
+                        ) : (
+                            <Center>
+                                <AspectRatio
+                                    w="100%"
+                                    maxW="800px"
+                                    maxH="90vh"
+                                    ratio={16 / 9}
+                                    border="3px solid"
+                                    borderColor="gray.400"
+                                    borderRadius="lg"
+                                >
+                                    <VStack>
+                                        <Text fontSize="2xl">Select a video below</Text>
+                                        <FAIcon
+                                            icon="hand-point-down"
+                                            aria-hidden="true"
+                                            iconStyle="r"
+                                            fontSize="6xl"
+                                        />
+                                    </VStack>
+                                </AspectRatio>
+                            </Center>
+                        )}
+                        <EmojiFloatContainer chatId={roomDetails.chatId ?? ""} />
+                    </Box>
+                </>
             ) : shouldShowLivePlayer && hlsUri ? (
                 <Box pos="relative">
                     <VideoAspectWrapper>
@@ -674,6 +723,8 @@ function RoomInner({
         withinThreeMinutesOfBroadcastEvent,
         showBackstage,
         selectedVideoElementId,
+        videoPlayerAuto,
+        onDeviatedFromSimulive,
         roomDetails.chatId,
         roomDetails.id,
         hlsUri,

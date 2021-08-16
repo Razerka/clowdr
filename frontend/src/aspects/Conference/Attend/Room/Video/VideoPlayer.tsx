@@ -26,7 +26,15 @@ import { FAIcon } from "../../../../Icons/FAIcon";
 import { useConference } from "../../../useConference";
 import { VideoElement } from "../../Content/Element/VideoElement";
 
-export function VideoPlayer({ elementId }: { elementId: string }): JSX.Element {
+export function VideoPlayer({
+    elementId,
+    simuliveStartTimeMillis,
+    onDeviatedFromSimulive,
+}: {
+    elementId: string;
+    simuliveStartTimeMillis?: number;
+    onDeviatedFromSimulive?: () => void;
+}): JSX.Element {
     gql`
         query VideoPlayer_GetElement($elementId: uuid!) {
             content_Element_by_pk(id: $elementId) {
@@ -97,6 +105,7 @@ export function VideoPlayer({ elementId }: { elementId: string }): JSX.Element {
         () => (
             <VStack
                 bgColor="rgba(0, 0, 0, 0.7)"
+                color="white"
                 position="absolute"
                 p={4}
                 ref={popoverRef}
@@ -119,6 +128,11 @@ export function VideoPlayer({ elementId }: { elementId: string }): JSX.Element {
         [finished, id]
     );
 
+    const seekOnPlay = useMemo(
+        () => (simuliveStartTimeMillis ? (Date.now() - simuliveStartTimeMillis) / 1000 : undefined),
+        [simuliveStartTimeMillis]
+    );
+
     return (
         <>
             {data?.content_Element_by_pk?.item && itemPath ? (
@@ -135,9 +149,30 @@ export function VideoPlayer({ elementId }: { elementId: string }): JSX.Element {
                                 {finished ? popoverEl : undefined}
                                 <VideoElement
                                     elementId={elementId}
+                                    autoplay={Boolean(simuliveStartTimeMillis)}
                                     videoElementData={videoElementBlob}
-                                    onFinish={() => setFinished(true)}
                                     onPlay={() => setFinished(false)}
+                                    onPause={(durationSeconds) => {
+                                        if (simuliveStartTimeMillis) {
+                                            const expectedPlayedSeconds = (Date.now() - simuliveStartTimeMillis) / 1000;
+                                            if (expectedPlayedSeconds <= durationSeconds - 2) {
+                                                onDeviatedFromSimulive?.();
+                                            }
+                                        }
+                                    }}
+                                    onProgress={({ finished, playedSeconds }) => {
+                                        if (finished) {
+                                            setFinished(true);
+                                            return;
+                                        }
+                                        if (simuliveStartTimeMillis) {
+                                            const expectedPlayedSeconds = (Date.now() - simuliveStartTimeMillis) / 1000;
+                                            if (Math.abs(expectedPlayedSeconds - playedSeconds) > 2) {
+                                                onDeviatedFromSimulive?.();
+                                            }
+                                        }
+                                    }}
+                                    seekOnPlay={seekOnPlay}
                                 />
                             </>
                         ) : undefined}

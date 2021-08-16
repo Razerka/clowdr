@@ -4,7 +4,7 @@ import { WebVTTConverter } from "@clowdr-app/srt-webvtt";
 import AmazonS3URI from "amazon-s3-uri";
 import type Hls from "hls.js";
 import type { HlsConfig } from "hls.js";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAsync } from "react-async-hook";
 import ReactPlayer, { Config } from "react-player";
 import type { TrackProps } from "react-player/file";
@@ -14,16 +14,20 @@ export function VideoElement({
     elementId,
     videoElementData,
     title,
+    autoplay,
     onPlay,
     onPause,
-    onFinish,
+    onProgress,
+    seekOnPlay,
 }: {
     elementId: string;
     videoElementData: VideoElementBlob;
     title?: string;
+    autoplay?: boolean;
     onPlay?: () => void;
-    onPause?: () => void;
-    onFinish?: () => void;
+    onPause?: (durationSeconds: number) => void;
+    onProgress?: (options: { finished: boolean; playedSeconds: number }) => void;
+    seekOnPlay?: number;
 }): JSX.Element {
     const videoURL = useMemo(() => {
         let s3Url = videoElementData.transcode?.s3Url;
@@ -97,7 +101,29 @@ export function VideoElement({
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     useTrackView(isPlaying, elementId, "Element");
 
+    useEffect(() => {
+        if (autoplay) {
+            setIsPlaying(autoplay);
+        }
+    }, [elementId, autoplay]);
+
     const playerRef = useRef<ReactPlayer | null>(null);
+    const onPlayerChanged = useCallback(
+        (player: ReactPlayer | null) => {
+            playerRef.current = player;
+            if (seekOnPlay) {
+                playerRef.current?.seekTo(seekOnPlay, "seconds");
+            }
+        },
+        [seekOnPlay]
+    );
+
+    useEffect(() => {
+        if (seekOnPlay) {
+            playerRef.current?.seekTo(seekOnPlay, "seconds");
+        }
+    }, [seekOnPlay]);
+
     const player = useMemo(() => {
         // Only render the player once both the video URL and the subtitles config are available
         // react-player memoizes internally and only re-renders if the url or key props change.
@@ -105,6 +131,7 @@ export function VideoElement({
             <ReactPlayer
                 url={videoURL}
                 controls={true}
+                playing={isPlaying}
                 width="100%"
                 height="auto"
                 onEnded={() => {
@@ -115,7 +142,10 @@ export function VideoElement({
                 }}
                 onPause={() => {
                     setIsPlaying(false);
-                    onPause?.();
+                    const video = playerRef.current?.getInternalPlayer();
+                    if (video instanceof HTMLVideoElement) {
+                        onPause?.(video.duration);
+                    }
                 }}
                 onPlay={() => {
                     setIsPlaying(true);
@@ -126,17 +156,16 @@ export function VideoElement({
                         hlsPlayer.config.maxBufferSize = 60 * 1000 * 1000;
                     }
                 }}
-                onProgress={({ played }) => {
-                    if (played >= 1) {
-                        onFinish?.();
-                    }
+                progressInterval={1000}
+                onProgress={({ played, playedSeconds }) => {
+                    onProgress?.({ finished: played >= 1, playedSeconds });
                 }}
                 config={{ ...config }}
-                ref={playerRef}
+                ref={onPlayerChanged}
                 style={{ borderRadius: "10px", overflow: "hidden" }}
             />
         );
-    }, [videoURL, config, onPause, onPlay, onFinish]);
+    }, [videoURL, config, isPlaying, onPlayerChanged, onPause, onPlay, onProgress]);
 
     useEffect(() => {
         if (playerRef.current) {

@@ -143,6 +143,26 @@ export function useCurrentRoomEvent(roomEvents: readonly Room_EventSummaryFragme
         infrequentUpdate();
     }, [infrequentUpdate]);
 
+    // Trigger an update at exactly the time the next event starts
+    // Otherwise there will be a delay updating the UI
+    useEffect(() => {
+        if (nextRoomEvent) {
+            const nextEventStart = Date.parse(nextRoomEvent.startTime);
+            const nextEventStartsIn = nextEventStart - Date.now();
+            if (nextEventStartsIn > 1000) {
+                console.log("Setting timeout", nextEventStartsIn);
+                const timeout = setTimeout(() => {
+                    console.log("Timeout fired");
+                    infrequentUpdate();
+                }, nextEventStartsIn + 1000);
+                return () => {
+                    console.log("Clearing timeout");
+                    clearTimeout(timeout);
+                };
+            }
+        }
+    }, [infrequentUpdate, nextRoomEvent]);
+
     const result = useMemo(
         () => ({
             currentRoomEvent,
