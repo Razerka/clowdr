@@ -156,18 +156,30 @@ export function VideoPlayer({
                                         if (simuliveStartTimeMillis) {
                                             const expectedPlayedSeconds = (Date.now() - simuliveStartTimeMillis) / 1000;
                                             if (expectedPlayedSeconds <= durationSeconds - 2) {
+                                                console.log("Deviated (pause)", {
+                                                    expectedPlayedSeconds,
+                                                    simuliveStartTimeMillis,
+                                                });
                                                 onDeviatedFromSimulive?.();
                                             }
                                         }
                                     }}
-                                    onProgress={({ finished, playedSeconds }) => {
+                                    onProgress={({ finished, playedSeconds, playerInitialised }) => {
                                         if (finished) {
                                             setFinished(true);
                                             return;
                                         }
-                                        if (simuliveStartTimeMillis) {
+                                        if (simuliveStartTimeMillis && playerInitialised) {
                                             const expectedPlayedSeconds = (Date.now() - simuliveStartTimeMillis) / 1000;
-                                            if (Math.abs(expectedPlayedSeconds - playedSeconds) > 2) {
+                                            if (
+                                                Math.abs(expectedPlayedSeconds - playedSeconds) > 2 &&
+                                                playedSeconds > 2
+                                            ) {
+                                                console.log("Deviated (progress)", {
+                                                    expectedPlayedSeconds,
+                                                    simuliveStartTimeMillis,
+                                                    playedSeconds,
+                                                });
                                                 onDeviatedFromSimulive?.();
                                             }
                                         }

@@ -4,7 +4,7 @@ import { HlsPlayer } from "./HlsPlayer";
 import { HlsPlayerV1 } from "./HlsPlayerV1";
 import { VideoAspectWrapper } from "./VideoAspectWrapper";
 
-const defaultUri = "https://playertest.longtailvideo.com/streams/live-vtt-countdown/live.m3u8";
+const defaultUri = "https://ll-hls-test.apple.com/master.m3u8";
 
 export function VideoTestPage(): JSX.Element {
     const [choice, setChoice] = useState<"v1" | "v2">("v2");

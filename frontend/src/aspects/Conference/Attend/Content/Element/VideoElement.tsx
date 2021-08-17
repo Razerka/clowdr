@@ -26,7 +26,7 @@ export function VideoElement({
     autoplay?: boolean;
     onPlay?: () => void;
     onPause?: (durationSeconds: number) => void;
-    onProgress?: (options: { finished: boolean; playedSeconds: number }) => void;
+    onProgress?: (options: { finished: boolean; playedSeconds: number; playerInitialised: boolean }) => void;
     seekOnPlay?: number;
 }): JSX.Element {
     const videoURL = useMemo(() => {
@@ -108,19 +108,30 @@ export function VideoElement({
     }, [elementId, autoplay]);
 
     const playerRef = useRef<ReactPlayer | null>(null);
+    const playerInitialised = useRef<boolean>(false);
     const onPlayerChanged = useCallback(
         (player: ReactPlayer | null) => {
             playerRef.current = player;
-            if (seekOnPlay) {
-                playerRef.current?.seekTo(seekOnPlay, "seconds");
+
+            const video = playerRef.current?.getInternalPlayer();
+            if (video instanceof HTMLVideoElement && seekOnPlay) {
+                console.log("Seeking on playerChanged", { seekOnPlay, duration: video.duration });
+                playerInitialised.current = true;
+                const seekTo = Math.min(seekOnPlay, video.duration);
+                playerRef.current?.seekTo(seekTo, "seconds");
+            } else {
+                playerInitialised.current = false;
             }
         },
         [seekOnPlay]
     );
 
     useEffect(() => {
-        if (seekOnPlay) {
-            playerRef.current?.seekTo(seekOnPlay, "seconds");
+        const video = playerRef.current?.getInternalPlayer();
+        if (video instanceof HTMLVideoElement && seekOnPlay) {
+            console.log("Seeking on seekOnPlay", { seekOnPlay, duration: video.duration });
+            const seekTo = Math.min(seekOnPlay, video.duration);
+            playerRef.current?.seekTo(seekTo, "seconds");
         }
     }, [seekOnPlay]);
 
@@ -158,7 +169,11 @@ export function VideoElement({
                 }}
                 progressInterval={1000}
                 onProgress={({ played, playedSeconds }) => {
-                    onProgress?.({ finished: played >= 1, playedSeconds });
+                    onProgress?.({
+                        finished: played >= 1,
+                        playedSeconds,
+                        playerInitialised: playerInitialised.current,
+                    });
                 }}
                 config={{ ...config }}
                 ref={onPlayerChanged}
