@@ -1947,7 +1947,49 @@
   - name: usedBy
     using:
       foreign_key_constraint_on: usedById
+  insert_permissions:
+  - role: superuser
+    permission:
+      check:
+        _exists:
+          _where:
+            _and:
+            - grantedPermissionName:
+                _eq: CREATE_CONFERENCE_DEMO_CODE
+            - userId:
+                _eq: X-Hasura-User-Id
+            - targetPermissionName:
+                _is_null: true
+          _table:
+            schema: system
+            name: SuperUserPermissionGrant
+      columns:
+      - id
+      - note
+      - usedById
+      backend_only: false
   select_permissions:
+  - role: superuser
+    permission:
+      columns:
+      - note
+      - usedById
+      - created_at
+      - updated_at
+      - id
+      filter:
+        _exists:
+          _where:
+            _and:
+            - grantedPermissionName:
+                _eq: LIST_CONFERENCE_DEMO_CODES
+            - userId:
+                _eq: X-Hasura-User-Id
+            - targetPermissionName:
+                _is_null: true
+          _table:
+            schema: system
+            name: SuperUserPermissionGrant
   - role: user
     permission:
       columns:
@@ -1958,6 +2000,26 @@
         usedById:
           _eq: X-Hasura-User-Id
   update_permissions:
+  - role: superuser
+    permission:
+      columns:
+      - id
+      - note
+      - usedById
+      filter:
+        _exists:
+          _where:
+            _and:
+            - grantedPermissionName:
+                _eq: CREATE_CONFERENCE_DEMO_CODE
+            - userId:
+                _eq: X-Hasura-User-Id
+            - targetPermissionName:
+                _is_null: true
+          _table:
+            schema: system
+            name: SuperUserPermissionGrant
+      check: null
   - role: user
     permission:
       columns:
@@ -1968,6 +2030,22 @@
       check: {}
       set:
         usedById: x-hasura-User-Id
+  delete_permissions:
+  - role: superuser
+    permission:
+      filter:
+        _exists:
+          _where:
+            _and:
+            - grantedPermissionName:
+                _eq: CREATE_CONFERENCE_DEMO_CODE
+            - userId:
+                _eq: X-Hasura-User-Id
+            - targetPermissionName:
+                _is_null: true
+          _table:
+            schema: system
+            name: SuperUserPermissionGrant
 - table:
     schema: conference
     name: OriginatingData
@@ -7804,7 +7882,41 @@
 - table:
     schema: system
     name: Configuration
+  object_relationships:
+  - name: configurationKey
+    using:
+      foreign_key_constraint_on: key
+  insert_permissions:
+  - role: superuser
+    permission:
+      check:
+        configurationKey:
+          grantedPermissions:
+            _and:
+            - permissionName:
+                _eq: SET_SYSTEM_CONFIGURATION
+            - userId:
+                _eq: X-Hasura-User-Id
+      columns:
+      - key
+      - value
+      backend_only: false
   select_permissions:
+  - role: superuser
+    permission:
+      columns:
+      - value
+      - key
+      - created_at
+      - updated_at
+      filter:
+        configurationKey:
+          grantedPermissions:
+            _and:
+            - permissionName:
+                _eq: VIEW_SYSTEM_CONFIGURATION
+            - userId:
+                _eq: X-Hasura-User-Id
   - role: unauthenticated
     permission:
       columns:
@@ -7839,10 +7951,206 @@
           - COOKIE_POLICY_LATEST_REVISION_TIMESTAMP
           - COOKIE_POLICY_URL
           - DEFAULT_VIDEO_ROOM_BACKEND
+  update_permissions:
+  - role: superuser
+    permission:
+      columns:
+      - key
+      - value
+      filter:
+        configurationKey:
+          grantedPermissions:
+            _and:
+            - permissionName:
+                _eq: SET_SYSTEM_CONFIGURATION
+            - userId:
+                _eq: X-Hasura-User-Id
+      check: null
+  delete_permissions:
+  - role: superuser
+    permission:
+      filter:
+        configurationKey:
+          grantedPermissions:
+            _and:
+            - permissionName:
+                _eq: SET_SYSTEM_CONFIGURATION
+            - userId:
+                _eq: X-Hasura-User-Id
 - table:
     schema: system
     name: ConfigurationKey
   is_enum: true
+  array_relationships:
+  - name: grantedPermissions
+    using:
+      foreign_key_constraint_on:
+        column: configurationKey
+        table:
+          schema: system
+          name: ConfigurationPermissionGrant
+- table:
+    schema: system
+    name: ConfigurationPermissionGrant
+  object_relationships:
+  - name: grantedPermission
+    using:
+      foreign_key_constraint_on: permissionName
+  - name: targetConfigurationKey
+    using:
+      foreign_key_constraint_on: configurationKey
+  - name: user
+    using:
+      foreign_key_constraint_on: userId
+  insert_permissions:
+  - role: superuser
+    permission:
+      check:
+        grantedPermission:
+          superUserGrantTargets:
+            _and:
+            - grantedPermissionName:
+                _eq: INSERT_SU_PERMISSION
+            - userId:
+                _eq: X-Hasura-User-Id
+      columns:
+      - configurationKey
+      - id
+      - permissionName
+      - userId
+      backend_only: false
+  select_permissions:
+  - role: superuser
+    permission:
+      columns:
+      - configurationKey
+      - permissionName
+      - userId
+      - created_at
+      - updated_at
+      - id
+      filter:
+        _or:
+        - grantedPermission:
+            superUserGrantTargets:
+              _and:
+              - grantedPermissionName:
+                  _eq: VIEW_SU_PERMISSION_GRANT
+              - userId:
+                  _eq: X-Hasura-User-Id
+        - userId:
+            _eq: X-Hasura-User-Id
+  delete_permissions:
+  - role: superuser
+    permission:
+      filter:
+        grantedPermission:
+          superUserGrantTargets:
+            _and:
+            - grantedPermissionName:
+                _eq: DELETE_SU_PERMISSION
+            - userId:
+                _eq: X-Hasura-User-Id
+- table:
+    schema: system
+    name: SuperUserPermission
+  array_relationships:
+  - name: superUserGrantTargets
+    using:
+      foreign_key_constraint_on:
+        column: targetPermissionName
+        table:
+          schema: system
+          name: SuperUserPermissionGrant
+  - name: superUserGrants
+    using:
+      foreign_key_constraint_on:
+        column: grantedPermissionName
+        table:
+          schema: system
+          name: SuperUserPermissionGrant
+  - name: systemConfigurationGrants
+    using:
+      foreign_key_constraint_on:
+        column: permissionName
+        table:
+          schema: system
+          name: ConfigurationPermissionGrant
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - description
+      - name
+      filter: {}
+- table:
+    schema: system
+    name: SuperUserPermissionGrant
+  object_relationships:
+  - name: grantedPermission
+    using:
+      foreign_key_constraint_on: grantedPermissionName
+  - name: targetPermission
+    using:
+      foreign_key_constraint_on: targetPermissionName
+  - name: user
+    using:
+      foreign_key_constraint_on: userId
+  insert_permissions:
+  - role: superuser
+    permission:
+      check:
+        grantedPermission:
+          superUserGrantTargets:
+            _and:
+            - grantedPermissionName:
+                _eq: INSERT_SU_PERMISSION
+            - userId:
+                _eq: X-Hasura-User-Id
+      columns:
+      - grantedPermissionName
+      - id
+      - targetPermissionName
+      - userId
+      backend_only: false
+  select_permissions:
+  - role: superuser
+    permission:
+      columns:
+      - grantedPermissionName
+      - targetPermissionName
+      - userId
+      - created_at
+      - updated_at
+      - id
+      filter:
+        _or:
+        - grantedPermission:
+            superUserGrantTargets:
+              _and:
+              - grantedPermissionName:
+                  _eq: VIEW_SU_PERMISSION_GRANT
+              - userId:
+                  _eq: X-Hasura-User-Id
+        - userId:
+            _eq: X-Hasura-User-Id
+  delete_permissions:
+  - role: superuser
+    permission:
+      filter:
+        _and:
+        - grantedPermission:
+            superUserGrantTargets:
+              _and:
+              - grantedPermissionName:
+                  _eq: DELETE_SU_PERMISSION
+              - userId:
+                  _eq: X-Hasura-User-Id
+        - _or:
+          - grantedPermissionName:
+              _neq: INSERT_SU_PERMISSION
+          - userId:
+              _neq: X-Hasura-User-Id
 - table:
     schema: video
     name: ChannelStack
