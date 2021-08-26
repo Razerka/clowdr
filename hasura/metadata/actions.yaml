@@ -40,6 +40,15 @@ actions:
   permissions:
   - role: unauthenticated
   - role: user
+- name: initialiseSuperUser
+  definition:
+    kind: synchronous
+    handler: '{{ACTION_BASE_URL}}/su/initialise'
+    headers:
+    - name: x-hasura-event-secret
+      value_from_env: EVENT_SECRET
+  permissions:
+  - role: superuser
 - name: invitationConfirmCurrent
   definition:
     kind: synchronous
@@ -263,4 +272,5 @@ custom_types:
         roomId: id
   - name: SubmitUploadableElementOutput
   - name: NotifyEventEnded
+  - name: InitialiseSuperUserOutput
   scalars: []

@@ -296,3 +296,8 @@ type updateSubtitlesArgs = {
     subtitleText: string;
     magicToken: string;
 };
+
+type InitialiseSuperUserOutput = {
+    success: boolean;
+    error?: Maybe<string>;
+};

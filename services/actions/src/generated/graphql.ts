@@ -688,6 +688,12 @@ export type GetUploadAgreementOutput = {
   agreementUrl?: Maybe<Scalars['String']>;
 };
 
+export type InitialiseSuperUserOutput = {
+  __typename?: 'InitialiseSuperUserOutput';
+  error?: Maybe<Scalars['String']>;
+  success: Scalars['Boolean'];
+};
+
 /** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
 export type Int_Comparison_Exp = {
   _eq?: Maybe<Scalars['Int']>;
@@ -9828,7 +9834,6 @@ export type Content_Element_Order_By = {
   isHidden?: Maybe<Order_By>;
   item?: Maybe<Content_Item_Order_By>;
   itemId?: Maybe<Order_By>;
-  itemTitle?: Maybe<Order_By>;
   layoutData?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   originatingData?: Maybe<Conference_OriginatingData_Order_By>;
@@ -14045,8 +14050,20 @@ export type Mutation_Root = {
   delete_system_ConfigurationKey?: Maybe<System_ConfigurationKey_Mutation_Response>;
   /** delete single row from the table: "system.ConfigurationKey" */
   delete_system_ConfigurationKey_by_pk?: Maybe<System_ConfigurationKey>;
+  /** delete data from the table: "system.ConfigurationPermissionGrant" */
+  delete_system_ConfigurationPermissionGrant?: Maybe<System_ConfigurationPermissionGrant_Mutation_Response>;
+  /** delete single row from the table: "system.ConfigurationPermissionGrant" */
+  delete_system_ConfigurationPermissionGrant_by_pk?: Maybe<System_ConfigurationPermissionGrant>;
   /** delete single row from the table: "system.Configuration" */
   delete_system_Configuration_by_pk?: Maybe<System_Configuration>;
+  /** delete data from the table: "system.SuperUserPermission" */
+  delete_system_SuperUserPermission?: Maybe<System_SuperUserPermission_Mutation_Response>;
+  /** delete data from the table: "system.SuperUserPermissionGrant" */
+  delete_system_SuperUserPermissionGrant?: Maybe<System_SuperUserPermissionGrant_Mutation_Response>;
+  /** delete single row from the table: "system.SuperUserPermissionGrant" */
+  delete_system_SuperUserPermissionGrant_by_pk?: Maybe<System_SuperUserPermissionGrant>;
+  /** delete single row from the table: "system.SuperUserPermission" */
+  delete_system_SuperUserPermission_by_pk?: Maybe<System_SuperUserPermission>;
   /** delete data from the table: "video.ChannelStack" */
   delete_video_ChannelStack?: Maybe<Video_ChannelStack_Mutation_Response>;
   /** delete single row from the table: "video.ChannelStack" */
@@ -14092,6 +14109,7 @@ export type Mutation_Root = {
   /** delete single row from the table: "video.YouTubeUpload" */
   delete_video_YouTubeUpload_by_pk?: Maybe<Video_YouTubeUpload>;
   getGoogleOAuthUrl?: Maybe<GetGoogleOAuthUrlOutput>;
+  initialiseSuperUser?: Maybe<InitialiseSuperUserOutput>;
   /** insert data into the table: "Email" */
   insert_Email?: Maybe<Email_Mutation_Response>;
   /** insert a single row into the table: "Email" */
@@ -14398,8 +14416,20 @@ export type Mutation_Root = {
   insert_system_ConfigurationKey?: Maybe<System_ConfigurationKey_Mutation_Response>;
   /** insert a single row into the table: "system.ConfigurationKey" */
   insert_system_ConfigurationKey_one?: Maybe<System_ConfigurationKey>;
+  /** insert data into the table: "system.ConfigurationPermissionGrant" */
+  insert_system_ConfigurationPermissionGrant?: Maybe<System_ConfigurationPermissionGrant_Mutation_Response>;
+  /** insert a single row into the table: "system.ConfigurationPermissionGrant" */
+  insert_system_ConfigurationPermissionGrant_one?: Maybe<System_ConfigurationPermissionGrant>;
   /** insert a single row into the table: "system.Configuration" */
   insert_system_Configuration_one?: Maybe<System_Configuration>;
+  /** insert data into the table: "system.SuperUserPermission" */
+  insert_system_SuperUserPermission?: Maybe<System_SuperUserPermission_Mutation_Response>;
+  /** insert data into the table: "system.SuperUserPermissionGrant" */
+  insert_system_SuperUserPermissionGrant?: Maybe<System_SuperUserPermissionGrant_Mutation_Response>;
+  /** insert a single row into the table: "system.SuperUserPermissionGrant" */
+  insert_system_SuperUserPermissionGrant_one?: Maybe<System_SuperUserPermissionGrant>;
+  /** insert a single row into the table: "system.SuperUserPermission" */
+  insert_system_SuperUserPermission_one?: Maybe<System_SuperUserPermission>;
   /** insert data into the table: "video.ChannelStack" */
   insert_video_ChannelStack?: Maybe<Video_ChannelStack_Mutation_Response>;
   /** insert a single row into the table: "video.ChannelStack" */
@@ -14759,8 +14789,20 @@ export type Mutation_Root = {
   update_system_ConfigurationKey?: Maybe<System_ConfigurationKey_Mutation_Response>;
   /** update single row of the table: "system.ConfigurationKey" */
   update_system_ConfigurationKey_by_pk?: Maybe<System_ConfigurationKey>;
+  /** update data of the table: "system.ConfigurationPermissionGrant" */
+  update_system_ConfigurationPermissionGrant?: Maybe<System_ConfigurationPermissionGrant_Mutation_Response>;
+  /** update single row of the table: "system.ConfigurationPermissionGrant" */
+  update_system_ConfigurationPermissionGrant_by_pk?: Maybe<System_ConfigurationPermissionGrant>;
   /** update single row of the table: "system.Configuration" */
   update_system_Configuration_by_pk?: Maybe<System_Configuration>;
+  /** update data of the table: "system.SuperUserPermission" */
+  update_system_SuperUserPermission?: Maybe<System_SuperUserPermission_Mutation_Response>;
+  /** update data of the table: "system.SuperUserPermissionGrant" */
+  update_system_SuperUserPermissionGrant?: Maybe<System_SuperUserPermissionGrant_Mutation_Response>;
+  /** update single row of the table: "system.SuperUserPermissionGrant" */
+  update_system_SuperUserPermissionGrant_by_pk?: Maybe<System_SuperUserPermissionGrant>;
+  /** update single row of the table: "system.SuperUserPermission" */
+  update_system_SuperUserPermission_by_pk?: Maybe<System_SuperUserPermission>;
   /** update data of the table: "video.ChannelStack" */
   update_video_ChannelStack?: Maybe<Video_ChannelStack_Mutation_Response>;
   /** update single row of the table: "video.ChannelStack" */
@@ -15727,8 +15769,44 @@ export type Mutation_RootDelete_System_ConfigurationKey_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_System_ConfigurationPermissionGrantArgs = {
+  where: System_ConfigurationPermissionGrant_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_System_ConfigurationPermissionGrant_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_System_Configuration_By_PkArgs = {
   key: System_ConfigurationKey_Enum;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_System_SuperUserPermissionArgs = {
+  where: System_SuperUserPermission_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_System_SuperUserPermissionGrantArgs = {
+  where: System_SuperUserPermissionGrant_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_System_SuperUserPermissionGrant_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_System_SuperUserPermission_By_PkArgs = {
+  name: Scalars['String'];
 };
 
 
@@ -16937,9 +17015,51 @@ export type Mutation_RootInsert_System_ConfigurationKey_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_System_ConfigurationPermissionGrantArgs = {
+  objects: Array<System_ConfigurationPermissionGrant_Insert_Input>;
+  on_conflict?: Maybe<System_ConfigurationPermissionGrant_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_System_ConfigurationPermissionGrant_OneArgs = {
+  object: System_ConfigurationPermissionGrant_Insert_Input;
+  on_conflict?: Maybe<System_ConfigurationPermissionGrant_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_System_Configuration_OneArgs = {
   object: System_Configuration_Insert_Input;
   on_conflict?: Maybe<System_Configuration_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_System_SuperUserPermissionArgs = {
+  objects: Array<System_SuperUserPermission_Insert_Input>;
+  on_conflict?: Maybe<System_SuperUserPermission_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_System_SuperUserPermissionGrantArgs = {
+  objects: Array<System_SuperUserPermissionGrant_Insert_Input>;
+  on_conflict?: Maybe<System_SuperUserPermissionGrant_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_System_SuperUserPermissionGrant_OneArgs = {
+  object: System_SuperUserPermissionGrant_Insert_Input;
+  on_conflict?: Maybe<System_SuperUserPermissionGrant_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_System_SuperUserPermission_OneArgs = {
+  object: System_SuperUserPermission_Insert_Input;
+  on_conflict?: Maybe<System_SuperUserPermission_On_Conflict>;
 };
 
 
@@ -18442,6 +18562,20 @@ export type Mutation_RootUpdate_System_ConfigurationKey_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_System_ConfigurationPermissionGrantArgs = {
+  _set?: Maybe<System_ConfigurationPermissionGrant_Set_Input>;
+  where: System_ConfigurationPermissionGrant_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_System_ConfigurationPermissionGrant_By_PkArgs = {
+  _set?: Maybe<System_ConfigurationPermissionGrant_Set_Input>;
+  pk_columns: System_ConfigurationPermissionGrant_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_System_Configuration_By_PkArgs = {
   _append?: Maybe<System_Configuration_Append_Input>;
   _delete_at_path?: Maybe<System_Configuration_Delete_At_Path_Input>;
@@ -18450,6 +18584,34 @@ export type Mutation_RootUpdate_System_Configuration_By_PkArgs = {
   _prepend?: Maybe<System_Configuration_Prepend_Input>;
   _set?: Maybe<System_Configuration_Set_Input>;
   pk_columns: System_Configuration_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_System_SuperUserPermissionArgs = {
+  _set?: Maybe<System_SuperUserPermission_Set_Input>;
+  where: System_SuperUserPermission_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_System_SuperUserPermissionGrantArgs = {
+  _set?: Maybe<System_SuperUserPermissionGrant_Set_Input>;
+  where: System_SuperUserPermissionGrant_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_System_SuperUserPermissionGrant_By_PkArgs = {
+  _set?: Maybe<System_SuperUserPermissionGrant_Set_Input>;
+  pk_columns: System_SuperUserPermissionGrant_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_System_SuperUserPermission_By_PkArgs = {
+  _set?: Maybe<System_SuperUserPermission_Set_Input>;
+  pk_columns: System_SuperUserPermission_Pk_Columns_Input;
 };
 
 
@@ -20421,10 +20583,32 @@ export type Query_Root = {
   system_ConfigurationKey_aggregate: System_ConfigurationKey_Aggregate;
   /** fetch data from the table: "system.ConfigurationKey" using primary key columns */
   system_ConfigurationKey_by_pk?: Maybe<System_ConfigurationKey>;
+  /** fetch data from the table: "system.ConfigurationPermissionGrant" */
+  system_ConfigurationPermissionGrant: Array<System_ConfigurationPermissionGrant>;
+  /** fetch aggregated fields from the table: "system.ConfigurationPermissionGrant" */
+  system_ConfigurationPermissionGrant_aggregate: System_ConfigurationPermissionGrant_Aggregate;
+  /** fetch data from the table: "system.ConfigurationPermissionGrant" using primary key columns */
+  system_ConfigurationPermissionGrant_by_pk?: Maybe<System_ConfigurationPermissionGrant>;
   /** fetch aggregated fields from the table: "system.Configuration" */
   system_Configuration_aggregate: System_Configuration_Aggregate;
   /** fetch data from the table: "system.Configuration" using primary key columns */
   system_Configuration_by_pk?: Maybe<System_Configuration>;
+  /** fetch data from the table: "system.SuperUserPermission" */
+  system_SuperUserPermission: Array<System_SuperUserPermission>;
+  /** fetch data from the table: "system.SuperUserPermissionGrant" */
+  system_SuperUserPermissionGrant: Array<System_SuperUserPermissionGrant>;
+  /** fetch aggregated fields from the table: "system.SuperUserPermissionGrant" */
+  system_SuperUserPermissionGrant_aggregate: System_SuperUserPermissionGrant_Aggregate;
+  /** fetch data from the table: "system.SuperUserPermissionGrant" using primary key columns */
+  system_SuperUserPermissionGrant_by_pk?: Maybe<System_SuperUserPermissionGrant>;
+  /** fetch aggregated fields from the table: "system.SuperUserPermission" */
+  system_SuperUserPermission_aggregate: System_SuperUserPermission_Aggregate;
+  /** fetch data from the table: "system.SuperUserPermission" using primary key columns */
+  system_SuperUserPermission_by_pk?: Maybe<System_SuperUserPermission>;
+  /** fetch data from the table: "system.SuperUserState" */
+  system_SuperUserState: Array<System_SuperUserState>;
+  /** fetch aggregated fields from the table: "system.SuperUserState" */
+  system_SuperUserState_aggregate: System_SuperUserState_Aggregate;
   vapidPublicKey: VapidPublicKeyOutput;
   /** fetch data from the table: "video.ChannelStack" */
   video_ChannelStack: Array<Video_ChannelStack>;
@@ -22426,6 +22610,29 @@ export type Query_RootSystem_ConfigurationKey_By_PkArgs = {
 };
 
 
+export type Query_RootSystem_ConfigurationPermissionGrantArgs = {
+  distinct_on?: Maybe<Array<System_ConfigurationPermissionGrant_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_ConfigurationPermissionGrant_Order_By>>;
+  where?: Maybe<System_ConfigurationPermissionGrant_Bool_Exp>;
+};
+
+
+export type Query_RootSystem_ConfigurationPermissionGrant_AggregateArgs = {
+  distinct_on?: Maybe<Array<System_ConfigurationPermissionGrant_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_ConfigurationPermissionGrant_Order_By>>;
+  where?: Maybe<System_ConfigurationPermissionGrant_Bool_Exp>;
+};
+
+
+export type Query_RootSystem_ConfigurationPermissionGrant_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Query_RootSystem_Configuration_AggregateArgs = {
   distinct_on?: Maybe<Array<System_Configuration_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -22437,6 +22644,70 @@ export type Query_RootSystem_Configuration_AggregateArgs = {
 
 export type Query_RootSystem_Configuration_By_PkArgs = {
   key: System_ConfigurationKey_Enum;
+};
+
+
+export type Query_RootSystem_SuperUserPermissionArgs = {
+  distinct_on?: Maybe<Array<System_SuperUserPermission_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_SuperUserPermission_Order_By>>;
+  where?: Maybe<System_SuperUserPermission_Bool_Exp>;
+};
+
+
+export type Query_RootSystem_SuperUserPermissionGrantArgs = {
+  distinct_on?: Maybe<Array<System_SuperUserPermissionGrant_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_SuperUserPermissionGrant_Order_By>>;
+  where?: Maybe<System_SuperUserPermissionGrant_Bool_Exp>;
+};
+
+
+export type Query_RootSystem_SuperUserPermissionGrant_AggregateArgs = {
+  distinct_on?: Maybe<Array<System_SuperUserPermissionGrant_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_SuperUserPermissionGrant_Order_By>>;
+  where?: Maybe<System_SuperUserPermissionGrant_Bool_Exp>;
+};
+
+
+export type Query_RootSystem_SuperUserPermissionGrant_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootSystem_SuperUserPermission_AggregateArgs = {
+  distinct_on?: Maybe<Array<System_SuperUserPermission_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_SuperUserPermission_Order_By>>;
+  where?: Maybe<System_SuperUserPermission_Bool_Exp>;
+};
+
+
+export type Query_RootSystem_SuperUserPermission_By_PkArgs = {
+  name: Scalars['String'];
+};
+
+
+export type Query_RootSystem_SuperUserStateArgs = {
+  distinct_on?: Maybe<Array<System_SuperUserState_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_SuperUserState_Order_By>>;
+  where?: Maybe<System_SuperUserState_Bool_Exp>;
+};
+
+
+export type Query_RootSystem_SuperUserState_AggregateArgs = {
+  distinct_on?: Maybe<Array<System_SuperUserState_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_SuperUserState_Order_By>>;
+  where?: Maybe<System_SuperUserState_Bool_Exp>;
 };
 
 
@@ -23141,7 +23412,6 @@ export type Registrant_Invitation_Order_By = {
   confirmationCode?: Maybe<Order_By>;
   createdAt?: Maybe<Order_By>;
   emails_aggregate?: Maybe<Email_Aggregate_Order_By>;
-  hash?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   inviteCode?: Maybe<Order_By>;
   invitedEmailAddress?: Maybe<Order_By>;
@@ -24012,7 +24282,6 @@ export type Registrant_Registrant_Order_By = {
   groupRegistrants_aggregate?: Maybe<Permissions_GroupRegistrant_Aggregate_Order_By>;
   id?: Maybe<Order_By>;
   invitation?: Maybe<Registrant_Invitation_Order_By>;
-  inviteSent?: Maybe<Order_By>;
   profile?: Maybe<Registrant_Profile_Order_By>;
   programPeople_aggregate?: Maybe<Collection_ProgramPerson_Aggregate_Order_By>;
   roomParticipants_aggregate?: Maybe<Room_Participant_Aggregate_Order_By>;
@@ -25960,7 +26229,6 @@ export type Room_Room_Order_By = {
   currentModeName?: Maybe<Order_By>;
   events_aggregate?: Maybe<Schedule_Event_Aggregate_Order_By>;
   id?: Maybe<Order_By>;
-  isProgramRoom?: Maybe<Order_By>;
   livestreamDuration?: Maybe<Room_LivestreamDurations_Order_By>;
   managementMode?: Maybe<Room_ManagementMode_Order_By>;
   managementModeName?: Maybe<Order_By>;
@@ -29818,10 +30086,32 @@ export type Subscription_Root = {
   system_ConfigurationKey_aggregate: System_ConfigurationKey_Aggregate;
   /** fetch data from the table: "system.ConfigurationKey" using primary key columns */
   system_ConfigurationKey_by_pk?: Maybe<System_ConfigurationKey>;
+  /** fetch data from the table: "system.ConfigurationPermissionGrant" */
+  system_ConfigurationPermissionGrant: Array<System_ConfigurationPermissionGrant>;
+  /** fetch aggregated fields from the table: "system.ConfigurationPermissionGrant" */
+  system_ConfigurationPermissionGrant_aggregate: System_ConfigurationPermissionGrant_Aggregate;
+  /** fetch data from the table: "system.ConfigurationPermissionGrant" using primary key columns */
+  system_ConfigurationPermissionGrant_by_pk?: Maybe<System_ConfigurationPermissionGrant>;
   /** fetch aggregated fields from the table: "system.Configuration" */
   system_Configuration_aggregate: System_Configuration_Aggregate;
   /** fetch data from the table: "system.Configuration" using primary key columns */
   system_Configuration_by_pk?: Maybe<System_Configuration>;
+  /** fetch data from the table: "system.SuperUserPermission" */
+  system_SuperUserPermission: Array<System_SuperUserPermission>;
+  /** fetch data from the table: "system.SuperUserPermissionGrant" */
+  system_SuperUserPermissionGrant: Array<System_SuperUserPermissionGrant>;
+  /** fetch aggregated fields from the table: "system.SuperUserPermissionGrant" */
+  system_SuperUserPermissionGrant_aggregate: System_SuperUserPermissionGrant_Aggregate;
+  /** fetch data from the table: "system.SuperUserPermissionGrant" using primary key columns */
+  system_SuperUserPermissionGrant_by_pk?: Maybe<System_SuperUserPermissionGrant>;
+  /** fetch aggregated fields from the table: "system.SuperUserPermission" */
+  system_SuperUserPermission_aggregate: System_SuperUserPermission_Aggregate;
+  /** fetch data from the table: "system.SuperUserPermission" using primary key columns */
+  system_SuperUserPermission_by_pk?: Maybe<System_SuperUserPermission>;
+  /** fetch data from the table: "system.SuperUserState" */
+  system_SuperUserState: Array<System_SuperUserState>;
+  /** fetch aggregated fields from the table: "system.SuperUserState" */
+  system_SuperUserState_aggregate: System_SuperUserState_Aggregate;
   /** fetch data from the table: "video.ChannelStack" */
   video_ChannelStack: Array<Video_ChannelStack>;
   /** fetch aggregated fields from the table: "video.ChannelStack" */
@@ -31817,6 +32107,29 @@ export type Subscription_RootSystem_ConfigurationKey_By_PkArgs = {
 };
 
 
+export type Subscription_RootSystem_ConfigurationPermissionGrantArgs = {
+  distinct_on?: Maybe<Array<System_ConfigurationPermissionGrant_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_ConfigurationPermissionGrant_Order_By>>;
+  where?: Maybe<System_ConfigurationPermissionGrant_Bool_Exp>;
+};
+
+
+export type Subscription_RootSystem_ConfigurationPermissionGrant_AggregateArgs = {
+  distinct_on?: Maybe<Array<System_ConfigurationPermissionGrant_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_ConfigurationPermissionGrant_Order_By>>;
+  where?: Maybe<System_ConfigurationPermissionGrant_Bool_Exp>;
+};
+
+
+export type Subscription_RootSystem_ConfigurationPermissionGrant_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Subscription_RootSystem_Configuration_AggregateArgs = {
   distinct_on?: Maybe<Array<System_Configuration_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -31828,6 +32141,70 @@ export type Subscription_RootSystem_Configuration_AggregateArgs = {
 
 export type Subscription_RootSystem_Configuration_By_PkArgs = {
   key: System_ConfigurationKey_Enum;
+};
+
+
+export type Subscription_RootSystem_SuperUserPermissionArgs = {
+  distinct_on?: Maybe<Array<System_SuperUserPermission_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_SuperUserPermission_Order_By>>;
+  where?: Maybe<System_SuperUserPermission_Bool_Exp>;
+};
+
+
+export type Subscription_RootSystem_SuperUserPermissionGrantArgs = {
+  distinct_on?: Maybe<Array<System_SuperUserPermissionGrant_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_SuperUserPermissionGrant_Order_By>>;
+  where?: Maybe<System_SuperUserPermissionGrant_Bool_Exp>;
+};
+
+
+export type Subscription_RootSystem_SuperUserPermissionGrant_AggregateArgs = {
+  distinct_on?: Maybe<Array<System_SuperUserPermissionGrant_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_SuperUserPermissionGrant_Order_By>>;
+  where?: Maybe<System_SuperUserPermissionGrant_Bool_Exp>;
+};
+
+
+export type Subscription_RootSystem_SuperUserPermissionGrant_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootSystem_SuperUserPermission_AggregateArgs = {
+  distinct_on?: Maybe<Array<System_SuperUserPermission_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_SuperUserPermission_Order_By>>;
+  where?: Maybe<System_SuperUserPermission_Bool_Exp>;
+};
+
+
+export type Subscription_RootSystem_SuperUserPermission_By_PkArgs = {
+  name: Scalars['String'];
+};
+
+
+export type Subscription_RootSystem_SuperUserStateArgs = {
+  distinct_on?: Maybe<Array<System_SuperUserState_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_SuperUserState_Order_By>>;
+  where?: Maybe<System_SuperUserState_Bool_Exp>;
+};
+
+
+export type Subscription_RootSystem_SuperUserState_AggregateArgs = {
+  distinct_on?: Maybe<Array<System_SuperUserState_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_SuperUserState_Order_By>>;
+  where?: Maybe<System_SuperUserState_Bool_Exp>;
 };
 
 
@@ -32086,6 +32463,8 @@ export type Subscription_RootVideo_YouTubeUpload_By_PkArgs = {
 /** columns and relationships of "system.Configuration" */
 export type System_Configuration = {
   __typename?: 'system_Configuration';
+  /** An object relationship */
+  configurationKey: System_ConfigurationKey;
   created_at: Scalars['timestamptz'];
   key: System_ConfigurationKey_Enum;
   updated_at: Scalars['timestamptz'];
@@ -32102,7 +32481,31 @@ export type System_ConfigurationValueArgs = {
 export type System_ConfigurationKey = {
   __typename?: 'system_ConfigurationKey';
   description?: Maybe<Scalars['String']>;
+  /** An array relationship */
+  grantedPermissions: Array<System_ConfigurationPermissionGrant>;
+  /** An aggregate relationship */
+  grantedPermissions_aggregate: System_ConfigurationPermissionGrant_Aggregate;
   name: Scalars['String'];
+};
+
+
+/** columns and relationships of "system.ConfigurationKey" */
+export type System_ConfigurationKeyGrantedPermissionsArgs = {
+  distinct_on?: Maybe<Array<System_ConfigurationPermissionGrant_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_ConfigurationPermissionGrant_Order_By>>;
+  where?: Maybe<System_ConfigurationPermissionGrant_Bool_Exp>;
+};
+
+
+/** columns and relationships of "system.ConfigurationKey" */
+export type System_ConfigurationKeyGrantedPermissions_AggregateArgs = {
+  distinct_on?: Maybe<Array<System_ConfigurationPermissionGrant_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_ConfigurationPermissionGrant_Order_By>>;
+  where?: Maybe<System_ConfigurationPermissionGrant_Bool_Exp>;
 };
 
 /** aggregated selection of "system.ConfigurationKey" */
@@ -32133,6 +32536,7 @@ export type System_ConfigurationKey_Bool_Exp = {
   _not?: Maybe<System_ConfigurationKey_Bool_Exp>;
   _or?: Maybe<Array<System_ConfigurationKey_Bool_Exp>>;
   description?: Maybe<String_Comparison_Exp>;
+  grantedPermissions?: Maybe<System_ConfigurationPermissionGrant_Bool_Exp>;
   name?: Maybe<String_Comparison_Exp>;
 };
 
@@ -32189,6 +32593,7 @@ export type System_ConfigurationKey_Enum_Comparison_Exp = {
 /** input type for inserting data into table "system.ConfigurationKey" */
 export type System_ConfigurationKey_Insert_Input = {
   description?: Maybe<Scalars['String']>;
+  grantedPermissions?: Maybe<System_ConfigurationPermissionGrant_Arr_Rel_Insert_Input>;
   name?: Maybe<Scalars['String']>;
 };
 
@@ -32215,6 +32620,13 @@ export type System_ConfigurationKey_Mutation_Response = {
   returning: Array<System_ConfigurationKey>;
 };
 
+/** input type for inserting object relation for remote table "system.ConfigurationKey" */
+export type System_ConfigurationKey_Obj_Rel_Insert_Input = {
+  data: System_ConfigurationKey_Insert_Input;
+  /** on conflict condition */
+  on_conflict?: Maybe<System_ConfigurationKey_On_Conflict>;
+};
+
 /** on conflict condition type for table "system.ConfigurationKey" */
 export type System_ConfigurationKey_On_Conflict = {
   constraint: System_ConfigurationKey_Constraint;
@@ -32225,6 +32637,7 @@ export type System_ConfigurationKey_On_Conflict = {
 /** Ordering options when selecting data from "system.ConfigurationKey". */
 export type System_ConfigurationKey_Order_By = {
   description?: Maybe<Order_By>;
+  grantedPermissions_aggregate?: Maybe<System_ConfigurationPermissionGrant_Aggregate_Order_By>;
   name?: Maybe<Order_By>;
 };
 
@@ -32253,6 +32666,206 @@ export enum System_ConfigurationKey_Update_Column {
   Description = 'description',
   /** column name */
   Name = 'name'
+}
+
+/** columns and relationships of "system.ConfigurationPermissionGrant" */
+export type System_ConfigurationPermissionGrant = {
+  __typename?: 'system_ConfigurationPermissionGrant';
+  configurationKey: System_ConfigurationKey_Enum;
+  created_at: Scalars['timestamptz'];
+  /** An object relationship */
+  grantedPermission: System_SuperUserPermission;
+  id: Scalars['uuid'];
+  permissionName: System_SuperUserPermission_Enum;
+  /** An object relationship */
+  targetConfigurationKey: System_ConfigurationKey;
+  updated_at: Scalars['timestamptz'];
+  /** An object relationship */
+  user: User;
+  userId: Scalars['String'];
+};
+
+/** aggregated selection of "system.ConfigurationPermissionGrant" */
+export type System_ConfigurationPermissionGrant_Aggregate = {
+  __typename?: 'system_ConfigurationPermissionGrant_aggregate';
+  aggregate?: Maybe<System_ConfigurationPermissionGrant_Aggregate_Fields>;
+  nodes: Array<System_ConfigurationPermissionGrant>;
+};
+
+/** aggregate fields of "system.ConfigurationPermissionGrant" */
+export type System_ConfigurationPermissionGrant_Aggregate_Fields = {
+  __typename?: 'system_ConfigurationPermissionGrant_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<System_ConfigurationPermissionGrant_Max_Fields>;
+  min?: Maybe<System_ConfigurationPermissionGrant_Min_Fields>;
+};
+
+
+/** aggregate fields of "system.ConfigurationPermissionGrant" */
+export type System_ConfigurationPermissionGrant_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<System_ConfigurationPermissionGrant_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "system.ConfigurationPermissionGrant" */
+export type System_ConfigurationPermissionGrant_Aggregate_Order_By = {
+  count?: Maybe<Order_By>;
+  max?: Maybe<System_ConfigurationPermissionGrant_Max_Order_By>;
+  min?: Maybe<System_ConfigurationPermissionGrant_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "system.ConfigurationPermissionGrant" */
+export type System_ConfigurationPermissionGrant_Arr_Rel_Insert_Input = {
+  data: Array<System_ConfigurationPermissionGrant_Insert_Input>;
+  /** on conflict condition */
+  on_conflict?: Maybe<System_ConfigurationPermissionGrant_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "system.ConfigurationPermissionGrant". All fields are combined with a logical 'AND'. */
+export type System_ConfigurationPermissionGrant_Bool_Exp = {
+  _and?: Maybe<Array<System_ConfigurationPermissionGrant_Bool_Exp>>;
+  _not?: Maybe<System_ConfigurationPermissionGrant_Bool_Exp>;
+  _or?: Maybe<Array<System_ConfigurationPermissionGrant_Bool_Exp>>;
+  configurationKey?: Maybe<System_ConfigurationKey_Enum_Comparison_Exp>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  grantedPermission?: Maybe<System_SuperUserPermission_Bool_Exp>;
+  id?: Maybe<Uuid_Comparison_Exp>;
+  permissionName?: Maybe<System_SuperUserPermission_Enum_Comparison_Exp>;
+  targetConfigurationKey?: Maybe<System_ConfigurationKey_Bool_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+  user?: Maybe<User_Bool_Exp>;
+  userId?: Maybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "system.ConfigurationPermissionGrant" */
+export enum System_ConfigurationPermissionGrant_Constraint {
+  /** unique or primary key constraint */
+  ConfigurationPermissionGrantPermissionNameConfigurationKeyUs = 'ConfigurationPermissionGrant_permissionName_configurationKey_us',
+  /** unique or primary key constraint */
+  ConfigurationPermissionGrantPkey = 'ConfigurationPermissionGrant_pkey'
+}
+
+/** input type for inserting data into table "system.ConfigurationPermissionGrant" */
+export type System_ConfigurationPermissionGrant_Insert_Input = {
+  configurationKey?: Maybe<System_ConfigurationKey_Enum>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  grantedPermission?: Maybe<System_SuperUserPermission_Obj_Rel_Insert_Input>;
+  id?: Maybe<Scalars['uuid']>;
+  permissionName?: Maybe<System_SuperUserPermission_Enum>;
+  targetConfigurationKey?: Maybe<System_ConfigurationKey_Obj_Rel_Insert_Input>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  user?: Maybe<User_Obj_Rel_Insert_Input>;
+  userId?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type System_ConfigurationPermissionGrant_Max_Fields = {
+  __typename?: 'system_ConfigurationPermissionGrant_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  userId?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "system.ConfigurationPermissionGrant" */
+export type System_ConfigurationPermissionGrant_Max_Order_By = {
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  userId?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type System_ConfigurationPermissionGrant_Min_Fields = {
+  __typename?: 'system_ConfigurationPermissionGrant_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  userId?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "system.ConfigurationPermissionGrant" */
+export type System_ConfigurationPermissionGrant_Min_Order_By = {
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  userId?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "system.ConfigurationPermissionGrant" */
+export type System_ConfigurationPermissionGrant_Mutation_Response = {
+  __typename?: 'system_ConfigurationPermissionGrant_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<System_ConfigurationPermissionGrant>;
+};
+
+/** on conflict condition type for table "system.ConfigurationPermissionGrant" */
+export type System_ConfigurationPermissionGrant_On_Conflict = {
+  constraint: System_ConfigurationPermissionGrant_Constraint;
+  update_columns?: Array<System_ConfigurationPermissionGrant_Update_Column>;
+  where?: Maybe<System_ConfigurationPermissionGrant_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "system.ConfigurationPermissionGrant". */
+export type System_ConfigurationPermissionGrant_Order_By = {
+  configurationKey?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  grantedPermission?: Maybe<System_SuperUserPermission_Order_By>;
+  id?: Maybe<Order_By>;
+  permissionName?: Maybe<Order_By>;
+  targetConfigurationKey?: Maybe<System_ConfigurationKey_Order_By>;
+  updated_at?: Maybe<Order_By>;
+  user?: Maybe<User_Order_By>;
+  userId?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: system_ConfigurationPermissionGrant */
+export type System_ConfigurationPermissionGrant_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "system.ConfigurationPermissionGrant" */
+export enum System_ConfigurationPermissionGrant_Select_Column {
+  /** column name */
+  ConfigurationKey = 'configurationKey',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  PermissionName = 'permissionName',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'userId'
+}
+
+/** input type for updating data in table "system.ConfigurationPermissionGrant" */
+export type System_ConfigurationPermissionGrant_Set_Input = {
+  configurationKey?: Maybe<System_ConfigurationKey_Enum>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  permissionName?: Maybe<System_SuperUserPermission_Enum>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  userId?: Maybe<Scalars['String']>;
+};
+
+/** update columns of table "system.ConfigurationPermissionGrant" */
+export enum System_ConfigurationPermissionGrant_Update_Column {
+  /** column name */
+  ConfigurationKey = 'configurationKey',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  PermissionName = 'permissionName',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'userId'
 }
 
 /** aggregated selection of "system.Configuration" */
@@ -32287,6 +32900,7 @@ export type System_Configuration_Bool_Exp = {
   _and?: Maybe<Array<System_Configuration_Bool_Exp>>;
   _not?: Maybe<System_Configuration_Bool_Exp>;
   _or?: Maybe<Array<System_Configuration_Bool_Exp>>;
+  configurationKey?: Maybe<System_ConfigurationKey_Bool_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   key?: Maybe<System_ConfigurationKey_Enum_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
@@ -32316,6 +32930,7 @@ export type System_Configuration_Delete_Key_Input = {
 
 /** input type for inserting data into table "system.Configuration" */
 export type System_Configuration_Insert_Input = {
+  configurationKey?: Maybe<System_ConfigurationKey_Obj_Rel_Insert_Input>;
   created_at?: Maybe<Scalars['timestamptz']>;
   key?: Maybe<System_ConfigurationKey_Enum>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -32354,6 +32969,7 @@ export type System_Configuration_On_Conflict = {
 
 /** Ordering options when selecting data from "system.Configuration". */
 export type System_Configuration_Order_By = {
+  configurationKey?: Maybe<System_ConfigurationKey_Order_By>;
   created_at?: Maybe<Order_By>;
   key?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -32400,6 +33016,483 @@ export enum System_Configuration_Update_Column {
   UpdatedAt = 'updated_at',
   /** column name */
   Value = 'value'
+}
+
+/** columns and relationships of "system.SuperUserPermission" */
+export type System_SuperUserPermission = {
+  __typename?: 'system_SuperUserPermission';
+  description: Scalars['String'];
+  name: Scalars['String'];
+  /** An array relationship */
+  superUserGrantTargets: Array<System_SuperUserPermissionGrant>;
+  /** An aggregate relationship */
+  superUserGrantTargets_aggregate: System_SuperUserPermissionGrant_Aggregate;
+  /** An array relationship */
+  superUserGrants: Array<System_SuperUserPermissionGrant>;
+  /** An aggregate relationship */
+  superUserGrants_aggregate: System_SuperUserPermissionGrant_Aggregate;
+  /** An array relationship */
+  systemConfigurationGrants: Array<System_ConfigurationPermissionGrant>;
+  /** An aggregate relationship */
+  systemConfigurationGrants_aggregate: System_ConfigurationPermissionGrant_Aggregate;
+};
+
+
+/** columns and relationships of "system.SuperUserPermission" */
+export type System_SuperUserPermissionSuperUserGrantTargetsArgs = {
+  distinct_on?: Maybe<Array<System_SuperUserPermissionGrant_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_SuperUserPermissionGrant_Order_By>>;
+  where?: Maybe<System_SuperUserPermissionGrant_Bool_Exp>;
+};
+
+
+/** columns and relationships of "system.SuperUserPermission" */
+export type System_SuperUserPermissionSuperUserGrantTargets_AggregateArgs = {
+  distinct_on?: Maybe<Array<System_SuperUserPermissionGrant_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_SuperUserPermissionGrant_Order_By>>;
+  where?: Maybe<System_SuperUserPermissionGrant_Bool_Exp>;
+};
+
+
+/** columns and relationships of "system.SuperUserPermission" */
+export type System_SuperUserPermissionSuperUserGrantsArgs = {
+  distinct_on?: Maybe<Array<System_SuperUserPermissionGrant_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_SuperUserPermissionGrant_Order_By>>;
+  where?: Maybe<System_SuperUserPermissionGrant_Bool_Exp>;
+};
+
+
+/** columns and relationships of "system.SuperUserPermission" */
+export type System_SuperUserPermissionSuperUserGrants_AggregateArgs = {
+  distinct_on?: Maybe<Array<System_SuperUserPermissionGrant_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_SuperUserPermissionGrant_Order_By>>;
+  where?: Maybe<System_SuperUserPermissionGrant_Bool_Exp>;
+};
+
+
+/** columns and relationships of "system.SuperUserPermission" */
+export type System_SuperUserPermissionSystemConfigurationGrantsArgs = {
+  distinct_on?: Maybe<Array<System_ConfigurationPermissionGrant_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_ConfigurationPermissionGrant_Order_By>>;
+  where?: Maybe<System_ConfigurationPermissionGrant_Bool_Exp>;
+};
+
+
+/** columns and relationships of "system.SuperUserPermission" */
+export type System_SuperUserPermissionSystemConfigurationGrants_AggregateArgs = {
+  distinct_on?: Maybe<Array<System_ConfigurationPermissionGrant_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<System_ConfigurationPermissionGrant_Order_By>>;
+  where?: Maybe<System_ConfigurationPermissionGrant_Bool_Exp>;
+};
+
+/** columns and relationships of "system.SuperUserPermissionGrant" */
+export type System_SuperUserPermissionGrant = {
+  __typename?: 'system_SuperUserPermissionGrant';
+  created_at: Scalars['timestamptz'];
+  /** An object relationship */
+  grantedPermission: System_SuperUserPermission;
+  grantedPermissionName: System_SuperUserPermission_Enum;
+  id: Scalars['uuid'];
+  /** An object relationship */
+  targetPermission?: Maybe<System_SuperUserPermission>;
+  targetPermissionName?: Maybe<System_SuperUserPermission_Enum>;
+  updated_at: Scalars['timestamptz'];
+  /** An object relationship */
+  user: User;
+  userId: Scalars['String'];
+};
+
+/** aggregated selection of "system.SuperUserPermissionGrant" */
+export type System_SuperUserPermissionGrant_Aggregate = {
+  __typename?: 'system_SuperUserPermissionGrant_aggregate';
+  aggregate?: Maybe<System_SuperUserPermissionGrant_Aggregate_Fields>;
+  nodes: Array<System_SuperUserPermissionGrant>;
+};
+
+/** aggregate fields of "system.SuperUserPermissionGrant" */
+export type System_SuperUserPermissionGrant_Aggregate_Fields = {
+  __typename?: 'system_SuperUserPermissionGrant_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<System_SuperUserPermissionGrant_Max_Fields>;
+  min?: Maybe<System_SuperUserPermissionGrant_Min_Fields>;
+};
+
+
+/** aggregate fields of "system.SuperUserPermissionGrant" */
+export type System_SuperUserPermissionGrant_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<System_SuperUserPermissionGrant_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "system.SuperUserPermissionGrant" */
+export type System_SuperUserPermissionGrant_Aggregate_Order_By = {
+  count?: Maybe<Order_By>;
+  max?: Maybe<System_SuperUserPermissionGrant_Max_Order_By>;
+  min?: Maybe<System_SuperUserPermissionGrant_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "system.SuperUserPermissionGrant" */
+export type System_SuperUserPermissionGrant_Arr_Rel_Insert_Input = {
+  data: Array<System_SuperUserPermissionGrant_Insert_Input>;
+  /** on conflict condition */
+  on_conflict?: Maybe<System_SuperUserPermissionGrant_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "system.SuperUserPermissionGrant". All fields are combined with a logical 'AND'. */
+export type System_SuperUserPermissionGrant_Bool_Exp = {
+  _and?: Maybe<Array<System_SuperUserPermissionGrant_Bool_Exp>>;
+  _not?: Maybe<System_SuperUserPermissionGrant_Bool_Exp>;
+  _or?: Maybe<Array<System_SuperUserPermissionGrant_Bool_Exp>>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  grantedPermission?: Maybe<System_SuperUserPermission_Bool_Exp>;
+  grantedPermissionName?: Maybe<System_SuperUserPermission_Enum_Comparison_Exp>;
+  id?: Maybe<Uuid_Comparison_Exp>;
+  targetPermission?: Maybe<System_SuperUserPermission_Bool_Exp>;
+  targetPermissionName?: Maybe<System_SuperUserPermission_Enum_Comparison_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+  user?: Maybe<User_Bool_Exp>;
+  userId?: Maybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "system.SuperUserPermissionGrant" */
+export enum System_SuperUserPermissionGrant_Constraint {
+  /** unique or primary key constraint */
+  SuperUserPermissionGrantGrantedPermissionNameUserIdTargeKey = 'SuperUserPermissionGrant_grantedPermissionName_userId_targe_key',
+  /** unique or primary key constraint */
+  SuperUserPermissionGrantPkey = 'SuperUserPermissionGrant_pkey'
+}
+
+/** input type for inserting data into table "system.SuperUserPermissionGrant" */
+export type System_SuperUserPermissionGrant_Insert_Input = {
+  created_at?: Maybe<Scalars['timestamptz']>;
+  grantedPermission?: Maybe<System_SuperUserPermission_Obj_Rel_Insert_Input>;
+  grantedPermissionName?: Maybe<System_SuperUserPermission_Enum>;
+  id?: Maybe<Scalars['uuid']>;
+  targetPermission?: Maybe<System_SuperUserPermission_Obj_Rel_Insert_Input>;
+  targetPermissionName?: Maybe<System_SuperUserPermission_Enum>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  user?: Maybe<User_Obj_Rel_Insert_Input>;
+  userId?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type System_SuperUserPermissionGrant_Max_Fields = {
+  __typename?: 'system_SuperUserPermissionGrant_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  userId?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "system.SuperUserPermissionGrant" */
+export type System_SuperUserPermissionGrant_Max_Order_By = {
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  userId?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type System_SuperUserPermissionGrant_Min_Fields = {
+  __typename?: 'system_SuperUserPermissionGrant_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  userId?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "system.SuperUserPermissionGrant" */
+export type System_SuperUserPermissionGrant_Min_Order_By = {
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  userId?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "system.SuperUserPermissionGrant" */
+export type System_SuperUserPermissionGrant_Mutation_Response = {
+  __typename?: 'system_SuperUserPermissionGrant_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<System_SuperUserPermissionGrant>;
+};
+
+/** on conflict condition type for table "system.SuperUserPermissionGrant" */
+export type System_SuperUserPermissionGrant_On_Conflict = {
+  constraint: System_SuperUserPermissionGrant_Constraint;
+  update_columns?: Array<System_SuperUserPermissionGrant_Update_Column>;
+  where?: Maybe<System_SuperUserPermissionGrant_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "system.SuperUserPermissionGrant". */
+export type System_SuperUserPermissionGrant_Order_By = {
+  created_at?: Maybe<Order_By>;
+  grantedPermission?: Maybe<System_SuperUserPermission_Order_By>;
+  grantedPermissionName?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  targetPermission?: Maybe<System_SuperUserPermission_Order_By>;
+  targetPermissionName?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  user?: Maybe<User_Order_By>;
+  userId?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: system_SuperUserPermissionGrant */
+export type System_SuperUserPermissionGrant_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "system.SuperUserPermissionGrant" */
+export enum System_SuperUserPermissionGrant_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  GrantedPermissionName = 'grantedPermissionName',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  TargetPermissionName = 'targetPermissionName',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'userId'
+}
+
+/** input type for updating data in table "system.SuperUserPermissionGrant" */
+export type System_SuperUserPermissionGrant_Set_Input = {
+  created_at?: Maybe<Scalars['timestamptz']>;
+  grantedPermissionName?: Maybe<System_SuperUserPermission_Enum>;
+  id?: Maybe<Scalars['uuid']>;
+  targetPermissionName?: Maybe<System_SuperUserPermission_Enum>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  userId?: Maybe<Scalars['String']>;
+};
+
+/** update columns of table "system.SuperUserPermissionGrant" */
+export enum System_SuperUserPermissionGrant_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  GrantedPermissionName = 'grantedPermissionName',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  TargetPermissionName = 'targetPermissionName',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'userId'
+}
+
+/** aggregated selection of "system.SuperUserPermission" */
+export type System_SuperUserPermission_Aggregate = {
+  __typename?: 'system_SuperUserPermission_aggregate';
+  aggregate?: Maybe<System_SuperUserPermission_Aggregate_Fields>;
+  nodes: Array<System_SuperUserPermission>;
+};
+
+/** aggregate fields of "system.SuperUserPermission" */
+export type System_SuperUserPermission_Aggregate_Fields = {
+  __typename?: 'system_SuperUserPermission_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<System_SuperUserPermission_Max_Fields>;
+  min?: Maybe<System_SuperUserPermission_Min_Fields>;
+};
+
+
+/** aggregate fields of "system.SuperUserPermission" */
+export type System_SuperUserPermission_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<System_SuperUserPermission_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "system.SuperUserPermission". All fields are combined with a logical 'AND'. */
+export type System_SuperUserPermission_Bool_Exp = {
+  _and?: Maybe<Array<System_SuperUserPermission_Bool_Exp>>;
+  _not?: Maybe<System_SuperUserPermission_Bool_Exp>;
+  _or?: Maybe<Array<System_SuperUserPermission_Bool_Exp>>;
+  description?: Maybe<String_Comparison_Exp>;
+  name?: Maybe<String_Comparison_Exp>;
+  superUserGrantTargets?: Maybe<System_SuperUserPermissionGrant_Bool_Exp>;
+  superUserGrants?: Maybe<System_SuperUserPermissionGrant_Bool_Exp>;
+  systemConfigurationGrants?: Maybe<System_ConfigurationPermissionGrant_Bool_Exp>;
+};
+
+/** unique or primary key constraints on table "system.SuperUserPermission" */
+export enum System_SuperUserPermission_Constraint {
+  /** unique or primary key constraint */
+  SuperUserPermissionPkey = 'SuperUserPermission_pkey'
+}
+
+export enum System_SuperUserPermission_Enum {
+  /** Ability to create a conference demo code. */
+  CreateConferenceDemoCode = 'CREATE_CONFERENCE_DEMO_CODE',
+  /** Ability to delete a super-user permission. */
+  DeleteSuPermission = 'DELETE_SU_PERMISSION',
+  /** Ability to insert a super-user permission. */
+  InsertSuPermission = 'INSERT_SU_PERMISSION',
+  /** Ability to list all conference demo codes. */
+  ListConferenceDemoCodes = 'LIST_CONFERENCE_DEMO_CODES',
+  /** Ability to set a specified system configuration. */
+  SetSystemConfiguration = 'SET_SYSTEM_CONFIGURATION',
+  /** Ability to view a super-user permission grant. */
+  ViewSuPermissionGrant = 'VIEW_SU_PERMISSION_GRANT',
+  /** Ability to view a system configuration. */
+  ViewSystemConfiguration = 'VIEW_SYSTEM_CONFIGURATION'
+}
+
+/** Boolean expression to compare columns of type "system_SuperUserPermission_enum". All fields are combined with logical 'AND'. */
+export type System_SuperUserPermission_Enum_Comparison_Exp = {
+  _eq?: Maybe<System_SuperUserPermission_Enum>;
+  _in?: Maybe<Array<System_SuperUserPermission_Enum>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _neq?: Maybe<System_SuperUserPermission_Enum>;
+  _nin?: Maybe<Array<System_SuperUserPermission_Enum>>;
+};
+
+/** input type for inserting data into table "system.SuperUserPermission" */
+export type System_SuperUserPermission_Insert_Input = {
+  description?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  superUserGrantTargets?: Maybe<System_SuperUserPermissionGrant_Arr_Rel_Insert_Input>;
+  superUserGrants?: Maybe<System_SuperUserPermissionGrant_Arr_Rel_Insert_Input>;
+  systemConfigurationGrants?: Maybe<System_ConfigurationPermissionGrant_Arr_Rel_Insert_Input>;
+};
+
+/** aggregate max on columns */
+export type System_SuperUserPermission_Max_Fields = {
+  __typename?: 'system_SuperUserPermission_max_fields';
+  description?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type System_SuperUserPermission_Min_Fields = {
+  __typename?: 'system_SuperUserPermission_min_fields';
+  description?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "system.SuperUserPermission" */
+export type System_SuperUserPermission_Mutation_Response = {
+  __typename?: 'system_SuperUserPermission_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<System_SuperUserPermission>;
+};
+
+/** input type for inserting object relation for remote table "system.SuperUserPermission" */
+export type System_SuperUserPermission_Obj_Rel_Insert_Input = {
+  data: System_SuperUserPermission_Insert_Input;
+  /** on conflict condition */
+  on_conflict?: Maybe<System_SuperUserPermission_On_Conflict>;
+};
+
+/** on conflict condition type for table "system.SuperUserPermission" */
+export type System_SuperUserPermission_On_Conflict = {
+  constraint: System_SuperUserPermission_Constraint;
+  update_columns?: Array<System_SuperUserPermission_Update_Column>;
+  where?: Maybe<System_SuperUserPermission_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "system.SuperUserPermission". */
+export type System_SuperUserPermission_Order_By = {
+  description?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  superUserGrantTargets_aggregate?: Maybe<System_SuperUserPermissionGrant_Aggregate_Order_By>;
+  superUserGrants_aggregate?: Maybe<System_SuperUserPermissionGrant_Aggregate_Order_By>;
+  systemConfigurationGrants_aggregate?: Maybe<System_ConfigurationPermissionGrant_Aggregate_Order_By>;
+};
+
+/** primary key columns input for table: system_SuperUserPermission */
+export type System_SuperUserPermission_Pk_Columns_Input = {
+  name: Scalars['String'];
+};
+
+/** select columns of table "system.SuperUserPermission" */
+export enum System_SuperUserPermission_Select_Column {
+  /** column name */
+  Description = 'description',
+  /** column name */
+  Name = 'name'
+}
+
+/** input type for updating data in table "system.SuperUserPermission" */
+export type System_SuperUserPermission_Set_Input = {
+  description?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** update columns of table "system.SuperUserPermission" */
+export enum System_SuperUserPermission_Update_Column {
+  /** column name */
+  Description = 'description',
+  /** column name */
+  Name = 'name'
+}
+
+/** columns and relationships of "system.SuperUserState" */
+export type System_SuperUserState = {
+  __typename?: 'system_SuperUserState';
+  canBeDirectlyInitialised?: Maybe<Scalars['Boolean']>;
+  isInitialised?: Maybe<Scalars['Boolean']>;
+};
+
+/** aggregated selection of "system.SuperUserState" */
+export type System_SuperUserState_Aggregate = {
+  __typename?: 'system_SuperUserState_aggregate';
+  aggregate?: Maybe<System_SuperUserState_Aggregate_Fields>;
+  nodes: Array<System_SuperUserState>;
+};
+
+/** aggregate fields of "system.SuperUserState" */
+export type System_SuperUserState_Aggregate_Fields = {
+  __typename?: 'system_SuperUserState_aggregate_fields';
+  count: Scalars['Int'];
+};
+
+
+/** aggregate fields of "system.SuperUserState" */
+export type System_SuperUserState_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<System_SuperUserState_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "system.SuperUserState". All fields are combined with a logical 'AND'. */
+export type System_SuperUserState_Bool_Exp = {
+  _and?: Maybe<Array<System_SuperUserState_Bool_Exp>>;
+  _not?: Maybe<System_SuperUserState_Bool_Exp>;
+  _or?: Maybe<Array<System_SuperUserState_Bool_Exp>>;
+  canBeDirectlyInitialised?: Maybe<Boolean_Comparison_Exp>;
+  isInitialised?: Maybe<Boolean_Comparison_Exp>;
+};
+
+/** Ordering options when selecting data from "system.SuperUserState". */
+export type System_SuperUserState_Order_By = {
+  canBeDirectlyInitialised?: Maybe<Order_By>;
+  isInitialised?: Maybe<Order_By>;
+};
+
+/** select columns of table "system.SuperUserState" */
+export enum System_SuperUserState_Select_Column {
+  /** column name */
+  CanBeDirectlyInitialised = 'canBeDirectlyInitialised',
+  /** column name */
+  IsInitialised = 'isInitialised'
 }
 
 
@@ -36202,6 +37295,33 @@ export type SetShuffleRoomsEndedMutation = (
   )> }
 );
 
+export type SuperUserStateQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SuperUserStateQuery = (
+  { __typename?: 'query_root' }
+  & { system_SuperUserState: Array<(
+    { __typename?: 'system_SuperUserState' }
+    & Pick<System_SuperUserState, 'isInitialised' | 'canBeDirectlyInitialised'>
+  )>, User: Array<(
+    { __typename?: 'User' }
+    & Pick<User, 'id'>
+  )> }
+);
+
+export type InitialiseSuperUserStateMutationVariables = Exact<{
+  userId: Scalars['String'];
+}>;
+
+
+export type InitialiseSuperUserStateMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_system_SuperUserPermissionGrant_one?: Maybe<(
+    { __typename?: 'system_SuperUserPermissionGrant' }
+    & Pick<System_SuperUserPermissionGrant, 'id'>
+  )> }
+);
+
 export type UploadableElementQueryVariables = Exact<{
   accessToken: Scalars['String'];
 }>;
@@ -37120,6 +38240,8 @@ export const InsertShuffleRoomDocument = {"kind":"Document","definitions":[{"kin
 export const InsertManagedRoomDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertManagedRoom"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"conferenceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"capacity"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_room_Room_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"capacity"},"value":{"kind":"Variable","name":{"kind":"Name","value":"capacity"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"conferenceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"conferenceId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"currentModeName"},"value":{"kind":"EnumValue","value":"BREAKOUT"}},{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"managementModeName"},"value":{"kind":"EnumValue","value":"MANAGED"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<InsertManagedRoomMutation, InsertManagedRoomMutationVariables>;
 export const SetAutoPinOnManagedRoomDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SetAutoPinOnManagedRoom"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roomId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_chat_Chat"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"rooms"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roomId"}}}]}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"enableAutoPin"},"value":{"kind":"BooleanValue","value":true}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"affected_rows"}}]}}]}}]} as unknown as DocumentNode<SetAutoPinOnManagedRoomMutation, SetAutoPinOnManagedRoomMutationVariables>;
 export const SetShuffleRoomsEndedDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SetShuffleRoomsEnded"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ids"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"bigint"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_room_ShuffleRoom"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_in"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ids"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"isEnded"},"value":{"kind":"BooleanValue","value":true}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"affected_rows"}},{"kind":"Field","name":{"kind":"Name","value":"returning"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<SetShuffleRoomsEndedMutation, SetShuffleRoomsEndedMutationVariables>;
+export const SuperUserStateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SuperUserState"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"system_SuperUserState"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isInitialised"}},{"kind":"Field","name":{"kind":"Name","value":"canBeDirectlyInitialised"}}]}},{"kind":"Field","name":{"kind":"Name","value":"User"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<SuperUserStateQuery, SuperUserStateQueryVariables>;
+export const InitialiseSuperUserStateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InitialiseSuperUserState"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_system_SuperUserPermissionGrant_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"grantedPermissionName"},"value":{"kind":"EnumValue","value":"INSERT_SU_PERMISSION"}},{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"targetPermissionName"},"value":{"kind":"EnumValue","value":"INSERT_SU_PERMISSION"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<InitialiseSuperUserStateMutation, InitialiseSuperUserStateMutationVariables>;
 export const UploadableElementDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"UploadableElement"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"accessToken"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"content_Element"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"accessToken"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"accessToken"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UploadableElementFields"}},{"kind":"Field","name":{"kind":"Name","value":"conference"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"configurations"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"key"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"EnumValue","value":"UPLOAD_CUTOFF_TIMESTAMP"}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"conferenceId"}},{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]}}]}},...UploadableElementFieldsFragmentDoc.definitions]} as unknown as DocumentNode<UploadableElementQuery, UploadableElementQueryVariables>;
 export const GetUploadersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUploaders"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"elementId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"content_Uploader"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"elementId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"elementId"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"conferenceId"}}]}}]}}]} as unknown as DocumentNode<GetUploadersQuery, GetUploadersQueryVariables>;
 export const SetUploadableElementUploadsRemainingDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SetUploadableElementUploadsRemaining"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"uploadsRemaining"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_content_Element_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"uploadsRemaining"},"value":{"kind":"Variable","name":{"kind":"Name","value":"uploadsRemaining"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<SetUploadableElementUploadsRemainingMutation, SetUploadableElementUploadsRemainingMutationVariables>;

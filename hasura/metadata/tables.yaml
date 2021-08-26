@@ -8054,6 +8054,7 @@
 - table:
     schema: system
     name: SuperUserPermission
+  is_enum: true
   array_relationships:
   - name: superUserGrantTargets
     using:
@@ -8151,6 +8152,16 @@
               _neq: INSERT_SU_PERMISSION
           - userId:
               _neq: X-Hasura-User-Id
+- table:
+    schema: system
+    name: SuperUserState
+  select_permissions:
+  - role: superuser
+    permission:
+      columns:
+      - canBeDirectlyInitialised
+      - isInitialised
+      filter: {}
 - table:
     schema: video
     name: ChannelStack

@@ -35,6 +35,7 @@ import { router as queuesRouter } from "./router/queues";
 import { router as registrantGoogleAccountRouter } from "./router/registrantGoogleAccount";
 import { router as roomRouter } from "./router/room";
 import { router as shuffleRoomsRouter } from "./router/shuffleRooms";
+import { router as superuserRouter } from "./router/superuser";
 import { router as videoRenderJobRouter } from "./router/videoRenderJob";
 import { router as vonageRouter } from "./router/vonage";
 
@@ -85,6 +86,8 @@ app.use("/chat", chatRouter);
 
 app.use("/queues", queuesRouter);
 app.use("/analytics", analyticsRouter);
+
+app.use("/su", superuserRouter);
 
 app.use("/hasura", hasuraRouter);
 

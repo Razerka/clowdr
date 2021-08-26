@@ -16,6 +16,7 @@ import PageNotFound from "./aspects/Errors/PageNotFound";
 import { GoogleOAuth, GoogleOAuthRedirect } from "./aspects/Google/GoogleOAuth";
 import AcceptInvitationPage from "./aspects/Invitation/AcceptInvitationPage";
 import PushNotificationSettings from "./aspects/PushNotifications/PushNotificationSettings";
+import SuperUserLandingPage from "./aspects/SuperUser/LandingPage";
 import CurrentUserPage from "./aspects/Users/CurrentUser/CurrentUserPage";
 import ExistingUserLandingPage from "./aspects/Users/ExistingUser/LandingPage";
 import NewUserLandingPage from "./aspects/Users/NewUser/LandingPage";
@@ -24,6 +25,7 @@ export default function Routing({ confSlug }: { confSlug?: string }): JSX.Elemen
     return (
         <Switch>
             <ProtectedRoute component={PushNotificationSettings} exact path="/user/pushNotifications" />
+            <ProtectedRoute component={SuperUserLandingPage} exact path="/su" />
 
             <Route exact path="/auth0/email-verification/result">
                 {(props) => {

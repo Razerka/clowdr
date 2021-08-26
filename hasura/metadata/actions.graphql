@@ -26,6 +26,10 @@ type Query {
 }
 
 type Mutation {
+  initialiseSuperUser : InitialiseSuperUserOutput
+}
+
+type Mutation {
   invitationConfirmCurrent (
     inviteCode: uuid!
   ): ConfirmInvitationOutput
@@ -293,5 +297,10 @@ type SubmitUploadableElementOutput {
 
 type NotifyEventEnded {
   ok : Boolean!
+}
+
+type InitialiseSuperUserOutput {
+  success : Boolean!
+  error : String
 }
 
