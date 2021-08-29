@@ -1,22 +1,17 @@
 import { gql } from "@apollo/client";
-import { Alert, AlertDescription, AlertTitle, Button, Code, Heading, Text, VStack } from "@chakra-ui/react";
+import { Code, Container, Heading, Text, VStack } from "@chakra-ui/react";
 import React from "react";
-import { useInitialiseSuperUserMutation, useSuperUserStateQuery } from "../../generated/graphql";
+import { useSuperUserStateQuery } from "../../generated/graphql";
 import CenteredSpinner from "../Chakra/CenteredSpinner";
 import { useTitle } from "../Utils/useTitle";
+import SuperUserInitialise from "./Initialise";
+import SuperUserLandingPageContent from "./LandingPageContent";
 
 gql`
     query SuperUserState {
         system_SuperUserState {
             isInitialised
             canBeDirectlyInitialised
-        }
-    }
-
-    mutation InitialiseSuperUser {
-        initialiseSuperUser {
-            success
-            error
         }
     }
 `;
@@ -33,7 +28,7 @@ export default function SuperUserLandingPage(): JSX.Element {
     });
 
     return (
-        <VStack w="100%">
+        <VStack w="100%" mt={2} spacing={4}>
             {title}
             <Heading>Super User</Heading>
             {suStateResponse.loading && !suStateResponse.data?.system_SuperUserState.length ? (
@@ -46,74 +41,24 @@ export default function SuperUserLandingPage(): JSX.Element {
                     <SuperUserInitialise />
                 ) : (
                     <>
-                        <Text>
-                            Super user is not initialised and cannot be initialised directly through the UI. Direct
-                            initialisation is only available when a single user exists.
-                        </Text>
-                        <Text>
-                            To initialise a super user, please create the relevent Super User Permission Grant record
-                            directly in Hasura (system schema). Insert a record for your user id, granting the
-                            permission <Code>INSERT_SU_PERMISSION</Code>
-                            with the target permission also being <Code>INSERT_SU_PERMISSION</Code>. Then reload this
-                            page.
-                        </Text>
+                        <Container>
+                            <Text>
+                                A super user is not initialised and cannot be initialised directly through the UI.
+                                Direct initialisation is only available when only a single user exists.
+                            </Text>
+                        </Container>
+                        <Container>
+                            <Text>
+                                To initialise a super user, please create the relevent Super User Permission Grant
+                                record directly in Hasura (look in the <Code>system</Code> schema). Insert a record for
+                                your user id, granting the permission <Code>INSERT_SU_PERMISSION</Code>
+                                with the target permission also being <Code>INSERT_SU_PERMISSION</Code>. Then reload
+                                this page.
+                            </Text>
+                        </Container>
                     </>
                 )
             ) : undefined}
         </VStack>
     );
-}
-
-function SuperUserInitialise(): JSX.Element {
-    const [initialiseMutation, initialiseResponse] = useInitialiseSuperUserMutation({
-        context: {
-            headers: {
-                "x-hasura-role": "superuser",
-            },
-        },
-    });
-
-    // TODO: System initialisation (when there's only a single user)
-    return (
-        <>
-            {initialiseResponse.data?.initialiseSuperUser?.error ? (
-                <Alert status="error">
-                    <AlertTitle>Error initialising super user.</AlertTitle>
-                    <AlertDescription>{initialiseResponse.data.initialiseSuperUser.error}</AlertDescription>
-                </Alert>
-            ) : undefined}
-            {initialiseResponse.data?.initialiseSuperUser?.success ? (
-                <Alert status="success">
-                    <AlertTitle>Super user initialised!</AlertTitle>
-                    <AlertDescription>Please refresh the page.</AlertDescription>
-                </Alert>
-            ) : initialiseResponse.data?.initialiseSuperUser?.success === false ? (
-                <Alert status="error">
-                    <AlertTitle>Super user not initialised.</AlertTitle>
-                    <AlertDescription>Please refresh the page.</AlertDescription>
-                </Alert>
-            ) : undefined}
-            <Text>Super user is not yet initialised. One-click initialisation is available.</Text>
-            <Button
-                isLoading={initialiseResponse.loading}
-                isDisabled={!!initialiseResponse.data?.initialiseSuperUser?.success}
-                onClick={() => {
-                    initialiseMutation();
-                }}
-            >
-                Initialise super user
-            </Button>
-        </>
-    );
-}
-
-function SuperUserLandingPageContent(): JSX.Element {
-    /*
-        TODO: Manage Super User Permission Grants
-        TODO: Manage System Configuration Permission Grants
-        TODO: Manage System Configurations
-        TODO: Manage Conference Demo Codes
-    */
-
-    return <>TODO</>;
 }
