@@ -25,7 +25,7 @@ export default function SUPermissionsTable(): JSX.Element {
             </Heading>
             <Container ml={0}>
                 <Text>
-                    These tables describe every possible super user permission grant. For each possibility, a role name
+                    These tables describe every possible superuser permission grant. For each possibility, a role name
                     is given. Roles are not formalised within Midspace but are suggested as a helpful way to configure
                     the system according to our recommendations.
                 </Text>
@@ -37,7 +37,7 @@ export default function SUPermissionsTable(): JSX.Element {
                 <Text>
                     These roles are recommended combinations of permissions. They have no technical or formal meaning
                     within the system and are provided primarily as a convenient way to talk about and configure the
-                    recommended super user accounts.
+                    recommended superuser accounts.
                 </Text>
                 <Text mt={2}>
                     The roles are based on the principle of reducing the amount of damage a malicious user of a breached
@@ -50,24 +50,24 @@ export default function SUPermissionsTable(): JSX.Element {
                 <List mt={4} spacing={4}>
                     <ListItem>
                         <Heading as="h4" fontSize="sm" textAlign="left" mb={1}>
-                            Grand Super User
+                            Grand Superuser
                         </Heading>
                         <Text>
                             Capable of granting any user any permission, this is the most powerful role within the
                             system. Very few users should have access to such an account and it should not be logged
                             into / used on a regular basis (i.e. don&apos;t use such an account for routine work such as
-                            creating conference demo codes).
+                            creating conference codes).
                         </Text>
                     </ListItem>
                     <Divider />
                     <ListItem>
                         <Heading as="h4" fontSize="sm" textAlign="left" mb={1}>
-                            Super User
+                            Superuser
                         </Heading>
                         <Text>
-                            Capable of granting any user a limited set of permissions, the Super User role is primarily
+                            Capable of granting any user a limited set of permissions, the Superuser role is primarily
                             for managing the accounts that will be used for day to day operations. It is intended for
-                            the routine management of users with super user privileges, which should require relatively
+                            the routine management of users with superuser privileges, which should require relatively
                             infrequent access.
                         </Text>
                     </ListItem>
@@ -78,7 +78,7 @@ export default function SUPermissionsTable(): JSX.Element {
                         <Text>
                             Capable of observing and removing permissions, the Overseer role should be used for routine
                             checking / safeguarding of the system and as a primary route to recovering control in the
-                            event of a malicious user assuming control of an account with super user permissions.
+                            event of a malicious user assuming control of an account with superuser permissions.
                         </Text>
                     </ListItem>
                     <Divider />
@@ -96,8 +96,8 @@ export default function SUPermissionsTable(): JSX.Element {
                             Operations
                         </Heading>
                         <Text>
-                            Capable of creating and managing conference demo codes. The Operations role is intended for
-                            sales / bizdev staff to manage client&apos;s access to the platform.
+                            Capable of creating and managing conference codes. The Operations role is intended for sales
+                            / bizdev staff to manage client&apos;s access to the platform.
                         </Text>
                     </ListItem>
                     <ListItem>
@@ -121,10 +121,20 @@ export default function SUPermissionsTable(): JSX.Element {
                             the communications aspects of the system.
                         </Text>
                     </ListItem>
+                    <ListItem>
+                        <Heading as="h4" fontSize="sm" textAlign="left" mb={1}>
+                            Support
+                        </Heading>
+                        <Text>
+                            Capable of managing users and their links to registrants. The Support role is intended for
+                            support staff to manage users and their links to registrants to sort out issues such as
+                            forgotten email addresses.
+                        </Text>
+                    </ListItem>
                 </List>
             </Container>
             <Heading pt={4} as="h3" fontSize="lg">
-                Super User Permission Grants
+                Superuser Permission Grants
             </Heading>
             <Table variant="striped" colorScheme="purple">
                 <Thead>
@@ -141,7 +151,7 @@ export default function SUPermissionsTable(): JSX.Element {
                             <Code>VIEW_SU_PERMISSION_GRANT</Code>
                         </Td>
                         <Td>For any given target permission</Td>
-                        <Td>Grand Super User / Super User / Overseer</Td>
+                        <Td>Grand Superuser / Superuser / Overseer</Td>
                         <Td>Grants the ability to see who has been granted the specified target permission.</Td>
                     </Tr>
 
@@ -152,7 +162,7 @@ export default function SUPermissionsTable(): JSX.Element {
                         <Td>
                             <Code>VIEW_SU_PERMISSION_GRANT</Code>
                         </Td>
-                        <Td>Super User / Overseer</Td>
+                        <Td>Superuser / Overseer</Td>
                         <Td>
                             Grants the ability to grant others the <Code>VIEW_SU_PERMISSION_GRANT</Code> permission for
                             any target permission.
@@ -165,9 +175,9 @@ export default function SUPermissionsTable(): JSX.Element {
                         <Td>
                             <Code>INSERT_SU_PERMISSION</Code>
                         </Td>
-                        <Td>Grand Super User</Td>
+                        <Td>Grand Superuser</Td>
                         <Td>
-                            Grants the ability to grant others any super user permission. This is the most powerful
+                            Grants the ability to grant others any superuser permission. This is the most powerful
                             permission grant - it gives the user the power to give themselves and anybody else total
                             control of the system.
                         </Td>
@@ -179,7 +189,7 @@ export default function SUPermissionsTable(): JSX.Element {
                         <Td>
                             <Code>DELETE_SU_PERMISSION</Code>
                         </Td>
-                        <Td>Grand Super User / Overseer</Td>
+                        <Td>Grand Superuser / Overseer</Td>
                         <Td>
                             Grants the ability to grant others the ability to delete any permission from any other super
                             user. This is less powerful than its sibling insert permission and enables an Overseer to
@@ -193,7 +203,7 @@ export default function SUPermissionsTable(): JSX.Element {
                         <Td>
                             <Code>VIEW_SYSTEM_CONFIGURATION</Code>
                         </Td>
-                        <Td>Super User / Overseer</Td>
+                        <Td>Superuser / Overseer</Td>
                         <Td>Grants the ability to grant others access to view system configuration records.</Td>
                     </Tr>
                     <Tr>
@@ -203,7 +213,7 @@ export default function SUPermissionsTable(): JSX.Element {
                         <Td>
                             <Code>SET_SYSTEM_CONFIGURATION</Code>
                         </Td>
-                        <Td>Super User</Td>
+                        <Td>Superuser</Td>
                         <Td>Grants the ability to grant others the ability to set system configuration records.</Td>
                     </Tr>
                     <Tr>
@@ -213,10 +223,10 @@ export default function SUPermissionsTable(): JSX.Element {
                         <Td>
                             <Code>LIST_CONFERENCE_DEMO_CODES</Code>
                         </Td>
-                        <Td>Super User</Td>
+                        <Td>Superuser</Td>
                         <Td>
-                            Grants the ability to grant others the ability to view a list of conference demo codes and
-                            their statuses.
+                            Grants the ability to grant others the ability to view a list of conference codes and their
+                            statuses.
                         </Td>
                     </Tr>
                     <Tr>
@@ -226,8 +236,38 @@ export default function SUPermissionsTable(): JSX.Element {
                         <Td>
                             <Code>CREATE_CONFERENCE_DEMO_CODE</Code>
                         </Td>
-                        <Td>Super User</Td>
-                        <Td>Grants the ability to grant others the ability to create conference demo codes.</Td>
+                        <Td>Superuser</Td>
+                        <Td>Grants the ability to grant others the ability to create conference codes.</Td>
+                    </Tr>
+                    <Tr>
+                        <Td>
+                            <Code>INSERT_SU_PERMISSION</Code>
+                        </Td>
+                        <Td>
+                            <Code>VIEW_USERS</Code>
+                        </Td>
+                        <Td>Superuser</Td>
+                        <Td>Grants the ability to grant others the ability to TODO.</Td>
+                    </Tr>
+                    <Tr>
+                        <Td>
+                            <Code>INSERT_SU_PERMISSION</Code>
+                        </Td>
+                        <Td>
+                            <Code>DELETE_USERS</Code>
+                        </Td>
+                        <Td>Superuser</Td>
+                        <Td>Grants the ability to grant others the ability to TODO.</Td>
+                    </Tr>
+                    <Tr>
+                        <Td>
+                            <Code>INSERT_SU_PERMISSION</Code>
+                        </Td>
+                        <Td>
+                            <Code>EDIT_USER_REGISTRANTS</Code>
+                        </Td>
+                        <Td>Superuser</Td>
+                        <Td>Grants the ability to grant others the ability to TODO.</Td>
                     </Tr>
 
                     <Tr borderTopWidth="4px" borderTopStyle="double" borderTopColor="blue.500">
@@ -237,9 +277,9 @@ export default function SUPermissionsTable(): JSX.Element {
                         <Td>
                             <Code>VIEW_SU_PERMISSION_GRANT</Code>
                         </Td>
-                        <Td>Super User / Overseer</Td>
+                        <Td>Superuser / Overseer</Td>
                         <Td>
-                            Grants the ability to remove another user&apos;s access to the list of granted super user
+                            Grants the ability to remove another user&apos;s access to the list of granted superuser
                             permissions.
                         </Td>
                     </Tr>
@@ -250,8 +290,8 @@ export default function SUPermissionsTable(): JSX.Element {
                         <Td>
                             <Code>INSERT_SU_PERMISSION</Code>
                         </Td>
-                        <Td>Grand Super User / Overseer</Td>
-                        <Td>Grants the ability to remove a user&apos;s ability to grant super user permissions.</Td>
+                        <Td>Grand Superuser / Overseer</Td>
+                        <Td>Grants the ability to remove a user&apos;s ability to grant superuser permissions.</Td>
                     </Tr>
                     <Tr>
                         <Td>
@@ -260,9 +300,9 @@ export default function SUPermissionsTable(): JSX.Element {
                         <Td>
                             <Code>DELETE_SU_PERMISSION</Code>
                         </Td>
-                        <Td>Grand Super User</Td>
+                        <Td>Grand Superuser</Td>
                         <Td>
-                            Grants the ability to remove another user&apos;s ability to remove super user permissions.
+                            Grants the ability to remove another user&apos;s ability to remove superuser permissions.
                         </Td>
                     </Tr>
                     <Tr>
@@ -272,7 +312,7 @@ export default function SUPermissionsTable(): JSX.Element {
                         <Td>
                             <Code>VIEW_SYSTEM_CONFIGURATION</Code>
                         </Td>
-                        <Td>Super User / Overseer</Td>
+                        <Td>Superuser / Overseer</Td>
                         <Td>
                             Grants the ability to remove another user&apos;s ability to view system configuration
                             records.
@@ -285,7 +325,7 @@ export default function SUPermissionsTable(): JSX.Element {
                         <Td>
                             <Code>SET_SYSTEM_CONFIGURATION</Code>
                         </Td>
-                        <Td>Super User</Td>
+                        <Td>Superuser</Td>
                         <Td>
                             Grants the ability to remove another user&apos;s ability to set system configuration
                             records.
@@ -298,7 +338,7 @@ export default function SUPermissionsTable(): JSX.Element {
                         <Td>
                             <Code>LIST_CONFERENCE_DEMO_CODES</Code>
                         </Td>
-                        <Td>Super User</Td>
+                        <Td>Superuser</Td>
                         <Td>
                             Grants the ability to remove another user&apos;s ability to view the list of conference demo
                             codes.
@@ -311,10 +351,38 @@ export default function SUPermissionsTable(): JSX.Element {
                         <Td>
                             <Code>CREATE_CONFERENCE_DEMO_CODE</Code>
                         </Td>
-                        <Td>Super User</Td>
+                        <Td>Superuser</Td>
+                        <Td>Grants the ability to remove another user&apos;s ability to create conference codes.</Td>
+                    </Tr>
+                    <Tr>
                         <Td>
-                            Grants the ability to remove another user&apos;s ability to create conference demo codes.
+                            <Code>DELETE_SU_PERMISSION</Code>
                         </Td>
+                        <Td>
+                            <Code>VIEW_USERS</Code>
+                        </Td>
+                        <Td>Superuser</Td>
+                        <Td>Grants the ability to grant others the ability to TODO.</Td>
+                    </Tr>
+                    <Tr>
+                        <Td>
+                            <Code>DELETE_SU_PERMISSION</Code>
+                        </Td>
+                        <Td>
+                            <Code>DELETE_USERS</Code>
+                        </Td>
+                        <Td>Superuser</Td>
+                        <Td>Grants the ability to grant others the ability to TODO.</Td>
+                    </Tr>
+                    <Tr>
+                        <Td>
+                            <Code>DELETE_SU_PERMISSION</Code>
+                        </Td>
+                        <Td>
+                            <Code>EDIT_USER_REGISTRANTS</Code>
+                        </Td>
+                        <Td>Superuser</Td>
+                        <Td>Grants the ability to grant others the ability to TODO.</Td>
                     </Tr>
 
                     <Tr borderTopWidth="4px" borderTopStyle="double" borderTopColor="blue.500">
@@ -326,9 +394,9 @@ export default function SUPermissionsTable(): JSX.Element {
                         </Td>
                         <Td>Operations</Td>
                         <Td>
-                            Grants the ability to view a list of conference demo codes and their statuses. This may also
-                            be useful for a customer support role to see whether a client has started their onboarding
-                            or not.
+                            Grants the ability to view a list of conference codes and their statuses. This may also be
+                            useful for a customer support role to see whether a client has started their onboarding or
+                            not.
                         </Td>
                     </Tr>
 
@@ -340,7 +408,38 @@ export default function SUPermissionsTable(): JSX.Element {
                             <Code>NULL</Code>
                         </Td>
                         <Td>Operations</Td>
-                        <Td>Grants the ability to create conference demo codes.</Td>
+                        <Td>Grants the ability to create conference codes.</Td>
+                    </Tr>
+
+                    <Tr borderTopWidth="4px" borderTopStyle="double" borderTopColor="blue.500">
+                        <Td>
+                            <Code>VIEW_USERS</Code>
+                        </Td>
+                        <Td>
+                            <Code>NULL</Code>
+                        </Td>
+                        <Td>Support</Td>
+                        <Td>Grants the ability to view the list of users.</Td>
+                    </Tr>
+                    <Tr>
+                        <Td>
+                            <Code>DELETE_USERS</Code>
+                        </Td>
+                        <Td>
+                            <Code>NULL</Code>
+                        </Td>
+                        <Td>Support</Td>
+                        <Td>Grants the ability to delete users.</Td>
+                    </Tr>
+                    <Tr>
+                        <Td>
+                            <Code>EDIT_USER_REGISTRANTS</Code>
+                        </Td>
+                        <Td>
+                            <Code>NULL</Code>
+                        </Td>
+                        <Td>Support</Td>
+                        <Td>Grants the ability to see the registrants linked to users and manage those links.</Td>
                     </Tr>
                 </Tbody>
             </Table>

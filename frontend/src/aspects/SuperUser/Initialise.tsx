@@ -26,22 +26,22 @@ export default function SuperUserInitialise(): JSX.Element {
         <>
             {initialiseResponse.data?.initialiseSuperUser?.error ? (
                 <Alert status="error">
-                    <AlertTitle>Error initialising super user.</AlertTitle>
+                    <AlertTitle>Error initialising superuser.</AlertTitle>
                     <AlertDescription>{initialiseResponse.data.initialiseSuperUser.error}</AlertDescription>
                 </Alert>
             ) : undefined}
             {initialiseResponse.data?.initialiseSuperUser?.success ? (
                 <Alert status="success">
-                    <AlertTitle>Super user initialised!</AlertTitle>
+                    <AlertTitle>Superuser initialised!</AlertTitle>
                     <AlertDescription>Please refresh the page.</AlertDescription>
                 </Alert>
             ) : initialiseResponse.data?.initialiseSuperUser?.success === false ? (
                 <Alert status="error">
-                    <AlertTitle>Super user not initialised.</AlertTitle>
+                    <AlertTitle>Superuser not initialised.</AlertTitle>
                     <AlertDescription>Please refresh the page.</AlertDescription>
                 </Alert>
             ) : undefined}
-            <Text>Super user is not yet initialised. One-click initialisation is available.</Text>
+            <Text>Superuser is not yet initialised. One-click initialisation is available.</Text>
             <Button
                 isLoading={initialiseResponse.loading}
                 isDisabled={!!initialiseResponse.data?.initialiseSuperUser?.success}
@@ -49,7 +49,7 @@ export default function SuperUserInitialise(): JSX.Element {
                     initialiseMutation();
                 }}
             >
-                Initialise super user
+                Initialise superuser
             </Button>
         </>
     );

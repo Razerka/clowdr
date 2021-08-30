@@ -17,13 +17,121 @@ gql`
         insert_system_SuperUserPermissionGrant(
             objects: [
                 {
+                    grantedPermissionName: VIEW_SU_PERMISSION_GRANT
+                    userId: $userId
+                    targetPermissionName: CREATE_CONFERENCE_DEMO_CODE
+                }
+                {
+                    grantedPermissionName: VIEW_SU_PERMISSION_GRANT
+                    userId: $userId
+                    targetPermissionName: DELETE_SU_PERMISSION
+                }
+                { grantedPermissionName: VIEW_SU_PERMISSION_GRANT, userId: $userId, targetPermissionName: DELETE_USERS }
+                {
+                    grantedPermissionName: VIEW_SU_PERMISSION_GRANT
+                    userId: $userId
+                    targetPermissionName: EDIT_USER_REGISTRANTS
+                }
+                {
+                    grantedPermissionName: VIEW_SU_PERMISSION_GRANT
+                    userId: $userId
+                    targetPermissionName: INSERT_SU_PERMISSION
+                }
+                {
+                    grantedPermissionName: VIEW_SU_PERMISSION_GRANT
+                    userId: $userId
+                    targetPermissionName: LIST_CONFERENCE_DEMO_CODES
+                }
+                {
+                    grantedPermissionName: VIEW_SU_PERMISSION_GRANT
+                    userId: $userId
+                    targetPermissionName: SET_SYSTEM_CONFIGURATION
+                }
+                {
+                    grantedPermissionName: VIEW_SU_PERMISSION_GRANT
+                    userId: $userId
+                    targetPermissionName: VIEW_SU_PERMISSION_GRANT
+                }
+                {
+                    grantedPermissionName: VIEW_SU_PERMISSION_GRANT
+                    userId: $userId
+                    targetPermissionName: VIEW_SYSTEM_CONFIGURATION
+                }
+                { grantedPermissionName: VIEW_SU_PERMISSION_GRANT, userId: $userId, targetPermissionName: VIEW_USERS }
+                ####
+                {
                     grantedPermissionName: INSERT_SU_PERMISSION
                     userId: $userId
                     targetPermissionName: INSERT_SU_PERMISSION
                 }
+                {
+                    grantedPermissionName: INSERT_SU_PERMISSION
+                    userId: $userId
+                    targetPermissionName: VIEW_SU_PERMISSION_GRANT
+                }
+                {
+                    grantedPermissionName: INSERT_SU_PERMISSION
+                    userId: $userId
+                    targetPermissionName: VIEW_SYSTEM_CONFIGURATION
+                }
+                {
+                    grantedPermissionName: INSERT_SU_PERMISSION
+                    userId: $userId
+                    targetPermissionName: SET_SYSTEM_CONFIGURATION
+                }
+                {
+                    grantedPermissionName: INSERT_SU_PERMISSION
+                    userId: $userId
+                    targetPermissionName: LIST_CONFERENCE_DEMO_CODES
+                }
+                {
+                    grantedPermissionName: INSERT_SU_PERMISSION
+                    userId: $userId
+                    targetPermissionName: CREATE_CONFERENCE_DEMO_CODE
+                }
+                { grantedPermissionName: INSERT_SU_PERMISSION, userId: $userId, targetPermissionName: VIEW_USERS }
+                { grantedPermissionName: INSERT_SU_PERMISSION, userId: $userId, targetPermissionName: DELETE_USERS }
+                {
+                    grantedPermissionName: INSERT_SU_PERMISSION
+                    userId: $userId
+                    targetPermissionName: EDIT_USER_REGISTRANTS
+                }
+                ####
+                {
+                    grantedPermissionName: DELETE_SU_PERMISSION
+                    userId: $userId
+                    targetPermissionName: VIEW_SU_PERMISSION_GRANT
+                }
+                {
+                    grantedPermissionName: DELETE_SU_PERMISSION
+                    userId: $userId
+                    targetPermissionName: VIEW_SYSTEM_CONFIGURATION
+                }
+                {
+                    grantedPermissionName: DELETE_SU_PERMISSION
+                    userId: $userId
+                    targetPermissionName: SET_SYSTEM_CONFIGURATION
+                }
+                {
+                    grantedPermissionName: DELETE_SU_PERMISSION
+                    userId: $userId
+                    targetPermissionName: LIST_CONFERENCE_DEMO_CODES
+                }
+                {
+                    grantedPermissionName: DELETE_SU_PERMISSION
+                    userId: $userId
+                    targetPermissionName: CREATE_CONFERENCE_DEMO_CODE
+                }
+                { grantedPermissionName: DELETE_SU_PERMISSION, userId: $userId, targetPermissionName: VIEW_USERS }
+                { grantedPermissionName: DELETE_SU_PERMISSION, userId: $userId, targetPermissionName: DELETE_USERS }
+                {
+                    grantedPermissionName: DELETE_SU_PERMISSION
+                    userId: $userId
+                    targetPermissionName: EDIT_USER_REGISTRANTS
+                }
             ]
         ) {
-            id
+            affected_rows
         }
     }
 `;
@@ -35,24 +143,24 @@ export async function handleInitialiseSuperUser(): Promise<InitialiseSuperUserOu
         });
 
         if (queryResponse.data.system_SuperUserState.length === 0) {
-            throw new Error("Super user state view returned no rows?!");
+            throw new Error("Superuser state view returned no rows?!");
         }
 
         if (queryResponse.data.system_SuperUserState[0].isInitialised) {
-            return { success: false, error: "Super user is already initialised." };
+            return { success: false, error: "Superuser is already initialised." };
         }
 
         if (!queryResponse.data.system_SuperUserState[0].canBeDirectlyInitialised) {
             return {
                 success: false,
-                error: "Super user cannot be directly initialised. Can only be initialised directly if exactly one user exists. Please insert the permission grant manually into Hasura: System.SuperUserPermissionGrant (INSERT_SU_PERMISSION, your user id, INSERT_SU_PERMISSION).",
+                error: "Superuser cannot be directly initialised. Can only be initialised directly if exactly one user exists. Please insert the permission grant manually into Hasura: System.SuperUserPermissionGrant (INSERT_SU_PERMISSION, your user id, INSERT_SU_PERMISSION).",
             };
         }
 
         if (queryResponse.data.User.length !== 1) {
             return {
                 success: false,
-                error: "Super user cannot be directly initialised. No single user available. Not sure how this can have happened because the other checks should have prevented it.",
+                error: "Superuser cannot be directly initialised. No single user available. Not sure how this can have happened because the other checks should have prevented it.",
             };
         }
 
@@ -66,6 +174,6 @@ export async function handleInitialiseSuperUser(): Promise<InitialiseSuperUserOu
         return { success: true, error: null };
     } catch (e) {
         console.error("Unable to fetch current super state", e);
-        return { success: false, error: "Could not fetch current super user state." };
+        return { success: false, error: "Could not fetch current superuser state." };
     }
 }

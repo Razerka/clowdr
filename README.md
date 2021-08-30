@@ -96,16 +96,16 @@ parts of the platform, follow all the steps below.
     ReadMe](frontend/README.md#Setting-up)
 11. Follow the instructions below for Auth0 setup.
 12. Once the system is up and running, open the app in your browser, log in,
-    then navigate to `/su` and follow the instructions to set up a super user.
+    then navigate to `/su` and follow the instructions to set up a superuser.
     - In a production environment, we recommend using separate
-      infrequently-accessed accounts for super users, to reduce the risk or
+      infrequently-accessed accounts for superusers, to reduce the risk or
       impact of security breaches.
     - In a production environment, we recommend using separate accounts for
-      the various privileges available to super users. For example, keep
-      accounts with the ability to create conference demo codes separate from
-      those able to modify the set of super users.
+      the various privileges available to superusers. For example, keep
+      accounts with the ability to create conference codes separate from
+      those able to modify the set of superusers.
 13. If running this software in a production environment, you will need to use
-    the super user configuration pages to initialise the System Configuration.
+    the superuser configuration pages to initialise the System Configuration.
     - Fill out values for all available keys.
     - Refer to the `description` field of each key (in `system.ConfigurationKey`)
       for expected values.
@@ -578,13 +578,13 @@ If you alter environment config, Docker Compose config, etc., then all tasks mus
 
 ## Create a conference
 
-When you log into Clowdr for the first time, there will be no conferences listed. You will need a demo code to create a conference, and this cannot yet be done through the Clowdr UI. To create a demo code:
+When you log into Clowdr for the first time, there will be no conferences listed. You will need a code to create a conference, and this cannot yet be done through the Clowdr UI. To create a code:
 
 1. Go to the _Data_ tab in the Hasura console.
 2. Open the _conference > DemoCode_ table.
 3. Open the _Insert Row_ tab. Ensure that `id` is set to _Default_ and click _Save_. There is no need to enter any values manually.
-4. A demo code has now been created. Open the _Browse Rows_ tab and find the new row in the table.
-5. Copy the `id` column of the new row. This is your demo code - you can use it to create a conference in the Clowdr UI.
+4. A code has now been created. Open the _Browse Rows_ tab and find the new row in the table.
+5. Copy the `id` column of the new row. This is your code - you can use it to create a conference in the Clowdr UI.
 
 ### Modifying the default security settings
 

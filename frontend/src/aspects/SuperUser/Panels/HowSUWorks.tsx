@@ -6,9 +6,9 @@ export default function HowSuperUserWorks(): JSX.Element {
         <Container ml={0}>
             <VStack spacing={4} alignItems="flex-start">
                 <Text>
-                    A super user is someone who has permission to edit one or more pieces of system-wide configuration
+                    A superuser is someone who has permission to edit one or more pieces of system-wide configuration
                     (as opposed to configuration of a specific conference - which is more generally known as an
-                    &lsquo;instance&rsquo; in webdev terminology). A user is a super user if they have any super user
+                    &lsquo;instance&rsquo; in webdev terminology). A user is a superuser if they have any superuser
                     permission granted to them.
                 </Text>
                 <Text>
@@ -16,10 +16,10 @@ export default function HowSuperUserWorks(): JSX.Element {
                     control over part or all of the system.
                 </Text>
                 <Text>
-                    Super user permissions cover a number of areas of the system. First, there are Super User Permission
-                    Grants - meaning the granting of Super User Permissions to users. In other words, a permission grant
-                    gives to a specified user a particular super user permission. For example, the ability to grant
-                    other users additional super user permissions.
+                    Superuser permissions cover a number of areas of the system. First, there are Superuser Permission
+                    Grants - meaning the granting of Superuser Permissions to users. In other words, a permission grant
+                    gives to a specified user a particular superuser permission. For example, the ability to grant other
+                    users additional superuser permissions.
                 </Text>
                 <Text>
                     Second, there are System Configuration Permission Grants. These determine permissions for viewing
@@ -28,8 +28,8 @@ export default function HowSuperUserWorks(): JSX.Element {
                 </Text>
                 <Text>
                     Lastly, there are various specific permission grants covering other aspects of the system, such as
-                    conference demo codes, specific conference configurations, and more. For example, a super user may
-                    be given permission to view the list and state of conference demo codes.
+                    conference codes, specific conference configurations, and more. For example, a superuser may be
+                    given permission to view the list and state of conference codes.
                 </Text>
                 <Text>
                     Putting the various permissions together can form pretty much any organisational hierrarchy we are
@@ -37,7 +37,7 @@ export default function HowSuperUserWorks(): JSX.Element {
                     one-click setup options in the various sections.
                 </Text>
                 <Text>
-                    The Table of Super User Permissions below contains a comprehensive description of each permission.
+                    The Table of Superuser Permissions below contains a comprehensive description of each permission.
                 </Text>
             </VStack>
         </Container>

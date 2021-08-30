@@ -17,7 +17,7 @@ gql`
 `;
 
 export default function SuperUserLandingPage(): JSX.Element {
-    const title = useTitle("Super User");
+    const title = useTitle("Superuser");
 
     const suStateResponse = useSuperUserStateQuery({
         context: {
@@ -30,7 +30,7 @@ export default function SuperUserLandingPage(): JSX.Element {
     return (
         <VStack w="100%" mt={2} spacing={4}>
             {title}
-            <Heading>Super User</Heading>
+            <Heading>Superuser</Heading>
             {suStateResponse.loading && !suStateResponse.data?.system_SuperUserState.length ? (
                 <CenteredSpinner />
             ) : undefined}
@@ -43,15 +43,15 @@ export default function SuperUserLandingPage(): JSX.Element {
                     <>
                         <Container>
                             <Text>
-                                A super user is not initialised and cannot be initialised directly through the UI.
-                                Direct initialisation is only available when only a single user exists.
+                                A superuser is not initialised and cannot be initialised directly through the UI. Direct
+                                initialisation is only available when only a single user exists.
                             </Text>
                         </Container>
                         <Container>
                             <Text>
-                                To initialise a super user, please create the relevent Super User Permission Grant
-                                record directly in Hasura (look in the <Code>system</Code> schema). Insert a record for
-                                your user id, granting the permission <Code>INSERT_SU_PERMISSION</Code>
+                                To initialise a superuser, please create the relevent Superuser Permission Grant record
+                                directly in Hasura (look in the <Code>system</Code> schema). Insert a record for your
+                                user id, granting the permission <Code>INSERT_SU_PERMISSION</Code>
                                 with the target permission also being <Code>INSERT_SU_PERMISSION</Code>. Then reload
                                 this page.
                             </Text>

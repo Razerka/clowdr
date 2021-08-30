@@ -5034,7 +5034,54 @@
         table:
           schema: registrant
           name: Registrant
+  - name: superUserPermissionGrants
+    using:
+      manual_configuration:
+        remote_table:
+          schema: system
+          name: SuperUserPermissionGrant
+        insertion_order: null
+        column_mapping:
+          id: userId
   select_permissions:
+  - role: superuser
+    permission:
+      columns:
+      - id
+      - created_at
+      - updated_at
+      - email
+      - acceptedTermsAt
+      - acceptedPrivacyPolicyAt
+      filter:
+        _or:
+        - superUserPermissionGrants:
+            grantedPermission:
+              superUserGrantTargets:
+                _and:
+                - grantedPermissionName:
+                    _eq: VIEW_SU_PERMISSION_GRANT
+                - userId:
+                    _eq: X-Hasura-User-Id
+        - _exists:
+            _where:
+              _and:
+              - grantedPermissionName:
+                  _in:
+                  - VIEW_USERS
+                  - DELETE_USERS
+                  - EDIT_USER_REGISTRANTS
+                  - INSERT_SU_PERMISSION
+              - targetPermissionName:
+                  _is_null: true
+              - userId:
+                  _eq: X-Hasura-User-Id
+            _table:
+              schema: system
+              name: SuperUserPermissionGrant
+        - superUserPermissionGrants:
+            userId:
+              _eq: X-Hasura-User-Id
   - role: user
     permission:
       columns:
@@ -5060,6 +5107,22 @@
           _eq: X-Hasura-User-Id
       check: null
   delete_permissions:
+  - role: superuser
+    permission:
+      filter:
+        _exists:
+          _where:
+            _and:
+            - grantedPermissionName:
+                _in:
+                - DELETE_USERS
+            - targetPermissionName:
+                _is_null: true
+            - userId:
+                _eq: X-Hasura-User-Id
+          _table:
+            schema: system
+            name: SuperUserPermissionGrant
   - role: user
     permission:
       filter:
@@ -5595,6 +5658,30 @@
       - userId
       backend_only: false
   select_permissions:
+  - role: superuser
+    permission:
+      columns:
+      - id
+      - conferenceId
+      - userId
+      - displayName
+      - created_at
+      - updated_at
+      computed_fields:
+      - inviteSent
+      filter:
+        _exists:
+          _where:
+            _and:
+            - grantedPermissionName:
+                _eq: EDIT_USER_REGISTRANTS
+            - targetPermissionName:
+                _is_null: true
+            - userId:
+                _eq: X-Hasura-User-Id
+          _table:
+            schema: system
+            name: SuperUserPermissionGrant
   - role: user
     permission:
       columns:
@@ -5654,6 +5741,25 @@
           - userId:
               _eq: X-Hasura-User-Id
   update_permissions:
+  - role: superuser
+    permission:
+      columns:
+      - displayName
+      - userId
+      filter:
+        _exists:
+          _where:
+            _and:
+            - grantedPermissionName:
+                _eq: EDIT_USER_REGISTRANTS
+            - targetPermissionName:
+                _is_null: true
+            - userId:
+                _eq: X-Hasura-User-Id
+          _table:
+            schema: system
+            name: SuperUserPermissionGrant
+      check: null
   - role: user
     permission:
       columns:
@@ -8040,6 +8146,19 @@
                   _eq: X-Hasura-User-Id
         - userId:
             _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: superuser
+    permission:
+      columns: []
+      filter:
+        grantedPermission:
+          superUserGrantTargets:
+            _and:
+            - grantedPermissionName:
+                _eq: INSERT_SU_PERMISSION
+            - userId:
+                _eq: X-Hasura-User-Id
+      check: null
   delete_permissions:
   - role: superuser
     permission:
@@ -8135,6 +8254,19 @@
                   _eq: X-Hasura-User-Id
         - userId:
             _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: superuser
+    permission:
+      columns: []
+      filter:
+        grantedPermission:
+          superUserGrantTargets:
+            _and:
+            - grantedPermissionName:
+                _eq: INSERT_SU_PERMISSION
+            - userId:
+                _eq: X-Hasura-User-Id
+      check: null
   delete_permissions:
   - role: superuser
     permission:
@@ -8152,6 +8284,8 @@
               _neq: INSERT_SU_PERMISSION
           - userId:
               _neq: X-Hasura-User-Id
+          - targetPermissionName:
+              _neq: INSERT_SU_PERMISSION
 - table:
     schema: system
     name: SuperUserState
