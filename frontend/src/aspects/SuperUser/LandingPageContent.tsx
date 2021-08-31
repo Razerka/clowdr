@@ -4,6 +4,7 @@ import HowSUWorks from "./Panels/HowSUWorks";
 import SUPermissionGrants from "./Panels/SUPermissionGrants";
 import SUPermissionsTable from "./Panels/SUPermissionsTable";
 import SysConfigPermissionGrants from "./Panels/SysConfigPermissionGrants";
+import SystemConfiguration from "./Panels/SystemConfiguration";
 
 export default function SuperUserLandingPageContent(): JSX.Element {
     // TODO: Make these lazy panels
@@ -76,7 +77,7 @@ export default function SuperUserLandingPageContent(): JSX.Element {
                                 <AccordionIcon mr={2} />
                                 System Configuration
                             </AccordionButton>
-                            <AccordionPanel>{isExpanded ? "TODO" : undefined}</AccordionPanel>
+                            <AccordionPanel>{isExpanded ? <SystemConfiguration /> : undefined}</AccordionPanel>
                         </>
                     )}
                 </AccordionItem>

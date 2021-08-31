@@ -38445,6 +38445,42 @@ export type DeleteSysConfigPermissionGrantsMutationVariables = Exact<{
 
 export type DeleteSysConfigPermissionGrantsMutation = { readonly __typename?: 'mutation_root', readonly delete_system_ConfigurationPermissionGrant?: Maybe<{ readonly __typename?: 'system_ConfigurationPermissionGrant_mutation_response', readonly returning: ReadonlyArray<{ readonly __typename?: 'system_ConfigurationPermissionGrant', readonly id: any }> }> };
 
+export type UserSysConfigPermissionsQueryVariables = Exact<{
+  userId: Scalars['String'];
+}>;
+
+
+export type UserSysConfigPermissionsQuery = { readonly __typename?: 'query_root', readonly system_ConfigurationPermissionGrant: ReadonlyArray<{ readonly __typename?: 'system_ConfigurationPermissionGrant', readonly id: any, readonly created_at: any, readonly updated_at: any, readonly permissionName: System_SuperUserPermission_Enum, readonly userId: string, readonly configurationKey: System_ConfigurationKey_Enum }> };
+
+export type SystemConfigurationFragment = { readonly __typename?: 'system_Configuration', readonly key: System_ConfigurationKey_Enum, readonly value: any, readonly updated_at: any, readonly created_at: any };
+
+export type AllSystemConfigurationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllSystemConfigurationsQuery = { readonly __typename?: 'query_root', readonly system_Configuration: ReadonlyArray<{ readonly __typename?: 'system_Configuration', readonly key: System_ConfigurationKey_Enum, readonly value: any, readonly updated_at: any, readonly created_at: any }> };
+
+export type InsertSystemConfigurationMutationVariables = Exact<{
+  object: System_Configuration_Insert_Input;
+}>;
+
+
+export type InsertSystemConfigurationMutation = { readonly __typename?: 'mutation_root', readonly insert_system_Configuration_one?: Maybe<{ readonly __typename?: 'system_Configuration', readonly key: System_ConfigurationKey_Enum, readonly value: any, readonly updated_at: any, readonly created_at: any }> };
+
+export type UpdateSystemConfigurationMutationVariables = Exact<{
+  key: System_ConfigurationKey_Enum;
+  set: System_Configuration_Set_Input;
+}>;
+
+
+export type UpdateSystemConfigurationMutation = { readonly __typename?: 'mutation_root', readonly update_system_Configuration_by_pk?: Maybe<{ readonly __typename?: 'system_Configuration', readonly key: System_ConfigurationKey_Enum, readonly value: any, readonly updated_at: any, readonly created_at: any }> };
+
+export type DeleteSystemConfigurationsMutationVariables = Exact<{
+  keys: ReadonlyArray<System_ConfigurationKey_Enum> | System_ConfigurationKey_Enum;
+}>;
+
+
+export type DeleteSystemConfigurationsMutation = { readonly __typename?: 'mutation_root', readonly delete_system_Configuration?: Maybe<{ readonly __typename?: 'system_Configuration_mutation_response', readonly returning: ReadonlyArray<{ readonly __typename?: 'system_Configuration', readonly key: System_ConfigurationKey_Enum }> }> };
+
 export type RegistrantFieldsFragment = { readonly __typename?: 'registrant_Registrant', readonly id: any, readonly userId?: Maybe<string>, readonly conferenceId: any, readonly displayName: string, readonly createdAt: any, readonly updatedAt: any, readonly profile?: Maybe<{ readonly __typename?: 'registrant_Profile', readonly registrantId: any, readonly photoURL_50x50?: Maybe<string> }>, readonly conference: { readonly __typename?: 'conference_Conference', readonly id: any, readonly name: string, readonly shortName: string, readonly slug: string }, readonly groupRegistrants: ReadonlyArray<{ readonly __typename?: 'permissions_GroupRegistrant', readonly id: any, readonly group: { readonly __typename?: 'permissions_Group', readonly id: any, readonly enabled: boolean, readonly name: string, readonly groupRoles: ReadonlyArray<{ readonly __typename?: 'permissions_GroupRole', readonly id: any, readonly role: { readonly __typename?: 'permissions_Role', readonly id: any, readonly name: string, readonly rolePermissions: ReadonlyArray<{ readonly __typename?: 'permissions_RolePermission', readonly id: any, readonly permissionName: Permissions_Permission_Enum }> } }> } }> };
 
 export type UserInfoFragment = { readonly __typename?: 'User', readonly id: string, readonly email?: Maybe<string>, readonly acceptedTermsAt?: Maybe<any>, readonly acceptedPrivacyPolicyAt?: Maybe<any>, readonly registrants: ReadonlyArray<{ readonly __typename?: 'registrant_Registrant', readonly id: any, readonly userId?: Maybe<string>, readonly conferenceId: any, readonly displayName: string, readonly createdAt: any, readonly updatedAt: any, readonly profile?: Maybe<{ readonly __typename?: 'registrant_Profile', readonly registrantId: any, readonly photoURL_50x50?: Maybe<string> }>, readonly conference: { readonly __typename?: 'conference_Conference', readonly id: any, readonly name: string, readonly shortName: string, readonly slug: string }, readonly groupRegistrants: ReadonlyArray<{ readonly __typename?: 'permissions_GroupRegistrant', readonly id: any, readonly group: { readonly __typename?: 'permissions_Group', readonly id: any, readonly enabled: boolean, readonly name: string, readonly groupRoles: ReadonlyArray<{ readonly __typename?: 'permissions_GroupRole', readonly id: any, readonly role: { readonly __typename?: 'permissions_Role', readonly id: any, readonly name: string, readonly rolePermissions: ReadonlyArray<{ readonly __typename?: 'permissions_RolePermission', readonly id: any, readonly permissionName: Permissions_Permission_Enum }> } }> } }> }> };
@@ -40277,6 +40313,14 @@ export const SysConfigPermissionGrantFragmentDoc = gql`
   permissionName
   userId
   configurationKey
+}
+    `;
+export const SystemConfigurationFragmentDoc = gql`
+    fragment SystemConfiguration on system_Configuration {
+  key
+  value
+  updated_at
+  created_at
 }
     `;
 export const RegistrantFieldsFragmentDoc = gql`
@@ -51022,6 +51066,177 @@ export function useDeleteSysConfigPermissionGrantsMutation(baseOptions?: Apollo.
 export type DeleteSysConfigPermissionGrantsMutationHookResult = ReturnType<typeof useDeleteSysConfigPermissionGrantsMutation>;
 export type DeleteSysConfigPermissionGrantsMutationResult = Apollo.MutationResult<DeleteSysConfigPermissionGrantsMutation>;
 export type DeleteSysConfigPermissionGrantsMutationOptions = Apollo.BaseMutationOptions<DeleteSysConfigPermissionGrantsMutation, DeleteSysConfigPermissionGrantsMutationVariables>;
+export const UserSysConfigPermissionsDocument = gql`
+    query UserSysConfigPermissions($userId: String!) {
+  system_ConfigurationPermissionGrant(where: {userId: {_eq: $userId}}) {
+    ...SysConfigPermissionGrant
+  }
+}
+    ${SysConfigPermissionGrantFragmentDoc}`;
+
+/**
+ * __useUserSysConfigPermissionsQuery__
+ *
+ * To run a query within a React component, call `useUserSysConfigPermissionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserSysConfigPermissionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserSysConfigPermissionsQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUserSysConfigPermissionsQuery(baseOptions: Apollo.QueryHookOptions<UserSysConfigPermissionsQuery, UserSysConfigPermissionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserSysConfigPermissionsQuery, UserSysConfigPermissionsQueryVariables>(UserSysConfigPermissionsDocument, options);
+      }
+export function useUserSysConfigPermissionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserSysConfigPermissionsQuery, UserSysConfigPermissionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserSysConfigPermissionsQuery, UserSysConfigPermissionsQueryVariables>(UserSysConfigPermissionsDocument, options);
+        }
+export type UserSysConfigPermissionsQueryHookResult = ReturnType<typeof useUserSysConfigPermissionsQuery>;
+export type UserSysConfigPermissionsLazyQueryHookResult = ReturnType<typeof useUserSysConfigPermissionsLazyQuery>;
+export type UserSysConfigPermissionsQueryResult = Apollo.QueryResult<UserSysConfigPermissionsQuery, UserSysConfigPermissionsQueryVariables>;
+export const AllSystemConfigurationsDocument = gql`
+    query AllSystemConfigurations {
+  system_Configuration {
+    ...SystemConfiguration
+  }
+}
+    ${SystemConfigurationFragmentDoc}`;
+
+/**
+ * __useAllSystemConfigurationsQuery__
+ *
+ * To run a query within a React component, call `useAllSystemConfigurationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllSystemConfigurationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllSystemConfigurationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAllSystemConfigurationsQuery(baseOptions?: Apollo.QueryHookOptions<AllSystemConfigurationsQuery, AllSystemConfigurationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AllSystemConfigurationsQuery, AllSystemConfigurationsQueryVariables>(AllSystemConfigurationsDocument, options);
+      }
+export function useAllSystemConfigurationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllSystemConfigurationsQuery, AllSystemConfigurationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AllSystemConfigurationsQuery, AllSystemConfigurationsQueryVariables>(AllSystemConfigurationsDocument, options);
+        }
+export type AllSystemConfigurationsQueryHookResult = ReturnType<typeof useAllSystemConfigurationsQuery>;
+export type AllSystemConfigurationsLazyQueryHookResult = ReturnType<typeof useAllSystemConfigurationsLazyQuery>;
+export type AllSystemConfigurationsQueryResult = Apollo.QueryResult<AllSystemConfigurationsQuery, AllSystemConfigurationsQueryVariables>;
+export const InsertSystemConfigurationDocument = gql`
+    mutation InsertSystemConfiguration($object: system_Configuration_insert_input!) {
+  insert_system_Configuration_one(object: $object) {
+    ...SystemConfiguration
+  }
+}
+    ${SystemConfigurationFragmentDoc}`;
+export type InsertSystemConfigurationMutationFn = Apollo.MutationFunction<InsertSystemConfigurationMutation, InsertSystemConfigurationMutationVariables>;
+
+/**
+ * __useInsertSystemConfigurationMutation__
+ *
+ * To run a mutation, you first call `useInsertSystemConfigurationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertSystemConfigurationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertSystemConfigurationMutation, { data, loading, error }] = useInsertSystemConfigurationMutation({
+ *   variables: {
+ *      object: // value for 'object'
+ *   },
+ * });
+ */
+export function useInsertSystemConfigurationMutation(baseOptions?: Apollo.MutationHookOptions<InsertSystemConfigurationMutation, InsertSystemConfigurationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertSystemConfigurationMutation, InsertSystemConfigurationMutationVariables>(InsertSystemConfigurationDocument, options);
+      }
+export type InsertSystemConfigurationMutationHookResult = ReturnType<typeof useInsertSystemConfigurationMutation>;
+export type InsertSystemConfigurationMutationResult = Apollo.MutationResult<InsertSystemConfigurationMutation>;
+export type InsertSystemConfigurationMutationOptions = Apollo.BaseMutationOptions<InsertSystemConfigurationMutation, InsertSystemConfigurationMutationVariables>;
+export const UpdateSystemConfigurationDocument = gql`
+    mutation UpdateSystemConfiguration($key: system_ConfigurationKey_enum!, $set: system_Configuration_set_input!) {
+  update_system_Configuration_by_pk(pk_columns: {key: $key}, _set: $set) {
+    ...SystemConfiguration
+  }
+}
+    ${SystemConfigurationFragmentDoc}`;
+export type UpdateSystemConfigurationMutationFn = Apollo.MutationFunction<UpdateSystemConfigurationMutation, UpdateSystemConfigurationMutationVariables>;
+
+/**
+ * __useUpdateSystemConfigurationMutation__
+ *
+ * To run a mutation, you first call `useUpdateSystemConfigurationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSystemConfigurationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSystemConfigurationMutation, { data, loading, error }] = useUpdateSystemConfigurationMutation({
+ *   variables: {
+ *      key: // value for 'key'
+ *      set: // value for 'set'
+ *   },
+ * });
+ */
+export function useUpdateSystemConfigurationMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSystemConfigurationMutation, UpdateSystemConfigurationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateSystemConfigurationMutation, UpdateSystemConfigurationMutationVariables>(UpdateSystemConfigurationDocument, options);
+      }
+export type UpdateSystemConfigurationMutationHookResult = ReturnType<typeof useUpdateSystemConfigurationMutation>;
+export type UpdateSystemConfigurationMutationResult = Apollo.MutationResult<UpdateSystemConfigurationMutation>;
+export type UpdateSystemConfigurationMutationOptions = Apollo.BaseMutationOptions<UpdateSystemConfigurationMutation, UpdateSystemConfigurationMutationVariables>;
+export const DeleteSystemConfigurationsDocument = gql`
+    mutation DeleteSystemConfigurations($keys: [system_ConfigurationKey_enum!]!) {
+  delete_system_Configuration(where: {key: {_in: $keys}}) {
+    returning {
+      key
+    }
+  }
+}
+    `;
+export type DeleteSystemConfigurationsMutationFn = Apollo.MutationFunction<DeleteSystemConfigurationsMutation, DeleteSystemConfigurationsMutationVariables>;
+
+/**
+ * __useDeleteSystemConfigurationsMutation__
+ *
+ * To run a mutation, you first call `useDeleteSystemConfigurationsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteSystemConfigurationsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteSystemConfigurationsMutation, { data, loading, error }] = useDeleteSystemConfigurationsMutation({
+ *   variables: {
+ *      keys: // value for 'keys'
+ *   },
+ * });
+ */
+export function useDeleteSystemConfigurationsMutation(baseOptions?: Apollo.MutationHookOptions<DeleteSystemConfigurationsMutation, DeleteSystemConfigurationsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteSystemConfigurationsMutation, DeleteSystemConfigurationsMutationVariables>(DeleteSystemConfigurationsDocument, options);
+      }
+export type DeleteSystemConfigurationsMutationHookResult = ReturnType<typeof useDeleteSystemConfigurationsMutation>;
+export type DeleteSystemConfigurationsMutationResult = Apollo.MutationResult<DeleteSystemConfigurationsMutation>;
+export type DeleteSystemConfigurationsMutationOptions = Apollo.BaseMutationOptions<DeleteSystemConfigurationsMutation, DeleteSystemConfigurationsMutationVariables>;
 export const SelectCurrentUserDocument = gql`
     query SelectCurrentUser($userId: String!) {
   User_by_pk(id: $userId) {
