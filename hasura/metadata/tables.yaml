@@ -1899,6 +1899,7 @@
             - REGISTRATION_URL
             - SUPPORT_ADDRESS
             - SCHEDULE_VIEW_VERSION
+            - VONAGE_MAX_SIMULTANEOUS_SCREEN_SHARES
   update_permissions:
   - role: user
     permission:

@@ -7825,7 +7825,9 @@ export enum Conference_ConfigurationKey_Enum {
   /** Text of the upload agreement or a URL to one. */
   UploadAgreement = 'UPLOAD_AGREEMENT',
   /** The time in milliseconds since the UNIX epoch, as a string. */
-  UploadCutoffTimestamp = 'UPLOAD_CUTOFF_TIMESTAMP'
+  UploadCutoffTimestamp = 'UPLOAD_CUTOFF_TIMESTAMP',
+  /** The maximum number of simultaneous screen shares allowed in Vonage video chats. */
+  VonageMaxSimultaneousScreenShares = 'VONAGE_MAX_SIMULTANEOUS_SCREEN_SHARES'
 }
 
 /** Boolean expression to compare columns of type "conference_ConfigurationKey_enum". All fields are combined with logical 'AND'. */
@@ -37284,6 +37286,13 @@ export type AgreeToTermsMutationVariables = Exact<{
 
 export type AgreeToTermsMutation = { readonly __typename?: 'mutation_root', readonly update_User_by_pk?: Maybe<{ readonly __typename?: 'User', readonly id: string, readonly acceptedTermsAt?: Maybe<any>, readonly acceptedPrivacyPolicyAt?: Maybe<any> }> };
 
+export type VonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQueryVariables = Exact<{
+  conferenceId: Scalars['uuid'];
+}>;
+
+
+export type VonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQuery = { readonly __typename?: 'query_root', readonly conference_Configuration_by_pk?: Maybe<{ readonly __typename?: 'conference_Configuration', readonly conferenceId: any, readonly key: Conference_ConfigurationKey_Enum, readonly value: any }> };
+
 export const ChatState_SubdMessageFragmentDoc = gql`
     fragment ChatState_SubdMessage on chat_Message {
   id
@@ -49672,3 +49681,43 @@ export function useAgreeToTermsMutation(baseOptions?: Apollo.MutationHookOptions
 export type AgreeToTermsMutationHookResult = ReturnType<typeof useAgreeToTermsMutation>;
 export type AgreeToTermsMutationResult = Apollo.MutationResult<AgreeToTermsMutation>;
 export type AgreeToTermsMutationOptions = Apollo.BaseMutationOptions<AgreeToTermsMutation, AgreeToTermsMutationVariables>;
+export const VonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesDocument = gql`
+    query VonageRoomStateProvider_GetVonageMaxSimultaneousScreenShares($conferenceId: uuid!) {
+  conference_Configuration_by_pk(
+    conferenceId: $conferenceId
+    key: VONAGE_MAX_SIMULTANEOUS_SCREEN_SHARES
+  ) {
+    conferenceId
+    key
+    value
+  }
+}
+    `;
+
+/**
+ * __useVonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQuery__
+ *
+ * To run a query within a React component, call `useVonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useVonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useVonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQuery({
+ *   variables: {
+ *      conferenceId: // value for 'conferenceId'
+ *   },
+ * });
+ */
+export function useVonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQuery(baseOptions: Apollo.QueryHookOptions<VonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQuery, VonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<VonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQuery, VonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQueryVariables>(VonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesDocument, options);
+      }
+export function useVonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<VonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQuery, VonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<VonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQuery, VonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQueryVariables>(VonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesDocument, options);
+        }
+export type VonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQueryHookResult = ReturnType<typeof useVonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQuery>;
+export type VonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesLazyQueryHookResult = ReturnType<typeof useVonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesLazyQuery>;
+export type VonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQueryResult = Apollo.QueryResult<VonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQuery, VonageRoomStateProvider_GetVonageMaxSimultaneousScreenSharesQueryVariables>;
