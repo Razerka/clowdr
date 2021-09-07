@@ -35252,15 +35252,6 @@ export type UpdateEventVonageSessionLayoutMutationVariables = Exact<{
 
 export type UpdateEventVonageSessionLayoutMutation = { readonly __typename?: 'mutation_root', readonly update_video_EventVonageSession_by_pk?: Maybe<{ readonly __typename?: 'video_EventVonageSession', readonly id: any }> };
 
-export type GetEventParticipantStreamsSubscriptionVariables = Exact<{
-  eventId: Scalars['uuid'];
-}>;
-
-
-export type GetEventParticipantStreamsSubscription = { readonly __typename?: 'subscription_root', readonly video_EventParticipantStream: ReadonlyArray<{ readonly __typename?: 'video_EventParticipantStream', readonly id: any, readonly conferenceId: any, readonly eventId: any, readonly vonageStreamType: string, readonly vonageStreamId: string, readonly registrantId: any, readonly registrant: { readonly __typename?: 'registrant_Registrant', readonly id: any, readonly displayName: string } }> };
-
-export type EventParticipantStreamDetailsFragment = { readonly __typename?: 'video_EventParticipantStream', readonly id: any, readonly conferenceId: any, readonly eventId: any, readonly vonageStreamType: string, readonly vonageStreamId: string, readonly registrantId: any, readonly registrant: { readonly __typename?: 'registrant_Registrant', readonly id: any, readonly displayName: string } };
-
 export type GetEventVonageTokenMutationVariables = Exact<{
   eventId: Scalars['uuid'];
 }>;
@@ -35306,6 +35297,15 @@ export type LiveIndicator_GetElementQueryVariables = Exact<{
 
 
 export type LiveIndicator_GetElementQuery = { readonly __typename?: 'query_root', readonly content_Element_by_pk?: Maybe<{ readonly __typename?: 'content_Element', readonly id: any, readonly data: any }> };
+
+export type GetEventParticipantStreamsSubscriptionVariables = Exact<{
+  eventId: Scalars['uuid'];
+}>;
+
+
+export type GetEventParticipantStreamsSubscription = { readonly __typename?: 'subscription_root', readonly video_EventParticipantStream: ReadonlyArray<{ readonly __typename?: 'video_EventParticipantStream', readonly id: any, readonly conferenceId: any, readonly eventId: any, readonly vonageStreamType: string, readonly vonageStreamId: string, readonly registrantId: any, readonly registrant: { readonly __typename?: 'registrant_Registrant', readonly id: any, readonly displayName: string } }> };
+
+export type EventParticipantStreamDetailsFragment = { readonly __typename?: 'video_EventParticipantStream', readonly id: any, readonly conferenceId: any, readonly eventId: any, readonly vonageStreamType: string, readonly vonageStreamId: string, readonly registrantId: any, readonly registrant: { readonly __typename?: 'registrant_Registrant', readonly id: any, readonly displayName: string } };
 
 export type Room_GetEventsQueryVariables = Exact<{
   roomId: Scalars['uuid'];
@@ -37605,20 +37605,6 @@ export const MyBackstages_EventFragmentDoc = gql`
   startTime
 }
     `;
-export const EventParticipantStreamDetailsFragmentDoc = gql`
-    fragment EventParticipantStreamDetails on video_EventParticipantStream {
-  id
-  registrant {
-    id
-    displayName
-  }
-  conferenceId
-  eventId
-  vonageStreamType
-  vonageStreamId
-  registrantId
-}
-    `;
 export const RoomEventDetailsFragmentDoc = gql`
     fragment RoomEventDetails on schedule_Event {
   id
@@ -37632,6 +37618,20 @@ export const RoomEventDetailsFragmentDoc = gql`
     id
     sessionId
   }
+}
+    `;
+export const EventParticipantStreamDetailsFragmentDoc = gql`
+    fragment EventParticipantStreamDetails on video_EventParticipantStream {
+  id
+  registrant {
+    id
+    displayName
+  }
+  conferenceId
+  eventId
+  vonageStreamType
+  vonageStreamId
+  registrantId
 }
     `;
 export const PrefetchShuffleQueueEntryDataFragmentDoc = gql`
@@ -40341,36 +40341,6 @@ export function useUpdateEventVonageSessionLayoutMutation(baseOptions?: Apollo.M
 export type UpdateEventVonageSessionLayoutMutationHookResult = ReturnType<typeof useUpdateEventVonageSessionLayoutMutation>;
 export type UpdateEventVonageSessionLayoutMutationResult = Apollo.MutationResult<UpdateEventVonageSessionLayoutMutation>;
 export type UpdateEventVonageSessionLayoutMutationOptions = Apollo.BaseMutationOptions<UpdateEventVonageSessionLayoutMutation, UpdateEventVonageSessionLayoutMutationVariables>;
-export const GetEventParticipantStreamsDocument = gql`
-    subscription GetEventParticipantStreams($eventId: uuid!) {
-  video_EventParticipantStream(where: {eventId: {_eq: $eventId}}) {
-    ...EventParticipantStreamDetails
-  }
-}
-    ${EventParticipantStreamDetailsFragmentDoc}`;
-
-/**
- * __useGetEventParticipantStreamsSubscription__
- *
- * To run a query within a React component, call `useGetEventParticipantStreamsSubscription` and pass it any options that fit your needs.
- * When your component renders, `useGetEventParticipantStreamsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetEventParticipantStreamsSubscription({
- *   variables: {
- *      eventId: // value for 'eventId'
- *   },
- * });
- */
-export function useGetEventParticipantStreamsSubscription(baseOptions: Apollo.SubscriptionHookOptions<GetEventParticipantStreamsSubscription, GetEventParticipantStreamsSubscriptionVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<GetEventParticipantStreamsSubscription, GetEventParticipantStreamsSubscriptionVariables>(GetEventParticipantStreamsDocument, options);
-      }
-export type GetEventParticipantStreamsSubscriptionHookResult = ReturnType<typeof useGetEventParticipantStreamsSubscription>;
-export type GetEventParticipantStreamsSubscriptionResult = Apollo.SubscriptionResult<GetEventParticipantStreamsSubscription>;
 export const GetEventVonageTokenDocument = gql`
     mutation GetEventVonageToken($eventId: uuid!) {
   joinEventVonageSession(eventId: $eventId) {
@@ -40614,6 +40584,36 @@ export function useLiveIndicator_GetElementLazyQuery(baseOptions?: Apollo.LazyQu
 export type LiveIndicator_GetElementQueryHookResult = ReturnType<typeof useLiveIndicator_GetElementQuery>;
 export type LiveIndicator_GetElementLazyQueryHookResult = ReturnType<typeof useLiveIndicator_GetElementLazyQuery>;
 export type LiveIndicator_GetElementQueryResult = Apollo.QueryResult<LiveIndicator_GetElementQuery, LiveIndicator_GetElementQueryVariables>;
+export const GetEventParticipantStreamsDocument = gql`
+    subscription GetEventParticipantStreams($eventId: uuid!) {
+  video_EventParticipantStream(where: {eventId: {_eq: $eventId}}) {
+    ...EventParticipantStreamDetails
+  }
+}
+    ${EventParticipantStreamDetailsFragmentDoc}`;
+
+/**
+ * __useGetEventParticipantStreamsSubscription__
+ *
+ * To run a query within a React component, call `useGetEventParticipantStreamsSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetEventParticipantStreamsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetEventParticipantStreamsSubscription({
+ *   variables: {
+ *      eventId: // value for 'eventId'
+ *   },
+ * });
+ */
+export function useGetEventParticipantStreamsSubscription(baseOptions: Apollo.SubscriptionHookOptions<GetEventParticipantStreamsSubscription, GetEventParticipantStreamsSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<GetEventParticipantStreamsSubscription, GetEventParticipantStreamsSubscriptionVariables>(GetEventParticipantStreamsDocument, options);
+      }
+export type GetEventParticipantStreamsSubscriptionHookResult = ReturnType<typeof useGetEventParticipantStreamsSubscription>;
+export type GetEventParticipantStreamsSubscriptionResult = Apollo.SubscriptionResult<GetEventParticipantStreamsSubscription>;
 export const Room_GetEventsDocument = gql`
     query Room_GetEvents($roomId: uuid!, $now: timestamptz!, $cutoff: timestamptz!) {
   schedule_Event(

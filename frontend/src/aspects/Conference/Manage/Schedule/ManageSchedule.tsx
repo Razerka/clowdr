@@ -59,6 +59,7 @@ import {
     useSelectWholeScheduleQuery,
     useUpdateEventInfoMutation,
 } from "../../../../generated/graphql";
+import { useAppSettings } from "../../../App/AppSettingsProvider";
 import { LinkButton } from "../../../Chakra/LinkButton";
 import { DateTimePicker } from "../../../CRUDTable/DateTimePicker";
 import {
@@ -229,6 +230,9 @@ const liveStreamRoomModes: Room_Mode_Enum[] = [
 
 function EditableScheduleTable(): JSX.Element {
     const conference = useConference();
+    const {
+        developer: { allowOngoingEventCreation },
+    } = useAppSettings();
     const wholeSchedule = useSelectWholeScheduleQuery({
         variables: {
             conferenceId: conference.id,
@@ -380,7 +384,7 @@ function EditableScheduleTable(): JSX.Element {
                     const end = start + 1000 * (staleRecord.durationSeconds ?? 300);
                     const startLeeway = 5 * 60 * 1000;
                     const endLeeway = 4 * 60 * 1000;
-                    const ongoing = isOngoing(now, startLeeway, endLeeway, start, end);
+                    const ongoing = isOngoing(now, startLeeway, endLeeway, start, end) && !allowOngoingEventCreation;
                     const past = end < now - endLeeway;
                     const isLivestream = staleRecord.intendedRoomModeName
                         ? liveStreamRoomModes.includes(staleRecord.intendedRoomModeName)
@@ -443,7 +447,8 @@ function EditableScheduleTable(): JSX.Element {
                     const end = start + 1000 * (staleRecord.durationSeconds ?? 300);
                     const startLeeway = 5 * 60 * 1000;
                     const endLeeway = 4 * 60 * 1000;
-                    const ongoing = isOngoingNearBoundary(now, startLeeway, endLeeway, start, end);
+                    const ongoing =
+                        isOngoingNearBoundary(now, startLeeway, endLeeway, start, end) && !allowOngoingEventCreation;
                     const past = end < now - endLeeway;
                     const isLivestream = staleRecord.intendedRoomModeName
                         ? liveStreamRoomModes.includes(staleRecord.intendedRoomModeName)
@@ -518,7 +523,7 @@ function EditableScheduleTable(): JSX.Element {
                     const end = start + 1000 * (staleRecord.durationSeconds ?? 300);
                     const startLeeway = 5 * 60 * 1000;
                     const endLeeway = 4 * 60 * 1000;
-                    const ongoing = isOngoing(now, startLeeway, endLeeway, start, end);
+                    const ongoing = isOngoing(now, startLeeway, endLeeway, start, end) && !allowOngoingEventCreation;
                     const past = end < now - endLeeway;
                     const isLivestream = staleRecord.intendedRoomModeName
                         ? liveStreamRoomModes.includes(staleRecord.intendedRoomModeName)
@@ -596,7 +601,7 @@ function EditableScheduleTable(): JSX.Element {
                     const end = start + 1000 * (staleRecord.durationSeconds ?? 300);
                     const startLeeway = 5 * 60 * 1000;
                     const endLeeway = 4 * 60 * 1000;
-                    const ongoing = isOngoing(now, startLeeway, endLeeway, start, end);
+                    const ongoing = isOngoing(now, startLeeway, endLeeway, start, end) && !allowOngoingEventCreation;
 
                     return (
                         <HStack>
@@ -725,7 +730,7 @@ function EditableScheduleTable(): JSX.Element {
                     const end = start + 1000 * (staleRecord.durationSeconds ?? 300);
                     const startLeeway = 5 * 60 * 1000;
                     const endLeeway = 4 * 60 * 1000;
-                    const ongoing = isOngoing(now, startLeeway, endLeeway, start, end);
+                    const ongoing = isOngoing(now, startLeeway, endLeeway, start, end) && !allowOngoingEventCreation;
                     const past = end < now - endLeeway;
                     const isLivestream = staleRecord.intendedRoomModeName
                         ? liveStreamRoomModes.includes(staleRecord.intendedRoomModeName)
@@ -960,7 +965,7 @@ function EditableScheduleTable(): JSX.Element {
                 const now = Date.now();
                 const startLeeway = 9.9 * 60 * 1000;
                 const endLeeway = 4 * 60 * 1000;
-                const ongoing = isOngoing(now, startLeeway, endLeeway, start, end);
+                const ongoing = isOngoing(now, startLeeway, endLeeway, start, end) && !allowOngoingEventCreation;
                 const past = end < now - endLeeway;
                 const isLivestream = record.intendedRoomModeName
                     ? liveStreamRoomModes.includes(record.intendedRoomModeName)
@@ -1005,7 +1010,7 @@ function EditableScheduleTable(): JSX.Element {
                 const now = Date.now();
                 const startLeeway = 5 * 60 * 1000;
                 const endLeeway = 4 * 60 * 1000;
-                const ongoing = isOngoing(now, startLeeway, endLeeway, start, end);
+                const ongoing = isOngoing(now, startLeeway, endLeeway, start, end) && !allowOngoingEventCreation;
                 const isLivestream = record.intendedRoomModeName
                     ? liveStreamRoomModes.includes(record.intendedRoomModeName)
                     : false;
@@ -1017,7 +1022,7 @@ function EditableScheduleTable(): JSX.Element {
                 const now = Date.now();
                 const startLeeway = 5 * 60 * 1000;
                 const endLeeway = 4 * 60 * 1000;
-                const ongoing = isOngoing(now, startLeeway, endLeeway, start, end);
+                const ongoing = isOngoing(now, startLeeway, endLeeway, start, end) && !allowOngoingEventCreation;
                 const isLivestream = record.intendedRoomModeName
                     ? liveStreamRoomModes.includes(record.intendedRoomModeName)
                     : false;
