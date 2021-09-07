@@ -17,4 +17,5 @@ export default {
     setBroadcastLayout: promisify(vonage.setBroadcastLayout.bind(vonage)),
     setStreamClassLists: promisify(vonage.setStreamClassLists.bind(vonage)),
     listStreams: promisify(vonage.listStreams.bind(vonage)),
+    signal: promisify(vonage.signal.bind(vonage)),
 };

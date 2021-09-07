@@ -8023,11 +8023,82 @@
             _table:
               schema: public
               name: FlatUserPermission
-  update_permissions:
+- table:
+    schema: video
+    name: EventVonageSessionLayout
+  object_relationships:
+  - name: conference
+    using:
+      foreign_key_constraint_on: conferenceId
+  - name: eventVonageSession
+    using:
+      foreign_key_constraint_on: eventVonageSessionId
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        _or:
+        - conference:
+            _and:
+            - slug:
+                _eq: X-Hasura-Conference-Slug
+            - _exists:
+                _where:
+                  _and:
+                  - user_id:
+                      _eq: X-Hasura-User-Id
+                  - slug:
+                      _eq: X-Hasura-Conference-Slug
+                  - permission_name:
+                      _in:
+                      - CONFERENCE_MANAGE_SCHEDULE
+                _table:
+                  schema: public
+                  name: FlatUserPermission
+        - _and:
+          - conference:
+              slug:
+                _eq: X-Hasura-Conference-Slug
+          - _exists:
+              _where:
+                _and:
+                - user_id:
+                    _eq: X-Hasura-User-Id
+                - slug:
+                    _eq: X-Hasura-Conference-Slug
+                - permission_name:
+                    _eq: CONFERENCE_VIEW_ATTENDEES
+              _table:
+                schema: public
+                name: FlatUserPermission
+          - eventVonageSession:
+              event:
+                eventPeople:
+                  _and:
+                  - person:
+                      registrant:
+                        userId:
+                          _eq: X-Hasura-User-Id
+                  - eventPersonRole:
+                      name:
+                        _in:
+                        - CHAIR
+                        - PRESENTER
+      columns:
+      - conferenceId
+      - eventVonageSessionId
+      - layoutData
+      backend_only: false
+  select_permissions:
   - role: user
     permission:
       columns:
       - layoutData
+      - created_at
+      - updated_at
+      - conferenceId
+      - eventVonageSessionId
+      - id
       filter:
         _or:
         - conference:
@@ -8048,47 +8119,40 @@
                   schema: public
                   name: FlatUserPermission
         - _and:
-          - _and:
-            - conference:
-                slug:
-                  _eq: X-Hasura-Conference-Slug
-            - _exists:
-                _where:
-                  _and:
-                  - user_id:
-                      _eq: X-Hasura-User-Id
-                  - slug:
-                      _eq: X-Hasura-Conference-Slug
-                  - permission_name:
-                      _eq: CONFERENCE_VIEW_ATTENDEES
-                _table:
-                  schema: public
-                  name: FlatUserPermission
-          - event:
-              eventPeople:
+          - conference:
+              slug:
+                _eq: X-Hasura-Conference-Slug
+          - _exists:
+              _where:
                 _and:
-                - person:
-                    registrant:
-                      userId:
-                        _eq: X-Hasura-User-Id
-                - eventPersonRole:
-                    name:
-                      _in:
-                      - CHAIR
-                      - PRESENTER
-      check: null
+                - user_id:
+                    _eq: X-Hasura-User-Id
+                - slug:
+                    _eq: X-Hasura-Conference-Slug
+                - permission_name:
+                    _eq: CONFERENCE_VIEW_ATTENDEES
+              _table:
+                schema: public
+                name: FlatUserPermission
+          - eventVonageSession:
+              event:
+                eventPeople:
+                  _and:
+                  - person:
+                      registrant:
+                        userId:
+                          _eq: X-Hasura-User-Id
   event_triggers:
-  - name: EventVonageSessionUpdated
+  - name: EventVonageSessionLayoutCreated
     definition:
       enable_manual: true
-      update:
-        columns:
-        - layoutData
+      insert:
+        columns: '*'
     retry_conf:
       num_retries: 0
       interval_sec: 10
       timeout_sec: 60
-    webhook: '{{ACTION_BASE_URL}}/eventVonageSession/updated'
+    webhook: '{{ACTION_BASE_URL}}/eventVonageSessionLayout/created'
     headers:
     - name: x-hasura-event-secret
       value_from_env: EVENT_SECRET
