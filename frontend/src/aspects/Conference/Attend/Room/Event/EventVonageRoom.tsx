@@ -9,7 +9,7 @@ import {
 } from "../../../../../generated/graphql";
 import ApolloQueryWrapper from "../../../../GQL/ApolloQueryWrapper";
 import { useSharedRoomContext } from "../../../../Room/useSharedRoomContext";
-import { EventRoomControlPanel } from "./EventRoomControlPanel";
+import { MenuBar } from "./MenuBar";
 
 gql`
     mutation GetEventVonageToken($eventId: uuid!) {
@@ -78,9 +78,11 @@ export function EventVonageRoom({
     return (
         <ApolloQueryWrapper queryResult={result} getter={(data) => data.schedule_Event_by_pk}>
             {(event: RoomEventDetailsFragment) => (
-                <VStack justifyContent="stretch" w="100%">
-                    {!isRaiseHandPreJoin ? <EventRoomControlPanel event={event} /> : undefined}
-                    <Box w="100%">
+                <VStack alignItems="stretch" w="100%" isolation="isolate">
+                    <Box zIndex={2} pos="sticky" top={0}>
+                        {!isRaiseHandPreJoin ? <MenuBar event={event} /> : undefined}
+                    </Box>
+                    <Box w="100%" zIndex={1}>
                         {event.eventVonageSession && sharedRoomContext ? (
                             <portals.OutPortal
                                 node={sharedRoomContext.vonagePortalNode}

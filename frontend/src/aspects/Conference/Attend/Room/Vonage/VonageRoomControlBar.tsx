@@ -1,5 +1,5 @@
 import { CheckCircleIcon, NotAllowedIcon, SettingsIcon } from "@chakra-ui/icons";
-import { Box, Button, chakra, HStack, Spinner, Stack, Tag, TagLabel, TagLeftIcon, Tooltip } from "@chakra-ui/react";
+import { Box, Button, chakra, HStack, Spinner, Tag, TagLabel, TagLeftIcon, Tooltip, Wrap } from "@chakra-ui/react";
 import { Mutex } from "async-mutex";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import FAIcon from "../../../../Icons/FAIcon";
@@ -325,17 +325,20 @@ export function VonageRoomControlBar({
         [vonage.state]
     );
 
+    const buttonsDirection = vonage.state.type === StateType.Connected ? "row" : "column";
+
     return (
         <>
-            <Stack
+            <Wrap
                 p={2}
-                direction={vonage.state.type === StateType.Connected ? "row" : "column"}
+                direction={buttonsDirection}
                 justifyContent="center"
                 alignItems="stretch"
                 flexWrap="wrap"
-                gridRowGap={vonage.state.type === StateType.Connected ? 2 : undefined}
+                gridRowGap={buttonsDirection === "row" ? 2 : undefined}
             >
                 <Button
+                    flexGrow={buttonsDirection === "row" ? 1 : 0}
                     isLoading={isOpening}
                     leftIcon={<SettingsIcon />}
                     onClick={() => onOpen(true, !joining || !requireMicrophone)}
@@ -345,23 +348,45 @@ export function VonageRoomControlBar({
                     Choose microphone / camera
                 </Button>
                 {state.microphoneStream && state.microphoneIntendedEnabled ? (
-                    <Button onClick={stopMicrophone} colorScheme="purple" isDisabled={joining}>
+                    <Button
+                        flexGrow={buttonsDirection === "row" ? 1 : 0}
+                        onClick={stopMicrophone}
+                        colorScheme="purple"
+                        isDisabled={joining}
+                    >
                         <FAIcon icon="microphone" iconStyle="s" />
                         <span style={{ marginLeft: "1rem" }}>Mute</span>
                     </Button>
                 ) : (
-                    <Button isLoading={isOpening} onClick={startMicrophone} isDisabled={joining} colorScheme="blue">
+                    <Button
+                        flexGrow={buttonsDirection === "row" ? 1 : 0}
+                        isLoading={isOpening}
+                        onClick={startMicrophone}
+                        isDisabled={joining}
+                        colorScheme="blue"
+                    >
                         <FAIcon icon="microphone-slash" iconStyle="s" />
                         <span style={{ marginLeft: "1rem" }}>Unmute</span>
                     </Button>
                 )}
                 {state.cameraStream && state.cameraIntendedEnabled ? (
-                    <Button onClick={stopCamera} colorScheme="purple" isDisabled={joining}>
+                    <Button
+                        flexGrow={buttonsDirection === "row" ? 1 : 0}
+                        onClick={stopCamera}
+                        colorScheme="purple"
+                        isDisabled={joining}
+                    >
                         <FAIcon icon="video" iconStyle="s" />
                         <span style={{ marginLeft: "1rem" }}>Stop video</span>
                     </Button>
                 ) : (
-                    <Button isLoading={isOpening} onClick={startCamera} isDisabled={joining} colorScheme="blue">
+                    <Button
+                        flexGrow={buttonsDirection === "row" ? 1 : 0}
+                        isLoading={isOpening}
+                        onClick={startCamera}
+                        isDisabled={joining}
+                        colorScheme="blue"
+                    >
                         <FAIcon icon="video-slash" iconStyle="s" />
                         <span style={{ marginLeft: "1rem" }}>Start video</span>
                     </Button>
@@ -370,6 +395,7 @@ export function VonageRoomControlBar({
                     vonage.state.type === StateType.Connected &&
                     receivingScreenShareCount >= settings.maximumSimultaneousScreenShares ? (
                         <Tag
+                            flexGrow={buttonsDirection === "row" ? 1 : 0}
                             size="sm"
                             variant="outline"
                             colorScheme="blue"
@@ -387,30 +413,52 @@ export function VonageRoomControlBar({
                             </TagLabel>
                         </Tag>
                     ) : vonage.state.type === StateType.Connected && state.screenShareIntendedEnabled ? (
-                        <Button onClick={stopScreenShare} mr="auto" colorScheme="red" isDisabled={joining}>
-                            <FAIcon icon="desktop" iconStyle="s" mr="auto" />
+                        <Button
+                            flexGrow={buttonsDirection === "row" ? 1 : 0}
+                            onClick={stopScreenShare}
+                            mr="auto"
+                            colorScheme="red"
+                            isDisabled={joining}
+                        >
+                            <FAIcon icon="desktop" iconStyle="s" />
                             <span style={{ marginLeft: "1rem" }}>Stop sharing</span>
                         </Button>
                     ) : vonage.state.type === StateType.Connected &&
                       vonage.state.initialisedState.screenSharingSupported ? (
-                        <Button onClick={startScreenShare} mr="auto" isDisabled={joining} colorScheme="blue">
-                            <FAIcon icon="desktop" iconStyle="s" mr="auto" />
+                        <Button
+                            flexGrow={buttonsDirection === "row" ? 1 : 0}
+                            onClick={startScreenShare}
+                            mr="auto"
+                            isDisabled={joining}
+                            colorScheme="blue"
+                        >
+                            <FAIcon icon="desktop" iconStyle="s" />
                             <span style={{ marginLeft: "1rem" }}>Share screen</span>
                         </Button>
                     ) : vonage.state.type === StateType.Initialised && vonage.state.screenSharingSupported ? (
-                        <Tag size="md" variant="outline" colorScheme="blue">
+                        <Tag
+                            flexGrow={buttonsDirection === "row" ? 1 : 0}
+                            size="md"
+                            variant="outline"
+                            colorScheme="blue"
+                        >
                             <TagLeftIcon as={CheckCircleIcon} />
                             <TagLabel whiteSpace="normal">Screen sharing available after you join</TagLabel>
                         </Tag>
                     ) : (
-                        <Tag size="md" variant="outline" colorScheme="red">
+                        <Tag
+                            flexGrow={buttonsDirection === "row" ? 1 : 0}
+                            size="md"
+                            variant="outline"
+                            colorScheme="red"
+                        >
                             <TagLeftIcon as={NotAllowedIcon} />
                             <TagLabel whiteSpace="normal">Screen sharing is not supported by your browser</TagLabel>
                         </Tag>
                     )
                 ) : undefined}
                 {vonage.state.type === StateType.Connected ? (
-                    <Button colorScheme="purple" onClick={onLeaveRoom}>
+                    <Button flexGrow={buttonsDirection === "row" ? 1 : 0} colorScheme="purple" onClick={onLeaveRoom}>
                         Leave Room
                     </Button>
                 ) : (
@@ -450,7 +498,7 @@ export function VonageRoomControlBar({
                         </Box>
                     </Tooltip>
                 )}
-            </Stack>
+            </Wrap>
             <DeviceChooserModal
                 cameraId={
                     state.cameraStream?.getVideoTracks()[0].getSettings().deviceId ?? state.preferredCameraId ?? null

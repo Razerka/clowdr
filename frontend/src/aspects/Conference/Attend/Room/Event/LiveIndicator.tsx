@@ -2,17 +2,18 @@ import { gql } from "@apollo/client";
 import {
     Badge,
     Button,
-    Heading,
     HStack,
     Modal,
     ModalBody,
+    ModalCloseButton,
     ModalContent,
+    ModalFooter,
+    ModalHeader,
     ModalOverlay,
     Stat,
     StatLabel,
     StatNumber,
     Text,
-    useColorModeValue,
     useDisclosure,
     VStack,
 } from "@chakra-ui/react";
@@ -192,32 +193,39 @@ export function LiveIndicator({
         }
     }, [currentInput, isConnected]);
 
-    const bgColor = useColorModeValue("gray.100", "gray.800");
     return (
         <>
             <Modal isOpen={shouldModalBeOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
                 <ModalContent>
+                    <ModalHeader>
+                        You will be live the moment the indicator says &ldquo;Backstage is live&rdquo;.
+                    </ModalHeader>
+                    <ModalCloseButton />
                     <ModalBody>
-                        <VStack>
-                            <Heading>
-                                You will be live the moment the indicator says &ldquo;Backstage is live&rdquo;.
-                            </Heading>
-                            <Text>Please do not ask the audience when you are live.</Text>
+                        <VStack alignItems="left">
                             <Text>
-                                The audience sees the stream with a bit of lag - anywhere from 5 to 30 seconds depending
-                                on where they are in the world. So they can&apos;t give you real-time feedback about the
-                                stream. Also, if there were a technical glitch (meaning your stream was not live) you
-                                can trust that the audience will quickly start telling you via the chat.
+                                <strong>The audience sees the stream with a bit of delay.</strong> This is normally 5-30
+                                seconds depending on where they are in the world. Don&apos;t wait for the audience to
+                                tell you they can see you - or they will see you sitting there silently for up to thirty
+                                seconds!
                             </Text>
                             <Text>
-                                The countdown is accurate and reliable. If it says the backstage is live, then you are
-                                live in front of the entire conference and should start your presentation or Q&amp;A
-                                session.
+                                <strong>Pay attention to the countdown clock.</strong> If it says the backstage is live,
+                                then you are live in front of the entire conference and should start your presentation
+                                or Q&amp;A session.
                             </Text>
-                            <Text>(Also, please open the chat sidebar ahead of time, while you are off air.)</Text>
+                            <Text>
+                                <strong>Open the chat sidebar now.</strong> It&apos;s a good idea to have the chat open
+                                so that you can read feedback from the audience.
+                            </Text>
                         </VStack>
                     </ModalBody>
+                    <ModalFooter>
+                        <Button colorScheme="blue" mr={3} onClick={onClose}>
+                            Close
+                        </Button>
+                    </ModalFooter>
                 </ModalContent>
             </Modal>
             {live ? (
@@ -226,11 +234,10 @@ export function LiveIndicator({
                     justifyContent="flex-start"
                     mx="auto"
                     flexWrap="wrap"
-                    pos="sticky"
                     top={0}
-                    bgColor={bgColor}
                     zIndex={10000}
                     overflow="visible"
+                    gridRowGap={2}
                 >
                     <Badge
                         fontSize={isConnected ? "lg" : "md"}
@@ -238,27 +245,42 @@ export function LiveIndicator({
                         fontWeight="bold"
                         p="1em"
                         display="flex"
+                        flexGrow={1}
                         justifyContent="center"
                         alignItems="center"
                     >
                         <HStack>{whatIsLiveText}</HStack>
                     </Badge>
-                    <Stat fontSize="md" ml="auto" flexGrow={1} textAlign="center">
+                    <Stat
+                        fontSize="md"
+                        ml="auto"
+                        flexGrow={1}
+                        textAlign="center"
+                        display="flex"
+                        flexDirection="column"
+                        justifyContent="center"
+                    >
                         <StatLabel>Time until end</StatLabel>
-                        <StatNumber>{formatRemainingTime(secondsUntilOffAir)}</StatNumber>
+                        <StatNumber
+                            css={{
+                                "font-feature-settings": "tnum",
+                                "font-variant-numeric": "tabular-nums",
+                            }}
+                        >
+                            {formatRemainingTime(secondsUntilOffAir)}
+                        </StatNumber>
                     </Stat>
                 </HStack>
             ) : (
                 <HStack
                     alignItems="stretch"
-                    justifyContent="flex-start"
+                    justifyContent="center"
                     mx="auto"
                     flexWrap="wrap"
-                    pos="sticky"
                     top={0}
-                    bgColor={bgColor}
                     zIndex={10000}
                     overflow="visible"
+                    gridRowGap={2}
                 >
                     {secondsUntilLive > 0 ? (
                         <>
@@ -274,6 +296,7 @@ export function LiveIndicator({
                                 display="flex"
                                 justifyContent="center"
                                 alignItems="center"
+                                flexGrow={1}
                             >
                                 <VStack>
                                     <Text fontSize={!isConnected ? "xs" : undefined}>Backstage is off-air</Text>
@@ -295,16 +318,37 @@ export function LiveIndicator({
                                                 : "black"
                                             : undefined
                                     }
+                                    display="flex"
+                                    flexDir="column"
+                                    justifyContent="center"
                                 >
                                     <StatLabel>Time until start</StatLabel>
-                                    <StatNumber>{formatRemainingTime(secondsUntilLive)}</StatNumber>
+                                    <StatNumber
+                                        css={{
+                                            "font-feature-settings": "tnum",
+                                            "font-variant-numeric": "tabular-nums",
+                                        }}
+                                    >
+                                        {formatRemainingTime(secondsUntilLive)}
+                                    </StatNumber>
                                 </Stat>
                             ) : (
                                 <></>
                             )}
                             {secondsUntilLive > 10 ? (
-                                <Button onClick={onOpen} h="auto" maxH="auto" p={3} colorScheme="blue" size="sm">
-                                    What should I do?
+                                <Button
+                                    onClick={onOpen}
+                                    h="auto"
+                                    maxH="auto"
+                                    p={3}
+                                    colorScheme="blue"
+                                    size="sm"
+                                    whiteSpace="normal"
+                                    wordWrap="break-word"
+                                    flexShrink={1}
+                                    maxW="15ch"
+                                >
+                                    How do I use the backstage?
                                 </Button>
                             ) : undefined}
                         </>

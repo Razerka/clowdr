@@ -9,10 +9,11 @@ import {
     AlertDialogOverlay,
     AlertIcon,
     AlertTitle,
+    Badge,
     Box,
     Button,
+    Flex,
     Heading,
-    HStack,
     ListItem,
     Text,
     UnorderedList,
@@ -64,29 +65,33 @@ function EventBackstage({
     const isSoon = isEventSoon(now, event);
     const isActive = isNow || isSoon;
     const category = isNow ? "Happening now" : isSoon ? "Starting soon" : "Ended";
+    const categoryColour = isNow ? "red" : isSoon ? "orange" : "grey";
     const borderColour = isNow ? "red" : greyBorderColour;
     const title = event?.item ? `${event.item.title}${event.name.length ? ` (${event.name})` : ""}` : event.name;
     const isSelected = event.id === selectedEventId;
     const summaryInfo = useMemo(
         () => (
-            <HStack
+            <Flex
                 key={event.id}
                 border={`1px ${borderColour} solid`}
                 width="max-content"
                 maxW="100%"
                 w="100%"
+                flexDirection="row"
                 justifyContent="space-between"
+                wrap="wrap"
                 p={4}
                 alignItems="center"
                 borderRadius="md"
+                gridRowGap={4}
             >
-                <Heading as="h3" size="md" width="min-content" textAlign="right" mr={8} whiteSpace="normal">
-                    {category}
-                </Heading>
-                <VStack px={8} alignItems="left" flexGrow={1}>
-                    <Heading as="h4" size="md" textAlign="left" mt={2} mb={1} whiteSpace="normal">
+                <VStack alignItems="left" flex={1} pr={4}>
+                    <Heading as="h4" size="md" textAlign="left" my={0} whiteSpace="normal">
                         <Twemoji className="twemoji" text={title} />
                     </Heading>
+                    <Badge colorScheme={categoryColour} flexGrow={0} maxW="max-content">
+                        {category}
+                    </Badge>
 
                     <Text my={2} fontStyle="italic" whiteSpace="normal">
                         {formatRelative(Date.parse(event.startTime), Date.now())}
@@ -96,9 +101,15 @@ function EventBackstage({
                     colorScheme={isSelected ? "red" : "purple"}
                     onClick={() => (isSelected ? setSelectedEventId(null) : setSelectedEventId(event.id))}
                     height="min-content"
+                    m={0}
+                    marginStart={0}
+                    marginInlineStart={0}
+                    spacing={0}
                     py={4}
                     whiteSpace="normal"
                     variant={isSelected ? "outline" : "solid"}
+                    flex={1}
+                    minW="max-content"
                 >
                     <Text fontSize="lg" whiteSpace="normal">
                         {isSelected
@@ -108,9 +119,19 @@ function EventBackstage({
                             : "Open this backstage"}
                     </Text>
                 </Button>
-            </HStack>
+            </Flex>
         ),
-        [borderColour, category, event.id, event.startTime, isSelected, selectedEventId, setSelectedEventId, title]
+        [
+            borderColour,
+            category,
+            categoryColour,
+            event.id,
+            event.startTime,
+            isSelected,
+            selectedEventId,
+            setSelectedEventId,
+            title,
+        ]
     );
 
     const vonageRoom = useMemo(() => <EventVonageRoom eventId={event.id} onLeave={onLeave} />, [event.id, onLeave]);
@@ -237,7 +258,7 @@ export function RoomBackstage({
             <Alert status="info" my={4}>
                 <AlertIcon />
                 <Box flex="1">
-                    <AlertTitle>Welcome to the backstage for {roomName}</AlertTitle>
+                    <AlertTitle>Welcome to the backstage list for {roomName}.</AlertTitle>
                     <AlertDescription display="block">
                         <UnorderedList>
                             <ListItem>Each presentation and Q&amp;A event in this room has a backstage.</ListItem>
