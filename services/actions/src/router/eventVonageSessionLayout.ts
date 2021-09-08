@@ -3,7 +3,7 @@ import express, { Request, Response } from "express";
 import { assertType } from "typescript-is";
 import { handleEventVonageSessionLayoutCreated as handleEventVonageSessionLayoutCreated } from "../handlers/eventVonageSessionLayout";
 import { checkEventSecret } from "../middlewares/checkEventSecret";
-import { EventVonageSessionData, Payload } from "../types/hasura/event";
+import { EventVonageSessionLayoutData, Payload } from "../types/hasura/event";
 
 export const router = express.Router();
 
@@ -12,7 +12,7 @@ router.use(checkEventSecret);
 
 router.post("/created", json(), async (req: Request, res: Response) => {
     try {
-        assertType<Payload<EventVonageSessionData>>(req.body);
+        assertType<Payload<EventVonageSessionLayoutData>>(req.body);
     } catch (e) {
         console.error("Received incorrect payload", e);
         res.status(500).json("Unexpected payload");

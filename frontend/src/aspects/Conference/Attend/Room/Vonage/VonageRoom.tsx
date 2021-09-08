@@ -18,6 +18,7 @@ import PlaceholderImage from "../PlaceholderImage";
 import { PreJoin } from "../PreJoin";
 import type { DevicesProps } from "../VideoChat/PermissionInstructions";
 import { useVonageComputedState } from "./useVonageComputedState";
+import type { VonageLayout } from "./VonageLayoutProvider";
 import { VonageOverlay } from "./VonageOverlay";
 import { VonageRoomControlBar } from "./VonageRoomControlBar";
 import { VonageSubscriber } from "./VonageSubscriber";
@@ -50,6 +51,7 @@ export function VonageRoom({
     completeJoinRef,
     onLeave,
     onPermissionsProblem,
+    layout,
 }: {
     eventId: string | null;
     vonageSessionId: string;
@@ -62,6 +64,7 @@ export function VonageRoom({
     completeJoinRef?: React.MutableRefObject<() => Promise<void>>;
     onLeave?: () => void;
     onPermissionsProblem: (devices: DevicesProps, title: string | null) => void;
+    layout?: VonageLayout;
 }): JSX.Element {
     const mRegistrant = useMaybeCurrentRegistrant();
 
@@ -78,7 +81,7 @@ export function VonageRoom({
     const apolloClient = useApolloClient();
 
     return (
-        <VonageRoomStateProvider onPermissionsProblem={onPermissionsProblem}>
+        <VonageRoomStateProvider onPermissionsProblem={onPermissionsProblem} layout={layout}>
             <ChatProfileModalProvider>
                 {mRegistrant ? (
                     <VonageRoomInner
@@ -169,6 +172,7 @@ export function VonageRoom({
                                 : undefined
                         }
                         onPermissionsProblem={onPermissionsProblem}
+                        layout={layout}
                     />
                 ) : undefined}
             </ChatProfileModalProvider>
@@ -189,6 +193,7 @@ function VonageRoomInner({
     cancelJoin,
     completeJoinRef,
     onPermissionsProblem,
+    layout,
 }: {
     vonageSessionId: string;
     getAccessToken: () => Promise<string>;
@@ -202,6 +207,7 @@ function VonageRoomInner({
     cancelJoin?: () => void;
     completeJoinRef?: React.MutableRefObject<() => Promise<void>>;
     onPermissionsProblem: (devices: DevicesProps, title: string | null) => void;
+    layout?: VonageLayout;
 }): JSX.Element {
     const cameraPublishContainerRef = useRef<HTMLDivElement>(null);
     const screenPublishContainerRef = useRef<HTMLDivElement>(null);

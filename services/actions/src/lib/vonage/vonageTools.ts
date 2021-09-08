@@ -1,5 +1,7 @@
 import { gql } from "@apollo/client/core";
 import { DeleteAttendeeCommand } from "@aws-sdk/client-chime";
+import { VonageSessionLayoutData, VonageSessionLayoutType } from "@clowdr-app/shared-types/build/vonage";
+import { is } from "typescript-is";
 import {
     CreateEventParticipantStreamDocument,
     GetEventBroadcastDetailsDocument,
@@ -13,6 +15,14 @@ import { callWithRetry } from "../../utils";
 import { Chime, shortId } from "../aws/awsClient";
 import { getRoomParticipantDetails, removeRoomParticipant } from "../roomParticipant";
 import Vonage from "./vonageClient";
+
+async function getStartedBroadcastIds(vonageSessionId: string): Promise<string[]> {
+    const broadcasts = await Vonage.listBroadcasts({
+        sessionId: vonageSessionId,
+    });
+
+    return broadcasts?.filter((broadcast) => broadcast.status === "started").map((broadcast) => broadcast.id) ?? [];
+}
 
 gql`
     query GetEventBroadcastDetails($eventId: uuid!) {
@@ -34,6 +44,10 @@ gql`
                 sessionId
                 id
                 rtmpInputName
+                eventVonageSessionLayouts(limit: 1, order_by: { created_at: desc }) {
+                    id
+                    layoutData
+                }
             }
         }
     }
@@ -43,6 +57,132 @@ interface EventBroadcastDetails {
     rtmpServerUrl: string;
     rtmpStreamName: string;
     vonageSessionId: string;
+    currentLayout: VonageLayout;
+}
+
+export interface VonageLayout {
+    streamClasses: {
+        [streamId: string]: string[];
+    };
+    layout: VonageLayoutCustom | VonageLayoutBuiltin;
+}
+
+export interface VonageLayoutCustom {
+    type: "custom";
+    stylesheet: string;
+}
+
+export interface VonageLayoutBuiltin {
+    type: "bestFit";
+    screenShareType: "verticalPresentation";
+}
+
+export async function applyVonageBroadcastLayout(vonageSessionId: string, layout: VonageLayout): Promise<void> {
+    const streams = await Vonage.listStreams(vonageSessionId);
+    if (!streams) {
+        console.error("Could not retrieve list of streams from Vonage", { vonageSessionId });
+        throw new Error("Could not retrieve list of streams from Vonage");
+    }
+
+    const invalidStreamClasses = Object.keys(layout.streamClasses).filter(
+        (streamId) => !streams.some((s) => s.id === streamId)
+    );
+
+    if (invalidStreamClasses.length) {
+        console.error(
+            "Cannot apply Vonage layout, found invalid streams",
+            JSON.stringify({
+                vonageSessionId,
+                invalidStreams: Object.entries(layout.streamClasses).filter(([streamId]) =>
+                    invalidStreamClasses.some((s) => s === streamId)
+                ),
+            })
+        );
+        throw new Error("Could not apply Vonage layout, found invalid streams");
+    }
+
+    const streamsToClear = streams
+        .filter((stream) => stream.layoutClassList.length)
+        .filter((stream) => !Object.keys(layout.streamClasses).includes(stream.id))
+        .map((stream) => ({
+            id: stream.id,
+            layoutClassList: [] as string[],
+        }));
+    const streamsToSet = Object.entries(layout.streamClasses).map(([streamId, classes]) => ({
+        id: streamId,
+        layoutClassList: classes,
+    }));
+
+    await Vonage.setStreamClassLists(vonageSessionId, streamsToClear.concat(streamsToSet));
+    const startedBroadcastIds = await getStartedBroadcastIds(vonageSessionId);
+
+    console.log("Setting layout of Vonage broadcasts", { vonageSessionId, startedBroadcastIds });
+    for (const startedBroadcastId of startedBroadcastIds) {
+        try {
+            switch (layout.layout.type) {
+                case "bestFit":
+                    await Vonage.setBroadcastLayout(startedBroadcastId, "bestFit", null, "verticalPresentation");
+                    break;
+                case "custom":
+                    await Vonage.setBroadcastLayout(startedBroadcastId, "custom", layout.layout.stylesheet, null);
+                    break;
+            }
+        } catch (err) {
+            console.error("Failed to set layout for Vonage broadcast", {
+                vonageSessionId,
+                startedBroadcastId,
+                err,
+            });
+        }
+    }
+}
+
+export function convertLayout(layoutData: VonageSessionLayoutData): VonageLayout {
+    switch (layoutData.type) {
+        case VonageSessionLayoutType.BestFit:
+            return {
+                layout: {
+                    type: "bestFit",
+                    screenShareType: "verticalPresentation",
+                },
+                streamClasses: {},
+            };
+        case VonageSessionLayoutType.Pair:
+            return {
+                layout: {
+                    type: "custom",
+                    stylesheet:
+                        "stream.left {display: block; position: absolute; width: 50%; height: 100%; left: 0;} stream.right {position: absolute; width: 50%; height: 100%; right: 0;}",
+                },
+                streamClasses: {
+                    [layoutData.leftStreamId]: ["left"],
+                    [layoutData.rightStreamId]: ["right"],
+                },
+            };
+        case VonageSessionLayoutType.PictureInPicture:
+            return {
+                layout: {
+                    type: "custom",
+                    stylesheet:
+                        "stream.focus {display: block; position: absolute; width: 100%; height: 100%; left: 0; z-index: 100;} stream.corner {display: block; position: absolute; width: 15%; height: 15%; right: 2%; bottom: 3%; z-index: 200;}",
+                },
+                streamClasses: {
+                    [layoutData.focusStreamId]: ["focus"],
+                    [layoutData.cornerStreamId]: ["corner"],
+                },
+            };
+        case VonageSessionLayoutType.Single:
+            return {
+                layout: {
+                    type: "custom",
+                    stylesheet:
+                        "stream.focus {display: block; position: absolute; width: 100%; height: 100%; left: 0;}",
+                },
+                streamClasses: {
+                    [layoutData.focusStreamId]: ["focus"],
+                },
+            };
+    }
 }
 
 export async function getEventBroadcastDetails(eventId: string): Promise<EventBroadcastDetails> {
@@ -82,10 +222,34 @@ export async function getEventBroadcastDetails(eventId: string): Promise<EventBr
         throw new Error("Could not find Vonage session ID for event");
     }
 
+    let currentLayout: VonageLayout = {
+        streamClasses: {},
+        layout: {
+            type: "bestFit",
+            screenShareType: "verticalPresentation",
+        },
+    };
+    if (eventResult.data.schedule_Event_by_pk.eventVonageSession.eventVonageSessionLayouts.length) {
+        try {
+            const layoutData =
+                eventResult.data.schedule_Event_by_pk.eventVonageSession.eventVonageSessionLayouts[0].layoutData;
+            if (is<VonageSessionLayoutData>(layoutData)) {
+                currentLayout = convertLayout(layoutData);
+            }
+        } catch {
+            console.log("Invalid layout found when retrieving event broadcast details", {
+                eventId,
+                eventVonageSessionLayoutId:
+                    eventResult.data.schedule_Event_by_pk.eventVonageSession.eventVonageSessionLayouts[0].id,
+            });
+        }
+    }
+
     return {
         rtmpServerUrl: serverUrl,
         rtmpStreamName: streamName,
         vonageSessionId: eventResult.data.schedule_Event_by_pk.eventVonageSession.sessionId,
+        currentLayout,
     };
 }
 
@@ -93,8 +257,8 @@ export async function startEventBroadcast(eventId: string): Promise<void> {
     let broadcastDetails: EventBroadcastDetails;
     try {
         broadcastDetails = await callWithRetry(async () => await getEventBroadcastDetails(eventId));
-    } catch (e) {
-        console.error("Error retrieving Vonage broadcast details for event", e);
+    } catch (err) {
+        console.error("Error retrieving Vonage broadcast details for event", { eventId, err });
         return;
     }
 
@@ -147,18 +311,14 @@ export async function startEventBroadcast(eventId: string): Promise<void> {
 
     if (!existingBroadcast) {
         const rtmpId = shortId();
-        console.log(
-            "Starting a broadcast from session to event room",
-            broadcastDetails.vonageSessionId,
+        console.log("Starting a broadcast from session to event room", {
+            vonageSessionId: broadcastDetails.vonageSessionId,
             eventId,
-            rtmpId
-        );
+            rtmpId,
+        });
         try {
             const broadcast = await Vonage.startBroadcast(broadcastDetails.vonageSessionId, {
-                layout: {
-                    type: "bestFit",
-                    screenshareType: "verticalPresentation",
-                },
+                layout: broadcastDetails.currentLayout.layout,
                 outputs: {
                     rtmp: [
                         {
@@ -170,17 +330,24 @@ export async function startEventBroadcast(eventId: string): Promise<void> {
                 },
                 resolution: "1280x720",
             });
-            console.log("Started Vonage RTMP broadcast", broadcast.id, broadcastDetails.vonageSessionId, eventId);
-        } catch (e) {
-            console.error("Failed to start broadcast", broadcastDetails.vonageSessionId, eventId, e);
+            console.log("Started Vonage RTMP broadcast", {
+                broadcastId: broadcast.id,
+                vonageSessionId: broadcastDetails.vonageSessionId,
+                eventId,
+            });
+        } catch (err) {
+            console.error("Failed to start broadcast", {
+                vonageSessionId: broadcastDetails.vonageSessionId,
+                eventId,
+                err,
+            });
             return;
         }
     } else {
-        console.log(
-            "There is already an existing RTMP broadcast from the session to the ongoing event.",
-            broadcastDetails.vonageSessionId,
-            eventId
-        );
+        console.log("There is already an existing RTMP broadcast from the session to the ongoing event.", {
+            vonageSessionId: broadcastDetails.vonageSessionId,
+            eventId,
+        });
     }
 }
 

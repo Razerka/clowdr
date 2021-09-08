@@ -1,4 +1,4 @@
-import OT from "@opentok/client";
+import OT, { Connection } from "@opentok/client";
 import { Mutex } from "async-mutex";
 import * as R from "ramda";
 import { StoredObservable } from "../../../../Observable";
@@ -29,6 +29,7 @@ interface InitialisedStateData {
     screenSharingSupported: boolean;
     onCameraStreamCreated: () => void;
     onScreenStreamCreated: () => void;
+    onSignalReceived: (type: string, data: any) => void;
 }
 
 interface ConnectedStateData {
@@ -84,7 +85,8 @@ export class VonageGlobalState {
         onCameraStreamDestroyed: (reason: string) => void,
         onScreenStreamDestroyed: (reason: string) => void,
         onCameraStreamCreated: () => void,
-        onScreenStreamCreated: () => void
+        onScreenStreamCreated: () => void,
+        onSignalReceived: (type: string, data: any) => void
     ): Promise<void> {
         const release = await this.mutex.acquire();
         try {
@@ -115,6 +117,7 @@ export class VonageGlobalState {
                 screenSharingSupported,
                 onCameraStreamCreated,
                 onScreenStreamCreated,
+                onSignalReceived,
             };
         } catch (e) {
             console.error("VonageGlobalState: initialiseState failure", e);
@@ -168,6 +171,10 @@ export class VonageGlobalState {
                 this.onSessionDisconnected(event).catch((e) =>
                     console.error("VonageGlobalState: error handling sessionDisconnected", e)
                 )
+            );
+
+            session.on("signal", (event) =>
+                this.onSignalReceived(event).catch((e) => console.error("VonageGlobalState: error handling signal", e))
             );
 
             await new Promise<void>((resolve, reject) => {
@@ -729,6 +736,26 @@ export class VonageGlobalState {
             }
         } catch (e) {
             console.error("VonageGlobalState: onScreenStreamDestroyed failure", e);
+            throw e;
+        } finally {
+            release();
+        }
+    }
+
+    private async onSignalReceived(
+        event: OT.Event<"signal", OT.Session> & {
+            type?: string;
+            data?: string;
+            from: Connection;
+        }
+    ): Promise<void> {
+        const release = await this.mutex.acquire();
+        try {
+            if (this.state.type === StateType.Connected) {
+                this.state.initialisedState.onSignalReceived(event.type, event.data);
+            }
+        } catch (e) {
+            console.error("VonageGlobalState: onSignalReceived failure", e);
             throw e;
         } finally {
             release();

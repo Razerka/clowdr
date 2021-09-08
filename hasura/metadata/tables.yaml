@@ -7995,6 +7995,14 @@
   - name: event
     using:
       foreign_key_constraint_on: eventId
+  array_relationships:
+  - name: eventVonageSessionLayouts
+    using:
+      foreign_key_constraint_on:
+        column: eventVonageSessionId
+        table:
+          schema: video
+          name: EventVonageSessionLayout
   select_permissions:
   - role: user
     permission:

@@ -17,7 +17,6 @@ import {
 import { transparentize } from "@chakra-ui/theme-tools";
 import React, { useEffect, useMemo, useState } from "react";
 import type { RoomEventDetailsFragment } from "../../../../../generated/graphql";
-import { useRealTime } from "../../../../Generic/useRealTime";
 import { FAIcon } from "../../../../Icons/FAIcon";
 import { useVonageGlobalState } from "../Vonage/VonageGlobalStateProvider";
 import { ChairControls } from "./ChairControls";
@@ -44,14 +43,6 @@ export function MenuBar({ event }: { event: RoomEventDetailsFragment }): JSX.Ele
             registrantId
         }
     `;
-
-    const startTime = useMemo(() => Date.parse(event.startTime), [event.startTime]);
-    const endTime = useMemo(() => Date.parse(event.endTime), [event.endTime]);
-    const realNow = useRealTime(1000);
-    const now = realNow + 2000; // adjust for expected RTMP delay
-    const live = now >= startTime && now <= endTime;
-    const secondsUntilLive = (startTime - now) / 1000;
-    const secondsUntilOffAir = (endTime - now) / 1000;
 
     const vonageGlobalState = useVonageGlobalState();
     const [isConnected, setIsConnected] = useState<boolean>(false);
@@ -86,12 +77,12 @@ export function MenuBar({ event }: { event: RoomEventDetailsFragment }): JSX.Ele
                     <PopoverCloseButton />
                     <PopoverHeader>Chair controls</PopoverHeader>
                     <PopoverBody>
-                        <ChairControls event={event} live={live} secondsUntilOffAir={secondsUntilOffAir} />
+                        <ChairControls event={event} /*secondsUntilOffAir={secondsUntilOffAir}*/ />
                     </PopoverBody>
                 </PopoverContent>
             </Popover>
         ),
-        [event, live, secondsUntilOffAir, theme]
+        [event, theme]
     );
     const bgColor = useColorModeValue("gray.100", "gray.800");
 
@@ -99,14 +90,7 @@ export function MenuBar({ event }: { event: RoomEventDetailsFragment }): JSX.Ele
         <Grid templateColumns="1fr auto 1fr" columnGap={4} p={2} boxShadow="md" rounded="md" bgColor={bgColor}>
             <GridItem />
             <GridItem>
-                <LiveIndicator
-                    live={live}
-                    secondsUntilLive={secondsUntilLive}
-                    secondsUntilOffAir={secondsUntilOffAir}
-                    now={now}
-                    eventId={event.id}
-                    isConnected={isConnected}
-                />
+                <LiveIndicator event={event} isConnected={isConnected} />
             </GridItem>
             <GridItem display="flex" justifyContent="flex-end" flexDirection="row" alignItems="center">
                 {isConnected ? chairControls : undefined}

@@ -1,4 +1,5 @@
 import { useToast } from "@chakra-ui/react";
+import { assertVonageSessionLayoutData } from "@clowdr-app/shared-types/build/vonage";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useVonageRoom, VonageRoomStateActionType } from "../../../../Vonage/useVonageRoom";
 import { StateType, VonageGlobalState } from "./VonageGlobalState";
@@ -37,6 +38,7 @@ export function useVonageComputedState({
 } {
     const vonage = useVonageGlobalState();
     const { dispatch, state } = useVonageRoom();
+    const { layout } = useVonageRoom();
 
     const [connected, setConnected] = useState<boolean>(false);
     const [streams, setStreams] = useState<OT.Stream[]>([]);
@@ -207,6 +209,22 @@ export function useVonageComputedState({
                     },
                     () => {
                         setScreen(vonage.state.type === StateType.Connected ? vonage.state.screen : null);
+                    },
+                    (type, data) => {
+                        switch (type) {
+                            case "signal:layout-signal":
+                                try {
+                                    console.log("Received signal", { type, data });
+                                    assertVonageSessionLayoutData(data);
+                                    layout?.updateCurrentLayout(data);
+                                } catch (err) {
+                                    console.error("Received invalid signal", { type, data });
+                                }
+                                break;
+                            default:
+                                console.error("Received signal of unknown type", { type, data });
+                                break;
+                        }
                     }
                 );
             } catch (e) {

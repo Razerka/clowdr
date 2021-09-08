@@ -14090,6 +14090,10 @@ export type Mutation_Root = {
   readonly delete_video_EventParticipantStream_by_pk?: Maybe<Video_EventParticipantStream>;
   /** delete data from the table: "video.EventVonageSession" */
   readonly delete_video_EventVonageSession?: Maybe<Video_EventVonageSession_Mutation_Response>;
+  /** delete data from the table: "video.EventVonageSessionLayout" */
+  readonly delete_video_EventVonageSessionLayout?: Maybe<Video_EventVonageSessionLayout_Mutation_Response>;
+  /** delete single row from the table: "video.EventVonageSessionLayout" */
+  readonly delete_video_EventVonageSessionLayout_by_pk?: Maybe<Video_EventVonageSessionLayout>;
   /** delete single row from the table: "video.EventVonageSession" */
   readonly delete_video_EventVonageSession_by_pk?: Maybe<Video_EventVonageSession>;
   /** delete data from the table: "video.ImmediateSwitch" */
@@ -14443,6 +14447,10 @@ export type Mutation_Root = {
   readonly insert_video_EventParticipantStream_one?: Maybe<Video_EventParticipantStream>;
   /** insert data into the table: "video.EventVonageSession" */
   readonly insert_video_EventVonageSession?: Maybe<Video_EventVonageSession_Mutation_Response>;
+  /** insert data into the table: "video.EventVonageSessionLayout" */
+  readonly insert_video_EventVonageSessionLayout?: Maybe<Video_EventVonageSessionLayout_Mutation_Response>;
+  /** insert a single row into the table: "video.EventVonageSessionLayout" */
+  readonly insert_video_EventVonageSessionLayout_one?: Maybe<Video_EventVonageSessionLayout>;
   /** insert a single row into the table: "video.EventVonageSession" */
   readonly insert_video_EventVonageSession_one?: Maybe<Video_EventVonageSession>;
   /** insert data into the table: "video.ImmediateSwitch" */
@@ -14801,6 +14809,10 @@ export type Mutation_Root = {
   readonly update_video_EventParticipantStream_by_pk?: Maybe<Video_EventParticipantStream>;
   /** update data of the table: "video.EventVonageSession" */
   readonly update_video_EventVonageSession?: Maybe<Video_EventVonageSession_Mutation_Response>;
+  /** update data of the table: "video.EventVonageSessionLayout" */
+  readonly update_video_EventVonageSessionLayout?: Maybe<Video_EventVonageSessionLayout_Mutation_Response>;
+  /** update single row of the table: "video.EventVonageSessionLayout" */
+  readonly update_video_EventVonageSessionLayout_by_pk?: Maybe<Video_EventVonageSessionLayout>;
   /** update single row of the table: "video.EventVonageSession" */
   readonly update_video_EventVonageSession_by_pk?: Maybe<Video_EventVonageSession>;
   /** update data of the table: "video.ImmediateSwitch" */
@@ -15789,6 +15801,18 @@ export type Mutation_RootDelete_Video_EventParticipantStream_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Video_EventVonageSessionArgs = {
   where: Video_EventVonageSession_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Video_EventVonageSessionLayoutArgs = {
+  where: Video_EventVonageSessionLayout_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Video_EventVonageSessionLayout_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -17005,6 +17029,20 @@ export type Mutation_RootInsert_Video_EventParticipantStream_OneArgs = {
 export type Mutation_RootInsert_Video_EventVonageSessionArgs = {
   objects: ReadonlyArray<Video_EventVonageSession_Insert_Input>;
   on_conflict?: Maybe<Video_EventVonageSession_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Video_EventVonageSessionLayoutArgs = {
+  objects: ReadonlyArray<Video_EventVonageSessionLayout_Insert_Input>;
+  on_conflict?: Maybe<Video_EventVonageSessionLayout_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Video_EventVonageSessionLayout_OneArgs = {
+  object: Video_EventVonageSessionLayout_Insert_Input;
+  on_conflict?: Maybe<Video_EventVonageSessionLayout_On_Conflict>;
 };
 
 
@@ -18495,23 +18533,37 @@ export type Mutation_RootUpdate_Video_EventParticipantStream_By_PkArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Video_EventVonageSessionArgs = {
-  _append?: Maybe<Video_EventVonageSession_Append_Input>;
-  _delete_at_path?: Maybe<Video_EventVonageSession_Delete_At_Path_Input>;
-  _delete_elem?: Maybe<Video_EventVonageSession_Delete_Elem_Input>;
-  _delete_key?: Maybe<Video_EventVonageSession_Delete_Key_Input>;
-  _prepend?: Maybe<Video_EventVonageSession_Prepend_Input>;
   _set?: Maybe<Video_EventVonageSession_Set_Input>;
   where: Video_EventVonageSession_Bool_Exp;
 };
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Video_EventVonageSessionLayoutArgs = {
+  _append?: Maybe<Video_EventVonageSessionLayout_Append_Input>;
+  _delete_at_path?: Maybe<Video_EventVonageSessionLayout_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Video_EventVonageSessionLayout_Delete_Elem_Input>;
+  _delete_key?: Maybe<Video_EventVonageSessionLayout_Delete_Key_Input>;
+  _prepend?: Maybe<Video_EventVonageSessionLayout_Prepend_Input>;
+  _set?: Maybe<Video_EventVonageSessionLayout_Set_Input>;
+  where: Video_EventVonageSessionLayout_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Video_EventVonageSessionLayout_By_PkArgs = {
+  _append?: Maybe<Video_EventVonageSessionLayout_Append_Input>;
+  _delete_at_path?: Maybe<Video_EventVonageSessionLayout_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Video_EventVonageSessionLayout_Delete_Elem_Input>;
+  _delete_key?: Maybe<Video_EventVonageSessionLayout_Delete_Key_Input>;
+  _prepend?: Maybe<Video_EventVonageSessionLayout_Prepend_Input>;
+  _set?: Maybe<Video_EventVonageSessionLayout_Set_Input>;
+  pk_columns: Video_EventVonageSessionLayout_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Video_EventVonageSession_By_PkArgs = {
-  _append?: Maybe<Video_EventVonageSession_Append_Input>;
-  _delete_at_path?: Maybe<Video_EventVonageSession_Delete_At_Path_Input>;
-  _delete_elem?: Maybe<Video_EventVonageSession_Delete_Elem_Input>;
-  _delete_key?: Maybe<Video_EventVonageSession_Delete_Key_Input>;
-  _prepend?: Maybe<Video_EventVonageSession_Prepend_Input>;
   _set?: Maybe<Video_EventVonageSession_Set_Input>;
   pk_columns: Video_EventVonageSession_Pk_Columns_Input;
 };
@@ -20453,6 +20505,12 @@ export type Query_Root = {
   readonly video_EventParticipantStream_by_pk?: Maybe<Video_EventParticipantStream>;
   /** fetch data from the table: "video.EventVonageSession" */
   readonly video_EventVonageSession: ReadonlyArray<Video_EventVonageSession>;
+  /** fetch data from the table: "video.EventVonageSessionLayout" */
+  readonly video_EventVonageSessionLayout: ReadonlyArray<Video_EventVonageSessionLayout>;
+  /** fetch aggregated fields from the table: "video.EventVonageSessionLayout" */
+  readonly video_EventVonageSessionLayout_aggregate: Video_EventVonageSessionLayout_Aggregate;
+  /** fetch data from the table: "video.EventVonageSessionLayout" using primary key columns */
+  readonly video_EventVonageSessionLayout_by_pk?: Maybe<Video_EventVonageSessionLayout>;
   /** fetch aggregated fields from the table: "video.EventVonageSession" */
   readonly video_EventVonageSession_aggregate: Video_EventVonageSession_Aggregate;
   /** fetch data from the table: "video.EventVonageSession" using primary key columns */
@@ -22510,6 +22568,29 @@ export type Query_RootVideo_EventVonageSessionArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<ReadonlyArray<Video_EventVonageSession_Order_By>>;
   where?: Maybe<Video_EventVonageSession_Bool_Exp>;
+};
+
+
+export type Query_RootVideo_EventVonageSessionLayoutArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Video_EventVonageSessionLayout_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Video_EventVonageSessionLayout_Order_By>>;
+  where?: Maybe<Video_EventVonageSessionLayout_Bool_Exp>;
+};
+
+
+export type Query_RootVideo_EventVonageSessionLayout_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Video_EventVonageSessionLayout_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Video_EventVonageSessionLayout_Order_By>>;
+  where?: Maybe<Video_EventVonageSessionLayout_Bool_Exp>;
+};
+
+
+export type Query_RootVideo_EventVonageSessionLayout_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -29856,6 +29937,12 @@ export type Subscription_Root = {
   readonly video_EventParticipantStream_by_pk?: Maybe<Video_EventParticipantStream>;
   /** fetch data from the table: "video.EventVonageSession" */
   readonly video_EventVonageSession: ReadonlyArray<Video_EventVonageSession>;
+  /** fetch data from the table: "video.EventVonageSessionLayout" */
+  readonly video_EventVonageSessionLayout: ReadonlyArray<Video_EventVonageSessionLayout>;
+  /** fetch aggregated fields from the table: "video.EventVonageSessionLayout" */
+  readonly video_EventVonageSessionLayout_aggregate: Video_EventVonageSessionLayout_Aggregate;
+  /** fetch data from the table: "video.EventVonageSessionLayout" using primary key columns */
+  readonly video_EventVonageSessionLayout_by_pk?: Maybe<Video_EventVonageSessionLayout>;
   /** fetch aggregated fields from the table: "video.EventVonageSession" */
   readonly video_EventVonageSession_aggregate: Video_EventVonageSession_Aggregate;
   /** fetch data from the table: "video.EventVonageSession" using primary key columns */
@@ -31906,6 +31993,29 @@ export type Subscription_RootVideo_EventVonageSessionArgs = {
 };
 
 
+export type Subscription_RootVideo_EventVonageSessionLayoutArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Video_EventVonageSessionLayout_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Video_EventVonageSessionLayout_Order_By>>;
+  where?: Maybe<Video_EventVonageSessionLayout_Bool_Exp>;
+};
+
+
+export type Subscription_RootVideo_EventVonageSessionLayout_AggregateArgs = {
+  distinct_on?: Maybe<ReadonlyArray<Video_EventVonageSessionLayout_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<ReadonlyArray<Video_EventVonageSessionLayout_Order_By>>;
+  where?: Maybe<Video_EventVonageSessionLayout_Bool_Exp>;
+};
+
+
+export type Subscription_RootVideo_EventVonageSessionLayout_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Subscription_RootVideo_EventVonageSession_AggregateArgs = {
   distinct_on?: Maybe<ReadonlyArray<Video_EventVonageSession_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -33067,17 +33177,206 @@ export type Video_EventVonageSession = {
   readonly event: Schedule_Event;
   readonly eventId: Scalars['uuid'];
   readonly id: Scalars['uuid'];
-  readonly layoutData?: Maybe<Scalars['jsonb']>;
   readonly rtmpInputName: Video_RtmpInput_Enum;
   readonly sessionId: Scalars['String'];
   readonly updatedAt: Scalars['timestamptz'];
 };
 
+/** columns and relationships of "video.EventVonageSessionLayout" */
+export type Video_EventVonageSessionLayout = {
+  readonly __typename?: 'video_EventVonageSessionLayout';
+  /** An object relationship */
+  readonly conference: Conference_Conference;
+  readonly conferenceId: Scalars['uuid'];
+  readonly created_at: Scalars['timestamptz'];
+  /** An object relationship */
+  readonly eventVonageSession: Video_EventVonageSession;
+  readonly eventVonageSessionId: Scalars['uuid'];
+  readonly id: Scalars['uuid'];
+  readonly layoutData: Scalars['jsonb'];
+  readonly updated_at: Scalars['timestamptz'];
+};
 
-/** columns and relationships of "video.EventVonageSession" */
-export type Video_EventVonageSessionLayoutDataArgs = {
+
+/** columns and relationships of "video.EventVonageSessionLayout" */
+export type Video_EventVonageSessionLayoutLayoutDataArgs = {
   path?: Maybe<Scalars['String']>;
 };
+
+/** aggregated selection of "video.EventVonageSessionLayout" */
+export type Video_EventVonageSessionLayout_Aggregate = {
+  readonly __typename?: 'video_EventVonageSessionLayout_aggregate';
+  readonly aggregate?: Maybe<Video_EventVonageSessionLayout_Aggregate_Fields>;
+  readonly nodes: ReadonlyArray<Video_EventVonageSessionLayout>;
+};
+
+/** aggregate fields of "video.EventVonageSessionLayout" */
+export type Video_EventVonageSessionLayout_Aggregate_Fields = {
+  readonly __typename?: 'video_EventVonageSessionLayout_aggregate_fields';
+  readonly count: Scalars['Int'];
+  readonly max?: Maybe<Video_EventVonageSessionLayout_Max_Fields>;
+  readonly min?: Maybe<Video_EventVonageSessionLayout_Min_Fields>;
+};
+
+
+/** aggregate fields of "video.EventVonageSessionLayout" */
+export type Video_EventVonageSessionLayout_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<ReadonlyArray<Video_EventVonageSessionLayout_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Video_EventVonageSessionLayout_Append_Input = {
+  readonly layoutData?: Maybe<Scalars['jsonb']>;
+};
+
+/** Boolean expression to filter rows from the table "video.EventVonageSessionLayout". All fields are combined with a logical 'AND'. */
+export type Video_EventVonageSessionLayout_Bool_Exp = {
+  readonly _and?: Maybe<ReadonlyArray<Video_EventVonageSessionLayout_Bool_Exp>>;
+  readonly _not?: Maybe<Video_EventVonageSessionLayout_Bool_Exp>;
+  readonly _or?: Maybe<ReadonlyArray<Video_EventVonageSessionLayout_Bool_Exp>>;
+  readonly conference?: Maybe<Conference_Conference_Bool_Exp>;
+  readonly conferenceId?: Maybe<Uuid_Comparison_Exp>;
+  readonly created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  readonly eventVonageSession?: Maybe<Video_EventVonageSession_Bool_Exp>;
+  readonly eventVonageSessionId?: Maybe<Uuid_Comparison_Exp>;
+  readonly id?: Maybe<Uuid_Comparison_Exp>;
+  readonly layoutData?: Maybe<Jsonb_Comparison_Exp>;
+  readonly updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "video.EventVonageSessionLayout" */
+export enum Video_EventVonageSessionLayout_Constraint {
+  /** unique or primary key constraint */
+  EventVonageSessionLayoutPkey = 'EventVonageSessionLayout_pkey'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Video_EventVonageSessionLayout_Delete_At_Path_Input = {
+  readonly layoutData?: Maybe<ReadonlyArray<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Video_EventVonageSessionLayout_Delete_Elem_Input = {
+  readonly layoutData?: Maybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Video_EventVonageSessionLayout_Delete_Key_Input = {
+  readonly layoutData?: Maybe<Scalars['String']>;
+};
+
+/** input type for inserting data into table "video.EventVonageSessionLayout" */
+export type Video_EventVonageSessionLayout_Insert_Input = {
+  readonly conference?: Maybe<Conference_Conference_Obj_Rel_Insert_Input>;
+  readonly conferenceId?: Maybe<Scalars['uuid']>;
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly eventVonageSession?: Maybe<Video_EventVonageSession_Obj_Rel_Insert_Input>;
+  readonly eventVonageSessionId?: Maybe<Scalars['uuid']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly layoutData?: Maybe<Scalars['jsonb']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type Video_EventVonageSessionLayout_Max_Fields = {
+  readonly __typename?: 'video_EventVonageSessionLayout_max_fields';
+  readonly conferenceId?: Maybe<Scalars['uuid']>;
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly eventVonageSessionId?: Maybe<Scalars['uuid']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate min on columns */
+export type Video_EventVonageSessionLayout_Min_Fields = {
+  readonly __typename?: 'video_EventVonageSessionLayout_min_fields';
+  readonly conferenceId?: Maybe<Scalars['uuid']>;
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly eventVonageSessionId?: Maybe<Scalars['uuid']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** response of any mutation on the table "video.EventVonageSessionLayout" */
+export type Video_EventVonageSessionLayout_Mutation_Response = {
+  readonly __typename?: 'video_EventVonageSessionLayout_mutation_response';
+  /** number of rows affected by the mutation */
+  readonly affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  readonly returning: ReadonlyArray<Video_EventVonageSessionLayout>;
+};
+
+/** on conflict condition type for table "video.EventVonageSessionLayout" */
+export type Video_EventVonageSessionLayout_On_Conflict = {
+  readonly constraint: Video_EventVonageSessionLayout_Constraint;
+  readonly update_columns?: ReadonlyArray<Video_EventVonageSessionLayout_Update_Column>;
+  readonly where?: Maybe<Video_EventVonageSessionLayout_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "video.EventVonageSessionLayout". */
+export type Video_EventVonageSessionLayout_Order_By = {
+  readonly conference?: Maybe<Conference_Conference_Order_By>;
+  readonly conferenceId?: Maybe<Order_By>;
+  readonly created_at?: Maybe<Order_By>;
+  readonly eventVonageSession?: Maybe<Video_EventVonageSession_Order_By>;
+  readonly eventVonageSessionId?: Maybe<Order_By>;
+  readonly id?: Maybe<Order_By>;
+  readonly layoutData?: Maybe<Order_By>;
+  readonly updated_at?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: video_EventVonageSessionLayout */
+export type Video_EventVonageSessionLayout_Pk_Columns_Input = {
+  readonly id: Scalars['uuid'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Video_EventVonageSessionLayout_Prepend_Input = {
+  readonly layoutData?: Maybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "video.EventVonageSessionLayout" */
+export enum Video_EventVonageSessionLayout_Select_Column {
+  /** column name */
+  ConferenceId = 'conferenceId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventVonageSessionId = 'eventVonageSessionId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LayoutData = 'layoutData',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "video.EventVonageSessionLayout" */
+export type Video_EventVonageSessionLayout_Set_Input = {
+  readonly conferenceId?: Maybe<Scalars['uuid']>;
+  readonly created_at?: Maybe<Scalars['timestamptz']>;
+  readonly eventVonageSessionId?: Maybe<Scalars['uuid']>;
+  readonly id?: Maybe<Scalars['uuid']>;
+  readonly layoutData?: Maybe<Scalars['jsonb']>;
+  readonly updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** update columns of table "video.EventVonageSessionLayout" */
+export enum Video_EventVonageSessionLayout_Update_Column {
+  /** column name */
+  ConferenceId = 'conferenceId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventVonageSessionId = 'eventVonageSessionId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LayoutData = 'layoutData',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
 
 /** aggregated selection of "video.EventVonageSession" */
 export type Video_EventVonageSession_Aggregate = {
@@ -33101,11 +33400,6 @@ export type Video_EventVonageSession_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
-/** append existing jsonb value of filtered columns with new jsonb value */
-export type Video_EventVonageSession_Append_Input = {
-  readonly layoutData?: Maybe<Scalars['jsonb']>;
-};
-
 /** Boolean expression to filter rows from the table "video.EventVonageSession". All fields are combined with a logical 'AND'. */
 export type Video_EventVonageSession_Bool_Exp = {
   readonly _and?: Maybe<ReadonlyArray<Video_EventVonageSession_Bool_Exp>>;
@@ -33117,7 +33411,6 @@ export type Video_EventVonageSession_Bool_Exp = {
   readonly event?: Maybe<Schedule_Event_Bool_Exp>;
   readonly eventId?: Maybe<Uuid_Comparison_Exp>;
   readonly id?: Maybe<Uuid_Comparison_Exp>;
-  readonly layoutData?: Maybe<Jsonb_Comparison_Exp>;
   readonly rtmpInputName?: Maybe<Video_RtmpInput_Enum_Comparison_Exp>;
   readonly sessionId?: Maybe<String_Comparison_Exp>;
   readonly updatedAt?: Maybe<Timestamptz_Comparison_Exp>;
@@ -33133,21 +33426,6 @@ export enum Video_EventVonageSession_Constraint {
   EventVonageSessionSessionIdKey = 'EventVonageSession_sessionId_key'
 }
 
-/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-export type Video_EventVonageSession_Delete_At_Path_Input = {
-  readonly layoutData?: Maybe<ReadonlyArray<Scalars['String']>>;
-};
-
-/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-export type Video_EventVonageSession_Delete_Elem_Input = {
-  readonly layoutData?: Maybe<Scalars['Int']>;
-};
-
-/** delete key/value pair or string element. key/value pairs are matched based on their key value */
-export type Video_EventVonageSession_Delete_Key_Input = {
-  readonly layoutData?: Maybe<Scalars['String']>;
-};
-
 /** input type for inserting data into table "video.EventVonageSession" */
 export type Video_EventVonageSession_Insert_Input = {
   readonly conference?: Maybe<Conference_Conference_Obj_Rel_Insert_Input>;
@@ -33156,7 +33434,6 @@ export type Video_EventVonageSession_Insert_Input = {
   readonly event?: Maybe<Schedule_Event_Obj_Rel_Insert_Input>;
   readonly eventId?: Maybe<Scalars['uuid']>;
   readonly id?: Maybe<Scalars['uuid']>;
-  readonly layoutData?: Maybe<Scalars['jsonb']>;
   readonly rtmpInputName?: Maybe<Video_RtmpInput_Enum>;
   readonly sessionId?: Maybe<Scalars['String']>;
   readonly updatedAt?: Maybe<Scalars['timestamptz']>;
@@ -33215,7 +33492,6 @@ export type Video_EventVonageSession_Order_By = {
   readonly event?: Maybe<Schedule_Event_Order_By>;
   readonly eventId?: Maybe<Order_By>;
   readonly id?: Maybe<Order_By>;
-  readonly layoutData?: Maybe<Order_By>;
   readonly rtmpInputName?: Maybe<Order_By>;
   readonly sessionId?: Maybe<Order_By>;
   readonly updatedAt?: Maybe<Order_By>;
@@ -33224,11 +33500,6 @@ export type Video_EventVonageSession_Order_By = {
 /** primary key columns input for table: video_EventVonageSession */
 export type Video_EventVonageSession_Pk_Columns_Input = {
   readonly id: Scalars['uuid'];
-};
-
-/** prepend existing jsonb value of filtered columns with new jsonb value */
-export type Video_EventVonageSession_Prepend_Input = {
-  readonly layoutData?: Maybe<Scalars['jsonb']>;
 };
 
 /** select columns of table "video.EventVonageSession" */
@@ -33241,8 +33512,6 @@ export enum Video_EventVonageSession_Select_Column {
   EventId = 'eventId',
   /** column name */
   Id = 'id',
-  /** column name */
-  LayoutData = 'layoutData',
   /** column name */
   RtmpInputName = 'rtmpInputName',
   /** column name */
@@ -33257,7 +33526,6 @@ export type Video_EventVonageSession_Set_Input = {
   readonly createdAt?: Maybe<Scalars['timestamptz']>;
   readonly eventId?: Maybe<Scalars['uuid']>;
   readonly id?: Maybe<Scalars['uuid']>;
-  readonly layoutData?: Maybe<Scalars['jsonb']>;
   readonly rtmpInputName?: Maybe<Video_RtmpInput_Enum>;
   readonly sessionId?: Maybe<Scalars['String']>;
   readonly updatedAt?: Maybe<Scalars['timestamptz']>;
@@ -33273,8 +33541,6 @@ export enum Video_EventVonageSession_Update_Column {
   EventId = 'eventId',
   /** column name */
   Id = 'id',
-  /** column name */
-  LayoutData = 'layoutData',
   /** column name */
   RtmpInputName = 'rtmpInputName',
   /** column name */
@@ -35244,13 +35510,14 @@ export type Registrant_RegistrantCreateRoomMutationVariables = Exact<{
 
 export type Registrant_RegistrantCreateRoomMutation = { readonly __typename?: 'mutation_root', readonly insert_room_Room_one?: Maybe<{ readonly __typename?: 'room_Room', readonly id: any, readonly name: string, readonly priority: number, readonly managementModeName: Room_ManagementMode_Enum, readonly originatingEventId?: Maybe<any>, readonly originatingItem?: Maybe<{ readonly __typename?: 'content_Item', readonly id: any, readonly itemPeople: ReadonlyArray<{ readonly __typename?: 'content_ItemProgramPerson', readonly id: any, readonly roleName: string, readonly person: { readonly __typename?: 'collection_ProgramPerson', readonly id: any, readonly registrantId?: Maybe<any> } }> }> }> };
 
-export type UpdateEventVonageSessionLayoutMutationVariables = Exact<{
+export type BroadcastControlPanel_InsertEventVonageSessionLayoutMutationVariables = Exact<{
   eventVonageSessionId: Scalars['uuid'];
   layoutData: Scalars['jsonb'];
+  conferenceId: Scalars['uuid'];
 }>;
 
 
-export type UpdateEventVonageSessionLayoutMutation = { readonly __typename?: 'mutation_root', readonly update_video_EventVonageSession_by_pk?: Maybe<{ readonly __typename?: 'video_EventVonageSession', readonly id: any }> };
+export type BroadcastControlPanel_InsertEventVonageSessionLayoutMutation = { readonly __typename?: 'mutation_root', readonly insert_video_EventVonageSessionLayout?: Maybe<{ readonly __typename?: 'video_EventVonageSessionLayout_mutation_response', readonly returning: ReadonlyArray<{ readonly __typename?: 'video_EventVonageSessionLayout', readonly id: any }> }> };
 
 export type GetEventVonageTokenMutationVariables = Exact<{
   eventId: Scalars['uuid'];
@@ -35395,6 +35662,13 @@ export type GetRoomVonageSessionIdQueryVariables = Exact<{
 
 
 export type GetRoomVonageSessionIdQuery = { readonly __typename?: 'query_root', readonly room_Room_by_pk?: Maybe<{ readonly __typename?: 'room_Room', readonly id: any, readonly publicVonageSessionId?: Maybe<string> }> };
+
+export type VonageLayoutProvider_GetLatestEventVonageSessionLayoutQueryVariables = Exact<{
+  eventId: Scalars['uuid'];
+}>;
+
+
+export type VonageLayoutProvider_GetLatestEventVonageSessionLayoutQuery = { readonly __typename?: 'query_root', readonly video_EventVonageSessionLayout: ReadonlyArray<{ readonly __typename?: 'video_EventVonageSessionLayout', readonly id: any, readonly layoutData: any }> };
 
 export type DeleteEventParticipantMutationVariables = Exact<{
   eventId: Scalars['uuid'];
@@ -40304,43 +40578,45 @@ export function useRegistrant_RegistrantCreateRoomMutation(baseOptions?: Apollo.
 export type Registrant_RegistrantCreateRoomMutationHookResult = ReturnType<typeof useRegistrant_RegistrantCreateRoomMutation>;
 export type Registrant_RegistrantCreateRoomMutationResult = Apollo.MutationResult<Registrant_RegistrantCreateRoomMutation>;
 export type Registrant_RegistrantCreateRoomMutationOptions = Apollo.BaseMutationOptions<Registrant_RegistrantCreateRoomMutation, Registrant_RegistrantCreateRoomMutationVariables>;
-export const UpdateEventVonageSessionLayoutDocument = gql`
-    mutation UpdateEventVonageSessionLayout($eventVonageSessionId: uuid!, $layoutData: jsonb!) {
-  update_video_EventVonageSession_by_pk(
-    pk_columns: {id: $eventVonageSessionId}
-    _set: {layoutData: $layoutData}
+export const BroadcastControlPanel_InsertEventVonageSessionLayoutDocument = gql`
+    mutation BroadcastControlPanel_InsertEventVonageSessionLayout($eventVonageSessionId: uuid!, $layoutData: jsonb!, $conferenceId: uuid!) {
+  insert_video_EventVonageSessionLayout(
+    objects: {eventVonageSessionId: $eventVonageSessionId, layoutData: $layoutData, conferenceId: $conferenceId}
   ) {
-    id
+    returning {
+      id
+    }
   }
 }
     `;
-export type UpdateEventVonageSessionLayoutMutationFn = Apollo.MutationFunction<UpdateEventVonageSessionLayoutMutation, UpdateEventVonageSessionLayoutMutationVariables>;
+export type BroadcastControlPanel_InsertEventVonageSessionLayoutMutationFn = Apollo.MutationFunction<BroadcastControlPanel_InsertEventVonageSessionLayoutMutation, BroadcastControlPanel_InsertEventVonageSessionLayoutMutationVariables>;
 
 /**
- * __useUpdateEventVonageSessionLayoutMutation__
+ * __useBroadcastControlPanel_InsertEventVonageSessionLayoutMutation__
  *
- * To run a mutation, you first call `useUpdateEventVonageSessionLayoutMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateEventVonageSessionLayoutMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useBroadcastControlPanel_InsertEventVonageSessionLayoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBroadcastControlPanel_InsertEventVonageSessionLayoutMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateEventVonageSessionLayoutMutation, { data, loading, error }] = useUpdateEventVonageSessionLayoutMutation({
+ * const [broadcastControlPanelInsertEventVonageSessionLayoutMutation, { data, loading, error }] = useBroadcastControlPanel_InsertEventVonageSessionLayoutMutation({
  *   variables: {
  *      eventVonageSessionId: // value for 'eventVonageSessionId'
  *      layoutData: // value for 'layoutData'
+ *      conferenceId: // value for 'conferenceId'
  *   },
  * });
  */
-export function useUpdateEventVonageSessionLayoutMutation(baseOptions?: Apollo.MutationHookOptions<UpdateEventVonageSessionLayoutMutation, UpdateEventVonageSessionLayoutMutationVariables>) {
+export function useBroadcastControlPanel_InsertEventVonageSessionLayoutMutation(baseOptions?: Apollo.MutationHookOptions<BroadcastControlPanel_InsertEventVonageSessionLayoutMutation, BroadcastControlPanel_InsertEventVonageSessionLayoutMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateEventVonageSessionLayoutMutation, UpdateEventVonageSessionLayoutMutationVariables>(UpdateEventVonageSessionLayoutDocument, options);
+        return Apollo.useMutation<BroadcastControlPanel_InsertEventVonageSessionLayoutMutation, BroadcastControlPanel_InsertEventVonageSessionLayoutMutationVariables>(BroadcastControlPanel_InsertEventVonageSessionLayoutDocument, options);
       }
-export type UpdateEventVonageSessionLayoutMutationHookResult = ReturnType<typeof useUpdateEventVonageSessionLayoutMutation>;
-export type UpdateEventVonageSessionLayoutMutationResult = Apollo.MutationResult<UpdateEventVonageSessionLayoutMutation>;
-export type UpdateEventVonageSessionLayoutMutationOptions = Apollo.BaseMutationOptions<UpdateEventVonageSessionLayoutMutation, UpdateEventVonageSessionLayoutMutationVariables>;
+export type BroadcastControlPanel_InsertEventVonageSessionLayoutMutationHookResult = ReturnType<typeof useBroadcastControlPanel_InsertEventVonageSessionLayoutMutation>;
+export type BroadcastControlPanel_InsertEventVonageSessionLayoutMutationResult = Apollo.MutationResult<BroadcastControlPanel_InsertEventVonageSessionLayoutMutation>;
+export type BroadcastControlPanel_InsertEventVonageSessionLayoutMutationOptions = Apollo.BaseMutationOptions<BroadcastControlPanel_InsertEventVonageSessionLayoutMutation, BroadcastControlPanel_InsertEventVonageSessionLayoutMutationVariables>;
 export const GetEventVonageTokenDocument = gql`
     mutation GetEventVonageToken($eventId: uuid!) {
   joinEventVonageSession(eventId: $eventId) {
@@ -41016,6 +41292,46 @@ export function useGetRoomVonageSessionIdLazyQuery(baseOptions?: Apollo.LazyQuer
 export type GetRoomVonageSessionIdQueryHookResult = ReturnType<typeof useGetRoomVonageSessionIdQuery>;
 export type GetRoomVonageSessionIdLazyQueryHookResult = ReturnType<typeof useGetRoomVonageSessionIdLazyQuery>;
 export type GetRoomVonageSessionIdQueryResult = Apollo.QueryResult<GetRoomVonageSessionIdQuery, GetRoomVonageSessionIdQueryVariables>;
+export const VonageLayoutProvider_GetLatestEventVonageSessionLayoutDocument = gql`
+    query VonageLayoutProvider_GetLatestEventVonageSessionLayout($eventId: uuid!) {
+  video_EventVonageSessionLayout(
+    where: {eventVonageSession: {eventId: {_eq: $eventId}}}
+    order_by: {created_at: desc}
+    limit: 1
+  ) {
+    id
+    layoutData
+  }
+}
+    `;
+
+/**
+ * __useVonageLayoutProvider_GetLatestEventVonageSessionLayoutQuery__
+ *
+ * To run a query within a React component, call `useVonageLayoutProvider_GetLatestEventVonageSessionLayoutQuery` and pass it any options that fit your needs.
+ * When your component renders, `useVonageLayoutProvider_GetLatestEventVonageSessionLayoutQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useVonageLayoutProvider_GetLatestEventVonageSessionLayoutQuery({
+ *   variables: {
+ *      eventId: // value for 'eventId'
+ *   },
+ * });
+ */
+export function useVonageLayoutProvider_GetLatestEventVonageSessionLayoutQuery(baseOptions: Apollo.QueryHookOptions<VonageLayoutProvider_GetLatestEventVonageSessionLayoutQuery, VonageLayoutProvider_GetLatestEventVonageSessionLayoutQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<VonageLayoutProvider_GetLatestEventVonageSessionLayoutQuery, VonageLayoutProvider_GetLatestEventVonageSessionLayoutQueryVariables>(VonageLayoutProvider_GetLatestEventVonageSessionLayoutDocument, options);
+      }
+export function useVonageLayoutProvider_GetLatestEventVonageSessionLayoutLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<VonageLayoutProvider_GetLatestEventVonageSessionLayoutQuery, VonageLayoutProvider_GetLatestEventVonageSessionLayoutQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<VonageLayoutProvider_GetLatestEventVonageSessionLayoutQuery, VonageLayoutProvider_GetLatestEventVonageSessionLayoutQueryVariables>(VonageLayoutProvider_GetLatestEventVonageSessionLayoutDocument, options);
+        }
+export type VonageLayoutProvider_GetLatestEventVonageSessionLayoutQueryHookResult = ReturnType<typeof useVonageLayoutProvider_GetLatestEventVonageSessionLayoutQuery>;
+export type VonageLayoutProvider_GetLatestEventVonageSessionLayoutLazyQueryHookResult = ReturnType<typeof useVonageLayoutProvider_GetLatestEventVonageSessionLayoutLazyQuery>;
+export type VonageLayoutProvider_GetLatestEventVonageSessionLayoutQueryResult = Apollo.QueryResult<VonageLayoutProvider_GetLatestEventVonageSessionLayoutQuery, VonageLayoutProvider_GetLatestEventVonageSessionLayoutQueryVariables>;
 export const DeleteEventParticipantDocument = gql`
     mutation DeleteEventParticipant($eventId: uuid!, $registrantId: uuid!) {
   delete_schedule_EventProgramPerson(

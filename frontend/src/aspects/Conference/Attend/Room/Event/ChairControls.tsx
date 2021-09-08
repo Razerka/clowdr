@@ -1,17 +1,15 @@
 import { Box, Spinner, Text } from "@chakra-ui/react";
 import React, { useMemo } from "react";
+import { useDeepCompareMemo } from "use-deep-compare";
 import { RoomEventDetailsFragment, useGetEventParticipantStreamsSubscription } from "../../../../../generated/graphql";
 import { BroadcastControlPanel } from "./BroadcastControlPanel";
-import { ImmediateSwitch } from "./ImmediateSwitch";
 
 export function ChairControls({
     event,
-    live,
-    secondsUntilOffAir,
-}: {
+}: // secondsUntilOffAir,
+{
     event: RoomEventDetailsFragment;
-    live: boolean;
-    secondsUntilOffAir: number;
+    // secondsUntilOffAir: number;
 }): JSX.Element {
     const {
         data: streamsData,
@@ -23,35 +21,39 @@ export function ChairControls({
         },
     });
 
+    const streamsDataMemo = useDeepCompareMemo(() => streamsData, [streamsData]);
+
     const streamLayoutControls = useMemo(
         () => (
             <Box zIndex="500" position="relative">
                 <Text fontSize="sm" mb={2}>
-                    Here you can control how the video streams from the backstage are laid out in the broadcast video.
+                    Control how the video streams from the backstage are laid out in the broadcast video.
                 </Text>
                 {streamsError ? <>Error loading streams.</> : streamsLoading ? <Spinner /> : undefined}
                 <BroadcastControlPanel
-                    live={live}
-                    streams={streamsData?.video_EventParticipantStream ?? null}
+                    streams={streamsDataMemo?.video_EventParticipantStream ?? null}
                     eventVonageSessionId={event.eventVonageSession?.id ?? null}
                 />
             </Box>
         ),
-        [event.eventVonageSession?.id, live, streamsData?.video_EventParticipantStream, streamsError, streamsLoading]
+        [event.eventVonageSession?.id, streamsDataMemo?.video_EventParticipantStream, streamsError, streamsLoading]
     );
 
-    const immediateSwitchControls = useMemo(
-        () => (
-            <Box maxW="30ch">
-                <ImmediateSwitch live={live} secondsUntilOffAir={secondsUntilOffAir} eventId={event.id} />
-            </Box>
-        ),
-        [event.id, live, secondsUntilOffAir]
-    );
+    // const immediateSwitchControls = useMemo(
+    //     () => (
+    //         <Box>
+    //             <Text fontSize="sm" mb={2}>
+    //                 Here you can control what video source is being played to the audience.
+    //             </Text>
+    //             <ImmediateSwitch live={live} secondsUntilOffAir={secondsUntilOffAir} eventId={event.id} />
+    //         </Box>
+    //     ),
+    //     [event.id, live, secondsUntilOffAir]
+    // );
     return (
         <>
             {streamLayoutControls}
-            {immediateSwitchControls}
+            {/* {immediateSwitchControls} */}
         </>
     );
 }
